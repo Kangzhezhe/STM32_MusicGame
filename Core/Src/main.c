@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
+#include "fatfs.h"
 #include "sdio.h"
 #include "spi.h"
 #include "tim.h"
@@ -37,6 +38,8 @@
 #include "lvgl.h"
 #include "lv_port_indev.h"
 #include "stdio.h"
+#include "ctype.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,6 +49,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+//sd
 #define BLOCK_START_ADDR 0 /* Block start address */
 #define NUM_OF_BLOCKS 1 /* Total number of blocks */
 #define BUFFER_WORDS_SIZE ((BLOCKSIZE * NUM_OF_BLOCKS) >> 2) /* Total data size in bytes */
@@ -56,6 +60,13 @@ HAL_StatusTypeDef Return_Status;
 extern DMA_HandleTypeDef hdma_sdio;
 HAL_StatusTypeDef SDIO_ReadBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks);
 HAL_StatusTypeDef SDIO_WriteBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks);
+	 
+//fs
+FIL file;
+UINT br,bw;
+uint16_t rBuffer[20];      //将SD卡的数据，读入到缓存区
+uint16_t WBuffer[20] ={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -176,6 +187,7 @@ void SD_test(void){
 
 		printf("SD card init fail!\r\n" );
 		}
+#if 0
 		/* 擦除SD卡块 */
 		printf("------------------- Block Erase -------------------------------\r\n");
 		if(HAL_SD_Erase(&hsd, BLOCK_START_ADDR, NUM_OF_BLOCKS) == HAL_OK)
@@ -193,6 +205,8 @@ void SD_test(void){
 
 		printf("\r\nErase Block Failed!\r\n");					
 		}
+#endif
+#if 0
 		/* 填充缓冲区数捿 */
 		memset(Buffer_Tx, 0x22, sizeof(Buffer_Tx));
 		/* 向SD卡块写入数据 */
@@ -207,6 +221,120 @@ void SD_test(void){
 
 		printf("0x%02x:%02x ", i, Buffer_Rx[i]);
 		}
+#endif
+}
+
+void fs_test(void){
+	#if 1  //挂载系统
+  retSD = f_mount(&SDFatFS,"0:",1);
+	switch(retSD)
+	{
+		case FR_NO_FILESYSTEM :   //如果没有文件系统，则进行格式化
+		{
+			retSD = f_mkfs("0:",0,0,rBuffer,sizeof(rBuffer));
+			if(retSD != FR_OK )   //如果格式化不成功，报错
+			{
+				printf("mkfs error %d\r\n",retSD);	
+			}
+		}
+		break;
+		case FR_OK :
+		{
+			printf("mount successful\r\n");
+#if 0 //创建文件并写数据
+			retSD = f_open(&file,"0:State.txt",FA_CREATE_ALWAYS | FA_WRITE);  //判断创建或打开文件是否成功
+			if(retSD == FR_OK)
+			{
+				printf("open successful\r\n");
+				//retSD = f_write(&file,(const void *)State,sizeof(WBuffer),&bw);
+				retSD = f_write(&file,(uint8_t *)WBuffer,sizeof(WBuffer),&bw);
+				if(retSD == FR_OK)  //判断写入数据是否成功
+				{
+					printf("write successful\r\n");
+					f_close(&file);   //关闭文件
+				}
+				else
+				{
+					printf("write error %d\r\n",retSD);
+				}
+			}
+			else
+			{
+				printf("open error %d\r\n",retSD);
+			}
+#endif
+		}	
+		break;
+		default :
+			printf("other error %d\r\n",retSD);
+		break;
+	}
+#if 0   //移位读取SD卡数据
+	retSD = f_open(&file,"0:Temperature_Probe_1.txt",FA_OPEN_EXISTING | FA_READ);
+	if(retSD == FR_OK)
+	{
+		printf("open successful\r\n");
+		retSD =  f_lseek(&file,f_tell(&file)+ 4); //这个函数用于移位，f_tell函数是获取文件首地址的函数
+		if(retSD == FR_OK)
+		{
+			retSD = f_read(&file,(void *)rBuffer,6,&br);
+			if(retSD == FR_OK)  //判断读取文件操作是否成功
+			{
+				printf("read successful\r\n");
+				uint8_t j = 0;
+				for(uint16_t i = 0;i < 2000;i++)  //次for循环用于将读到的数据打印到电脑
+				{
+					j++;
+					printf("%d ",rBuffer[i]);
+					if(j == 10)
+					{
+						printf("\r\n");
+						j = 0;
+					}
+				}
+				f_close(&file);
+			}
+		}
+		else
+		{
+			printf("open error %d\r\n",retSD);
+		}
+	}
+#endif
+#if 0  //读取SD卡中数据
+	retSD = f_open(&file,"0:State.txt",FA_OPEN_EXISTING | FA_READ);
+	if(retSD == FR_OK)
+	{
+		printf("open successful\r\n");
+		retSD = f_read(&file,(uint8_t *)rBuffer,sizeof(rBuffer),&br);
+		if(retSD == FR_OK)
+		{
+			printf("read successful\r\n");
+			uint8_t j = 0;
+			for(uint16_t i = 0;i < 20;i++)
+			{
+				j++;
+				printf("%d ",rBuffer[i]);
+				if(j == 10)
+				{
+					printf("\r\n");
+					j = 0;
+				}
+			}
+			f_close(&file);
+		}
+		else
+		{
+			printf("read error %d\r\n",retSD);
+		}
+	}
+	else
+	{
+		printf("open error %d\r\n",retSD);
+	}
+#endif
+#endif
+
 }
 
 void W25QXX_test(void){
@@ -289,10 +417,12 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM1_Init();
   MX_SDIO_SD_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 	
 	
 	SD_test();
+	fs_test();
 	delay_init(100);
 	LCD_Init();
 	W25QXX_Init();			//W25QXX初始化

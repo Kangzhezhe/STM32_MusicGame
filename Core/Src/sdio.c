@@ -46,16 +46,17 @@ void MX_SDIO_SD_Init(void)
   hsd.Init.BusWide = SDIO_BUS_WIDE_1B;
   hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
   hsd.Init.ClockDiv = 0;
-  if (HAL_SD_Init(&hsd) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B) != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE BEGIN SDIO_Init 2 */
+	if (HAL_SD_Init(&hsd) != HAL_OK)
+	{ 
 
+	Error_Handler();
+	}
+	if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B) != HAL_OK)
+	{ 
+
+	Error_Handler();
+	}
   /* USER CODE END SDIO_Init 2 */
 
 }
@@ -76,14 +77,10 @@ void HAL_SD_MspInit(SD_HandleTypeDef* sdHandle)
     __HAL_RCC_GPIOD_CLK_ENABLE();
     /**SDIO GPIO Configuration
     PC8     ------> SDIO_D0
-    PC9     ------> SDIO_D1
-    PC10     ------> SDIO_D2
-    PC11     ------> SDIO_D3
     PC12     ------> SDIO_CK
     PD2     ------> SDIO_CMD
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
-                          |GPIO_PIN_12;
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_12;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -146,14 +143,10 @@ void HAL_SD_MspDeInit(SD_HandleTypeDef* sdHandle)
 
     /**SDIO GPIO Configuration
     PC8     ------> SDIO_D0
-    PC9     ------> SDIO_D1
-    PC10     ------> SDIO_D2
-    PC11     ------> SDIO_D3
     PC12     ------> SDIO_CK
     PD2     ------> SDIO_CMD
     */
-    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11
-                          |GPIO_PIN_12);
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_8|GPIO_PIN_12);
 
     HAL_GPIO_DeInit(GPIOD, GPIO_PIN_2);
 
