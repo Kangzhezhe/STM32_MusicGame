@@ -3,19 +3,19 @@
 #include "sys.h" 
 //////////////////////////////////////////////////////////////////////////////////	 
  
-//°´¼üÊäÈëÇý¶¯´úÂë	   
-//STM32F4¹¤³Ì-¿âº¯Êý°æ±¾
-//ÌÔ±¦µêÆÌ£ºhttp://mcudev.taobao.com								  
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	   
+//STM32F4ï¿½ï¿½ï¿½ï¿½-ï¿½âº¯ï¿½ï¿½ï¿½æ±¾
+//ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ì£ï¿½http://mcudev.taobao.com								  
 ////////////////////////////////////////////////////////////////////////////////// 	 
 
-/*ÏÂÃæµÄ·½Ê½ÊÇÍ¨¹ýÖ±½Ó²Ù×÷¿âº¯Êý·½Ê½¶ÁÈ¡IO*/
+/*ï¿½ï¿½ï¿½ï¿½Ä·ï¿½Ê½ï¿½ï¿½Í¨ï¿½ï¿½Ö±ï¿½Ó²ï¿½ï¿½ï¿½ï¿½âº¯ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½È¡IO*/
 #define KEY0 		GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_9) //PE4
 #define KEY1 		GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_8)	//PE3 
 //#define KEY2 		GPIO_ReadInputDataBit(GPIOE,GPIO_Pin_2) //PE2
 #define WK_UP 	GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)	//PA0
 
 
-/*ÏÂÃæ·½Ê½ÊÇÍ¨¹ýÎ»´ø²Ù×÷·½Ê½¶ÁÈ¡IO*/
+/*ï¿½ï¿½ï¿½æ·½Ê½ï¿½ï¿½Í¨ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½È¡IO*/
 /*
 #define KEY0 		PEin(4)   	//PE4
 #define KEY1 		PEin(3)		//PE3 
@@ -29,7 +29,7 @@
 #define KEY2_PRES	3
 #define WKUP_PRES   4
 
-void KEY_Init(void);	//IO³õÊ¼»¯
-u8 KEY_Scan(u8);  		//°´¼üÉ¨Ãèº¯Êý	
+void KEY_Init(void);	//IOï¿½ï¿½Ê¼ï¿½ï¿½
+u8 KEY_Scan(u8);  		//ï¿½ï¿½ï¿½ï¿½É¨ï¿½èº¯ï¿½ï¿½	
 
 #endif

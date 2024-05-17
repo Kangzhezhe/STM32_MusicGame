@@ -18,6 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
+#include "sdio.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -34,6 +36,7 @@
 #include "lv_port_disp.h"
 #include "lvgl.h"
 #include "lv_port_indev.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,7 +46,16 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define BLOCK_START_ADDR 0 /* Block start address */
+#define NUM_OF_BLOCKS 1 /* Total number of blocks */
+#define BUFFER_WORDS_SIZE ((BLOCKSIZE * NUM_OF_BLOCKS) >> 2) /* Total data size in bytes */
+uint8_t Buffer_Tx[512],Buffer_Rx[512] = { 
+   0};
+uint32_t i;
+HAL_StatusTypeDef Return_Status;
+extern DMA_HandleTypeDef hdma_sdio;
+HAL_StatusTypeDef SDIO_ReadBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks);
+HAL_StatusTypeDef SDIO_WriteBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks);
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -139,7 +151,77 @@ void my_tptest(){
 	rtp_test(); 					//电阻屏测试
 }
 
+void SD_test(void){
+	printf("Micro SD Card Test...\r\n");
+		/* 棿测SD卡是否正常（处于数据传输模式的传输状态） */
+		if(HAL_SD_GetCardState(&hsd) == HAL_SD_CARD_TRANSFER)
+		{ 
+					
+		printf("Initialize SD card successfully!\r\n");
+		// 打印SD卡基本信恿
+		printf(" SD card information! \r\n");
+		printf(" CardCapacity : %llu \r\n", (unsigned long long)hsd.SdCard.BlockSize * hsd.SdCard.BlockNbr);// 显示容量
+		printf(" CardBlockSize : %d \r\n", hsd.SdCard.BlockSize);   // 块大尿
+		printf(" LogBlockNbr : %d \r\n", hsd.SdCard.LogBlockNbr);	// 逻辑块数釿
+		printf(" LogBlockSize : %d \r\n", hsd.SdCard.LogBlockSize);// 逻辑块大尿
+		printf(" RCA : %d \r\n", hsd.SdCard.RelCardAdd);  // 卡相对地坿
+		printf(" CardType : %d \r\n", hsd.SdCard.CardType);    // 卡类垿
+		// 读取并打印SD卡的CID信息
+		HAL_SD_CardCIDTypeDef sdcard_cid;
+		HAL_SD_GetCardCID(&hsd,&sdcard_cid);
+		printf(" ManufacturerID: %d \r\n",sdcard_cid.ManufacturerID);
+		}
+		else
+		{ 
 
+		printf("SD card init fail!\r\n" );
+		}
+		/* 擦除SD卡块 */
+		printf("------------------- Block Erase -------------------------------\r\n");
+		if(HAL_SD_Erase(&hsd, BLOCK_START_ADDR, NUM_OF_BLOCKS) == HAL_OK)
+		{ 
+
+		/* Wait until SD cards are ready to use for new operation */
+		while(HAL_SD_GetCardState(&hsd) != HAL_SD_CARD_TRANSFER)
+		{ 
+
+		}
+		printf("\r\nErase Block Success!\r\n");
+		}
+		else
+		{ 
+
+		printf("\r\nErase Block Failed!\r\n");					
+		}
+		/* 填充缓冲区数捿 */
+		memset(Buffer_Tx, 0x22, sizeof(Buffer_Tx));
+		/* 向SD卡块写入数据 */
+		printf("------------------- Write SD card block data Test ------------------\r\n");
+		SDIO_WriteBlocks_DMA(&hsd,Buffer_Tx, BLOCK_START_ADDR, NUM_OF_BLOCKS);
+		printf("write status :%d\r\n",Return_Status);
+		/* 读取SD卡块数据 */	
+		Return_Status=SDIO_ReadBlocks_DMA(&hsd,Buffer_Rx, BLOCK_START_ADDR, NUM_OF_BLOCKS);
+		printf("read status :%d\r\n",Return_Status);
+		for(i = 0; i < sizeof(Buffer_Rx); i++)
+		{ 
+
+		printf("0x%02x:%02x ", i, Buffer_Rx[i]);
+		}
+}
+
+void W25QXX_test(void){
+	POINT_COLOR=RED; 
+	
+	while(W25QXX_ReadID()!=W25Q16)								//检测不到W25QXX
+	{
+		LCD_ShowString(30,150,200,16,16,RED,"W25Q16 Check Failed!");
+		delay_ms(500);
+		LCD_ShowString(30,150,200,16,16,RED,"Please Check!      ");
+		delay_ms(500);
+		HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
+	}
+	LCD_ShowString(30,150,200,16,16,RED,"W25Q16 Ready!"); 
+}
 
 static lv_obj_t * label;
 
@@ -201,27 +283,20 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART1_UART_Init();
   MX_FSMC_Init();
   MX_SPI1_Init();
   MX_TIM1_Init();
+  MX_SDIO_SD_Init();
   /* USER CODE BEGIN 2 */
-	HAL_TIM_Base_Start_IT(&htim1); 
+	
+	
+	SD_test();
 	delay_init(100);
 	LCD_Init();
 	W25QXX_Init();			//W25QXX初始化
-	
-  POINT_COLOR=RED; 
-	
-	while(W25QXX_ReadID()!=W25Q16)								//检测不到W25QXX
-	{
-		LCD_ShowString(30,150,200,16,16,RED,"W25Q16 Check Failed!");
-		delay_ms(500);
-		LCD_ShowString(30,150,200,16,16,RED,"Please Check!      ");
-		delay_ms(500);
-		HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
-	}
-	LCD_ShowString(30,150,200,16,16,RED,"W25Q16 Ready!"); 
+	W25QXX_test();
 	
 	GBK_Lib_Init();       //硬件GBK字库初始化--(如果使用不带字库的液晶屏版本，此处可以屏蔽，不做字库初始化） 
 	
@@ -230,6 +305,7 @@ int main(void)
 	LCD_Clear(WHITE);//清除屏幕
 	
 	//lvgl
+	HAL_TIM_Base_Start_IT(&htim1); 
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
@@ -280,7 +356,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = 8;
   RCC_OscInitStruct.PLL.PLLN = 200;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLQ = 9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -302,6 +378,73 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+HAL_StatusTypeDef SDIO_ReadBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks)
+{ 
+
+HAL_StatusTypeDef Return_Status;
+HAL_SD_CardStateTypeDef SD_Card_Status;
+do
+{ 
+
+SD_Card_Status = HAL_SD_GetCardState(hsd);
+}while(SD_Card_Status != HAL_SD_CARD_TRANSFER );
+/* SDIO DMA DeInit */
+/* SDIO DeInit */
+HAL_DMA_DeInit(&hdma_sdio);
+/* SDIO DMA Init */
+/* SDIO Init */
+hdma_sdio.Instance = DMA2_Stream3;
+hdma_sdio.Init.Direction = DMA_PERIPH_TO_MEMORY;
+hdma_sdio.Init.PeriphInc = DMA_PINC_DISABLE;
+hdma_sdio.Init.MemInc = DMA_MINC_ENABLE;
+hdma_sdio.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+hdma_sdio.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+hdma_sdio.Init.Mode = DMA_NORMAL;
+hdma_sdio.Init.Priority = DMA_PRIORITY_LOW;
+if (HAL_DMA_Init(&hdma_sdio) != HAL_OK)
+{ 
+
+Error_Handler();
+}
+__HAL_LINKDMA( hsd,hdmarx,hdma_sdio);
+Return_Status = HAL_SD_ReadBlocks_DMA( hsd,pData, BlockAdd, NumberOfBlocks);
+return Return_Status;
+}
+
+HAL_StatusTypeDef SDIO_WriteBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks)
+{ 
+
+HAL_StatusTypeDef Return_Status;
+HAL_SD_CardStateTypeDef SD_Card_Status;
+do
+{ 
+
+SD_Card_Status = HAL_SD_GetCardState(hsd);
+}while(SD_Card_Status != HAL_SD_CARD_TRANSFER );
+/* SDIO DMA DeInit */
+/* SDIO DeInit */
+HAL_DMA_DeInit(&hdma_sdio);
+/* SDIO DMA Init */
+/* SDIO Init */
+hdma_sdio.Instance = DMA2_Stream3;
+hdma_sdio.Init.Direction = DMA_MEMORY_TO_PERIPH;
+hdma_sdio.Init.PeriphInc = DMA_PINC_DISABLE;
+hdma_sdio.Init.MemInc = DMA_MINC_ENABLE;
+hdma_sdio.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+hdma_sdio.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+hdma_sdio.Init.Mode = DMA_NORMAL;
+hdma_sdio.Init.Priority = DMA_PRIORITY_LOW;
+if (HAL_DMA_Init(&hdma_sdio) != HAL_OK)
+{ 
+
+Error_Handler();
+}
+__HAL_LINKDMA(hsd,hdmatx,hdma_sdio);	
+Return_Status = HAL_SD_WriteBlocks_DMA(hsd,pData, BlockAdd, NumberOfBlocks);
+return Return_Status;
+}
+
 //5ms
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
     if(htim->Instance == TIM1){
@@ -314,6 +457,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
         lv_tick_inc(5);
     }
 }
+
+int fputc(int ch, FILE *f)
+{ 
+
+HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xffff);
+return ch;
+}
+/** * @brief 重定向c库函数getchar,scanf到USARTx * @retval None */
+int fgetc(FILE *f)
+{ 
+
+uint8_t ch = 0;
+HAL_UART_Receive(&huart1, &ch, 1, 0xffff);
+return ch;
+}
+
 /* USER CODE END 4 */
 
 /**
