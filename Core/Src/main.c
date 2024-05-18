@@ -18,6 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
+#include "dac.h"
 #include "dma.h"
 #include "fatfs.h"
 #include "sdio.h"
@@ -40,6 +42,8 @@
 #include "stdio.h"
 #include "ctype.h"
 #include "string.h"
+#include "key.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -418,6 +422,8 @@ int main(void)
   MX_TIM1_Init();
   MX_SDIO_SD_Init();
   MX_FATFS_Init();
+  MX_ADC1_Init();
+  MX_DAC_Init();
   /* USER CODE BEGIN 2 */
 	
 	
@@ -440,6 +446,49 @@ int main(void)
 	lv_port_disp_init();
 	lv_port_indev_init();
 	lv_example_get_started_1();
+	
+	u16 adcx;
+	float temp;
+ 	u8 t=0;	 
+	u16 dacval=0;
+	u8 key;	
+	
+	while(1)
+	{
+		t++;
+		key=KEY_Scan(0);			  
+		if(key==WKUP_PRES)
+		{		 
+			if(dacval<4000)dacval+=200;
+			HAL_DAC_SetValue(&hdac,DAC_CHANNEL_1,DAC_ALIGN_12B_R,dacval);//设置DAC值
+		}else if(key==2)
+		{
+			if(dacval>200)dacval-=200;
+			else dacval=0;
+			HAL_DAC_SetValue(&hdac,DAC_CHANNEL_1,DAC_ALIGN_12B_R,dacval);//设置DAC值
+		}	 
+		if(t==10||key==KEY1_PRES||key==WKUP_PRES) 	//WKUP/KEY1按下了,或者定时时间到了
+		{	  
+			adcx = HAL_DAC_GetValue(&hdac,DAC_CHANNEL_1);
+			LCD_ShowxNum(94,150,adcx,4,16,BLUE,0);     	   //显示DAC寄存器值
+			temp=(float)adcx*(3.3/4096);			         //得到DAC电压值
+			adcx=temp;
+ 			LCD_ShowxNum(94,170,temp,1,16,BLUE,0);     	   //显示电压值整数部分
+ 			temp-=adcx;
+			temp*=1000;
+			LCD_ShowxNum(110,170,temp,3,16,BLUE,0X80); 	   //显示电压值的小数部分
+ 			adcx=Get_Adc_Average(10);		//得到ADC转换值	  
+			temp=(float)adcx*(3.3/4096);			        //得到ADC电压值
+			adcx=temp;
+ 			LCD_ShowxNum(94,190,temp,1,16,BLUE,0);     	  //显示电压值整数部分
+ 			temp-=adcx;
+			temp*=1000;
+			LCD_ShowxNum(110,190,temp,3,16,BLUE,0X80); 	  //显示电压值的小数部分
+			//LED1=!LED1;	   
+			t=0;
+		}	    
+		delay_ms(10);	 
+	}	
 
   /* USER CODE END 2 */
 

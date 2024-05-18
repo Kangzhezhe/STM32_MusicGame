@@ -75,6 +75,8 @@ void Error_Handler(void);
 #define TCS_GPIO_Port GPIOC
 #define LED_ON_Board_Pin GPIO_PIN_10
 #define LED_ON_Board_GPIO_Port GPIOF
+#define WK_UP_Pin GPIO_PIN_0
+#define WK_UP_GPIO_Port GPIOA
 #define TSCK_Pin GPIO_PIN_0
 #define TSCK_GPIO_Port GPIOB
 #define TPEN_Pin GPIO_PIN_1
@@ -87,6 +89,10 @@ void Error_Handler(void);
 #define W25QXX_CS_GPIO_Port GPIOB
 #define LCD_BL_Pin GPIO_PIN_15
 #define LCD_BL_GPIO_Port GPIOB
+#define KEY1_Pin GPIO_PIN_8
+#define KEY1_GPIO_Port GPIOB
+#define KEY0_Pin GPIO_PIN_9
+#define KEY0_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
