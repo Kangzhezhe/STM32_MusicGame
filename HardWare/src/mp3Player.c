@@ -100,13 +100,15 @@ int MP3DataDecoder(uint8_t **read_ptr, int *bytes_left)
 		{
 			if(dac_ht == 1)
 			{
-				DAC_buff[0][i] = outbuffer[2*i] * mp3player.ucVolume /100 + 32768;
-				DAC_buff[1][i] = outbuffer[2*i+1] * mp3player.ucVolume /100 + 32768;
+//				DAC_buff[0][i] = outbuffer[2*i] * mp3player.ucVolume /100 + 32768;
+//				DAC_buff[1][i] = outbuffer[2*i+1] * mp3player.ucVolume /100 + 32768;
+				DAC_buff[i] = outbuffer[2*i] * mp3player.ucVolume /100 + 32768;
 			}
 			else
 			{
-				DAC_buff[0][i+outputSamps/2] = outbuffer[2*i] * mp3player.ucVolume /100 + 32768;
-				DAC_buff[1][i+outputSamps/2] = outbuffer[2*i+1] * mp3player.ucVolume /100 + 32768;
+//				DAC_buff[0][i+outputSamps/2] = outbuffer[2*i] * mp3player.ucVolume /100 + 32768;
+//				DAC_buff[1][i+outputSamps/2] = outbuffer[2*i+1] * mp3player.ucVolume /100 + 32768;
+				DAC_buff[i+outputSamps/2] = outbuffer[2*i+1] * mp3player.ucVolume /100 + 32768;
 			}
 		}
 		

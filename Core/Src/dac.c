@@ -119,7 +119,7 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef* dacHandle)
     __HAL_LINKDMA(dacHandle,DMA_Handle1,hdma_dac1);
 
   /* USER CODE BEGIN DAC_MspInit 1 */
-
+	__HAL_DMA_ENABLE_IT(&hdma_dac1, DMA_IT_HT | DMA_IT_TC | DMA_IT_TE);
   /* USER CODE END DAC_MspInit 1 */
   }
 }
@@ -179,10 +179,12 @@ void DAC_Out(uint16_t dat)
 	HAL_DAC_SetValue(&hdac,DAC_CHANNEL_1,DAC_ALIGN_12B_R,dat);
 }
 
-//void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
-//{
-//    /*·­×ªRED_LEDÒý½Å×´Ì¬*/
-//    HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
-//}
-
+void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
+{
+    /*·­×ªRED_LEDÒý½Å×´Ì¬*/
+    HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
+}
+void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac){
+		HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
+}
 /* USER CODE END 1 */
