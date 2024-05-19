@@ -35,13 +35,15 @@ extern "C" {
 extern DAC_HandleTypeDef hdac;
 
 /* USER CODE BEGIN Private defines */
-
+#define   DAC_BUF_LEN       2500
 /* USER CODE END Private defines */
 
 void MX_DAC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 void Dac1_Set_Vol(u16 vol);
+extern uint16_t DAC_buff[DAC_BUF_LEN]; 
+void DAC_DMA_Start(uint32_t freq, uint16_t len);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

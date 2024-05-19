@@ -384,69 +384,7 @@ void lv_example_get_started_1(void)
 	
 }
 
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
-int main(void)
-{
-
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
-  SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_USART1_UART_Init();
-  MX_FSMC_Init();
-  MX_SPI1_Init();
-  MX_TIM1_Init();
-  MX_SDIO_SD_Init();
-  MX_FATFS_Init();
-  MX_ADC1_Init();
-  MX_DAC_Init();
-  /* USER CODE BEGIN 2 */
-	
-	
-	SD_test();
-	fs_test();
-	delay_init(100);
-	LCD_Init();
-	W25QXX_Init();			//W25QXX初始化
-	W25QXX_test();
-	
-	GBK_Lib_Init();       //硬件GBK字库初始化--(如果使用不带字库的液晶屏版本，此处可以屏蔽，不做字库初始化） 
-	
-	tp_dev.init();				//触摸屏初始化
-	
-	LCD_Clear(WHITE);//清除屏幕
-	
-	//lvgl
-	HAL_TIM_Base_Start_IT(&htim1); 
-	lv_init();
-	lv_port_disp_init();
-	lv_port_indev_init();
-	lv_example_get_started_1();
-	
+void adda_test(void){
 	u16 adcx;
 	float temp;
  	u8 t=0;	 
@@ -489,6 +427,127 @@ int main(void)
 		}	    
 		delay_ms(10);	 
 	}	
+}
+
+void dac_test_dma(void){
+	u16 adcx;
+	float temp;
+ 	u8 t=0;	 
+	volatile u32 dacval=1;
+	u8 key;	
+	bool buf_len=0;
+	DAC_DMA_Start(1,210);
+	while(1){
+		t++;
+		key=KEY_Scan(0);			  
+		if(key==WKUP_PRES)
+		{		 
+			dacval+=1;
+			DAC_DMA_Start(dacval,210);
+		}else if(key==2)
+		{
+			if(dacval>1)dacval-=1;
+			else dacval=1;
+			DAC_DMA_Start(dacval,210);
+		}	 
+		else if(key==1)
+		{
+			if (buf_len==0){
+				DAC_DMA_Start(dacval,20);
+				buf_len=1;
+			}else {
+				DAC_DMA_Start(dacval,210);
+				buf_len=0;
+			}
+		}	 
+		if(t==10||key==KEY1_PRES||key==WKUP_PRES||KEY0_PRES) 	//WKUP/KEY1按下了,或者定时时间到了
+		{	  
+				adcx = HAL_DAC_GetValue(&hdac,DAC_CHANNEL_1);
+				LCD_ShowxNum(94,150,adcx,4,16,BLUE,0);     	   //显示DAC寄存器值
+				temp=(float)adcx*(3.3/4096);			         //得到DAC电压值
+				adcx=temp;
+				LCD_ShowxNum(94,170,temp,1,16,BLUE,0);     	   //显示电压值整数部分
+				temp-=adcx;
+				temp*=1000;
+				LCD_ShowxNum(110,170,temp,3,16,BLUE,0X80); 	   //显示电压值的小数部分
+				adcx=Get_Adc_Average(10);		//得到ADC转换值	  
+				temp=(float)adcx*(3.3/4096);			        //得到ADC电压值
+				adcx=temp;
+				LCD_ShowxNum(94,190,temp,1,16,BLUE,0);     	  //显示电压值整数部分
+				temp-=adcx;
+				temp*=1000;
+				LCD_ShowxNum(110,190,temp,3,16,BLUE,0X80); 	  //显示电压值的小数部分
+		}
+	}
+}
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_USART1_UART_Init();
+  MX_FSMC_Init();
+  MX_SPI1_Init();
+  MX_TIM1_Init();
+  MX_SDIO_SD_Init();
+  MX_FATFS_Init();
+  MX_ADC1_Init();
+  MX_DAC_Init();
+  MX_TIM2_Init();
+  /* USER CODE BEGIN 2 */
+	
+	
+	SD_test();
+	fs_test();
+	delay_init(100);
+	LCD_Init();
+	W25QXX_Init();			//W25QXX初始化
+	W25QXX_test();
+	
+	GBK_Lib_Init();       //硬件GBK字库初始化--(如果使用不带字库的液晶屏版本，此处可以屏蔽，不做字库初始化） 
+	
+	tp_dev.init();				//触摸屏初始化
+	
+	LCD_Clear(WHITE);//清除屏幕
+	
+	//lvgl
+	HAL_TIM_Base_Start_IT(&htim1); 
+	lv_init();
+	lv_port_disp_init();
+	lv_port_indev_init();
+	lv_example_get_started_1();
+	
+	HAL_TIM_Base_Start(&htim2); 
+	
+	dac_test_dma();
 
   /* USER CODE END 2 */
 
@@ -499,6 +558,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
 //		delay_ms(1000);
 //		
 //		HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
