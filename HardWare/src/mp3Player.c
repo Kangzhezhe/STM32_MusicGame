@@ -251,7 +251,7 @@ void mp3PlayerDemo(const char *mp3file)
 			}
 			
 			//mp3文件读取完成，退出
-			if(file.fptr == file.fsize)
+			if(file.fptr == f_size(&file))
 			{
 				printf("单曲播放完毕\r\n");
 				break;
@@ -272,29 +272,45 @@ void mp3PlayerDemo(const char *mp3file)
 	}
 
 	//运行到此处，说明单曲播放完成，收尾工作
-	DAC_DMA_Stop();//停止喂DAC数据	
+	HAL_DAC_Stop_DMA(&hdac,DAC_CHANNEL_1);
+	//DAC_DMA_Stop();//停止喂DAC数据	
 	mp3player.ucStatus = STA_IDLE;
 	MP3FreeDecoder(Mp3Decoder);//清理缓存
 	f_close(&file);	
 }
 
-void DMA1_Stream6_IRQHandler(void)
+//void DMA1_Stream6_IRQHandler(void)
+//{
+//	if(DMA_GetITStatus(DMA1_Stream6, DMA_IT_HTIF6) != RESET) //半传输
+//	{	
+//		dac_ht = 1;		
+//		Isread=1;
+//		
+//    DMA_ClearITPendingBit(DMA1_Stream6, DMA_IT_HTIF6);
+//  }
+//	
+//	if(DMA_GetITStatus(DMA1_Stream6, DMA_IT_TCIF6) != RESET) //全传输
+//	{
+//		dac_ht = 0;
+//		Isread=1;
+//		
+//    DMA_ClearITPendingBit(DMA1_Stream6, DMA_IT_TCIF6);
+//  }
+//}
+
+
+
+void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
 {
-	if(DMA_GetITStatus(DMA1_Stream6, DMA_IT_HTIF6) != RESET) //半传输
-	{	
-		dac_ht = 1;		
-		Isread=1;
-		
-    DMA_ClearITPendingBit(DMA1_Stream6, DMA_IT_HTIF6);
-  }
-	
-	if(DMA_GetITStatus(DMA1_Stream6, DMA_IT_TCIF6) != RESET) //全传输
-	{
 		dac_ht = 0;
 		Isread=1;
-		
-    DMA_ClearITPendingBit(DMA1_Stream6, DMA_IT_TCIF6);
-  }
+    /*翻转RED_LED引脚状态*/
+    //HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
+}
+void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac){
+		dac_ht = 1;		
+		Isread=1;
+		//HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
 }
 
 /***************************** (END OF FILE) *********************************/

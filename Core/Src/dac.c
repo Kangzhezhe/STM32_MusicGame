@@ -167,24 +167,24 @@ void DAC_DMA_Start(uint32_t freq, uint16_t len)
 	//设置DMA缓冲长度需要停止DMA
 	HAL_DAC_Stop_DMA(&hdac,DAC_CHANNEL_1);
 
-	HAL_DAC_Start_DMA(&hdac,DAC_CHANNEL_1,(u32*)TriWave_Value,len,DAC_ALIGN_12B_R);
+	HAL_DAC_Start_DMA(&hdac,DAC_CHANNEL_1,(u32*)DAC_buff,len,DAC_ALIGN_12B_L);
 	
 	//设置定时器
 	__HAL_TIM_SetAutoreload(&htim2,(u32)((CNT_FREQ)/freq));
 	//HAL_TIM_Base_Start(&htim2);
 }
 
-void DAC_Out(uint16_t dat)
-{
-	HAL_DAC_SetValue(&hdac,DAC_CHANNEL_1,DAC_ALIGN_12B_R,dat);
-}
+//void DAC_Out(uint16_t dat)
+//{
+//	HAL_DAC_SetValue(&hdac,DAC_CHANNEL_1,DAC_ALIGN_12B_R,dat);
+//}
 
-void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
-{
-    /*翻转RED_LED引脚状态*/
-    HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
-}
-void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac){
-		HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
-}
+//void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
+//{
+//    /*翻转RED_LED引脚状态*/
+//    HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
+//}
+//void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac){
+//		HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
+//}
 /* USER CODE END 1 */

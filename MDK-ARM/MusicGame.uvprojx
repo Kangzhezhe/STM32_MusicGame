@@ -1525,6 +1525,11 @@
               <FileType>1</FileType>
               <FilePath>..\HardWare\src\key.c</FilePath>
             </File>
+            <File>
+              <FileName>mp3Player.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\src\mp3Player.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

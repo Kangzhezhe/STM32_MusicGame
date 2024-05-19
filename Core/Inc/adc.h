@@ -41,7 +41,7 @@ extern ADC_HandleTypeDef hadc1;
 void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-u16 Get_Adc();
+u16 Get_Adc(void);
 u16 Get_Adc_Average(u8 times);
 /* USER CODE END Prototypes */
 

@@ -43,7 +43,7 @@
 #include "ctype.h"
 #include "string.h"
 #include "key.h"
-
+#include "mp3Player.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -546,7 +546,14 @@ int main(void)
 	lv_example_get_started_1();
 	
 	HAL_TIM_Base_Start(&htim2); 
-	dac_test_dma();
+	//dac_test_dma();
+	while (1)
+	{
+		mp3PlayerDemo("0:/∂œ«≈≤–—©.MP3");
+		//mp3PlayerDemo("0:/’≈π˙»Ÿ-≤£¡ß÷Æ«È.MP3");
+
+		delay_ms(50);
+	}
 
   /* USER CODE END 2 */
 
