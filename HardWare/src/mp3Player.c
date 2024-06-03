@@ -25,7 +25,7 @@
  * 这里我们定义MP3BUFFER_SIZE为2304
  */
 #define MP3BUFFER_SIZE  2304
-#define INPUTBUF_SIZE   3000
+#define INPUTBUF_SIZE   2000
 
 static HMP3Decoder		Mp3Decoder;			/* mp3解码器指针	*/
 static MP3FrameInfo		Mp3FrameInfo;		/* mP3帧信息  */

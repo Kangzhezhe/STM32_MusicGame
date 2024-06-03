@@ -52,6 +52,7 @@ osThreadId defaultTaskHandle;
 osThreadId myTask_LEDHandle;
 osThreadId myTask_lvglHandle;
 osThreadId myTask_mp3Handle;
+osThreadId start_taskHandle;
 osSemaphoreId mutex_lvglHandle;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,6 +64,7 @@ void StartDefaultTask(void const * argument);
 void StartTaskLED(void const * argument);
 void StartTask_lvgl(void const * argument);
 void StartTask_mp3(void const * argument);
+void StartTask(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -144,6 +146,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of myTask_mp3 */
   osThreadDef(myTask_mp3, StartTask_mp3, osPriorityIdle, 0, 128);
   myTask_mp3Handle = osThreadCreate(osThread(myTask_mp3), NULL);
+
+  /* definition and creation of start_task */
+  osThreadDef(start_task, StartTask, osPriorityIdle, 0, 512);
+  start_taskHandle = osThreadCreate(osThread(start_task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -228,9 +234,32 @@ void StartTask_mp3(void const * argument)
   for(;;)
   {
     osDelay(1);
-		//mp3PlayerDemo("0:/æ–­æ¡¥æ®‹é›ª.MP3");
+		//mp3PlayerDemo("0:/æ–?æ¡¥æ®‹é›?.MP3");
   }
   /* USER CODE END StartTask_mp3 */
+}
+
+/* USER CODE BEGIN Header_StartTask */
+/**
+* @brief Function implementing the start_task thread.
+* @param argument: Not used
+* @retval None
+*/
+void SD_test(void);
+void fs_test(void);
+u8 scan_files(u8 * path);
+//volatile char a[512] = "0:/¶ÏÇÅ²ÐÑ©.MP3";
+/* USER CODE END Header_StartTask */
+void StartTask(void const * argument)
+{
+  /* USER CODE BEGIN StartTask */
+	
+  SD_test();
+	fs_test();
+	scan_files("0:");
+	mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
+	vTaskDelete(start_taskHandle);
+  /* USER CODE END StartTask */
 }
 
 /* Private application code --------------------------------------------------*/

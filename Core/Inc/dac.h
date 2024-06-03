@@ -35,7 +35,7 @@ extern "C" {
 extern DAC_HandleTypeDef hdac;
 
 /* USER CODE BEGIN Private defines */
-#define   DAC_BUF_LEN       2500
+#define   DAC_BUF_LEN       2304
 /* USER CODE END Private defines */
 
 void MX_DAC_Init(void);

@@ -63,9 +63,9 @@ uint8_t Buffer_Tx[512],Buffer_Rx[512] = {
    0};
 uint32_t i;
 HAL_StatusTypeDef Return_Status;
-extern DMA_HandleTypeDef hdma_sdio;
-HAL_StatusTypeDef SDIO_ReadBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks);
-HAL_StatusTypeDef SDIO_WriteBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks);
+//extern DMA_HandleTypeDef hdma_sdio;
+//HAL_StatusTypeDef SDIO_ReadBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks);
+//HAL_StatusTypeDef SDIO_WriteBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks);
 	 
 //fs
 FIL file;
@@ -565,8 +565,8 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 	
-	SD_test();
-	fs_test();
+//	SD_test();
+//	fs_test();
 	delay_init();
 	LCD_Init();
 	W25QXX_Init();			//W25QXX≥ı ºªØ
@@ -589,13 +589,13 @@ int main(void)
 
 	HAL_TIM_Base_Start(&htim2); 
 ////	//MP3
-	scan_files("0:");
+	//scan_files("0:");
 //	
 
 	//dac_test_dma();
 //	while (1)
 //	{
-//		mp3PlayerDemo("0:/∂œ«≈≤–—©.MP3");
+		//mp3PlayerDemo("0:/∂œ«≈≤–—©.MP3");
 //		//mp3PlayerDemo("0:/’≈π˙»Ÿ-≤£¡ß÷Æ«È.MP3");
 //	}
 	
@@ -677,71 +677,71 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-HAL_StatusTypeDef SDIO_ReadBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks)
-{ 
+//HAL_StatusTypeDef SDIO_ReadBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks)
+//{ 
 
-HAL_StatusTypeDef Return_Status;
-HAL_SD_CardStateTypeDef SD_Card_Status;
-do
-{ 
+//HAL_StatusTypeDef Return_Status;
+//HAL_SD_CardStateTypeDef SD_Card_Status;
+//do
+//{ 
 
-SD_Card_Status = HAL_SD_GetCardState(hsd);
-}while(SD_Card_Status != HAL_SD_CARD_TRANSFER );
-/* SDIO DMA DeInit */
-/* SDIO DeInit */
-HAL_DMA_DeInit(&hdma_sdio);
-/* SDIO DMA Init */
-/* SDIO Init */
-hdma_sdio.Instance = DMA2_Stream3;
-hdma_sdio.Init.Direction = DMA_PERIPH_TO_MEMORY;
-hdma_sdio.Init.PeriphInc = DMA_PINC_DISABLE;
-hdma_sdio.Init.MemInc = DMA_MINC_ENABLE;
-hdma_sdio.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-hdma_sdio.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
-hdma_sdio.Init.Mode = DMA_NORMAL;
-hdma_sdio.Init.Priority = DMA_PRIORITY_LOW;
-if (HAL_DMA_Init(&hdma_sdio) != HAL_OK)
-{ 
+//SD_Card_Status = HAL_SD_GetCardState(hsd);
+//}while(SD_Card_Status != HAL_SD_CARD_TRANSFER );
+///* SDIO DMA DeInit */
+///* SDIO DeInit */
+//HAL_DMA_DeInit(&hdma_sdio);
+///* SDIO DMA Init */
+///* SDIO Init */
+//hdma_sdio.Instance = DMA2_Stream3;
+//hdma_sdio.Init.Direction = DMA_PERIPH_TO_MEMORY;
+//hdma_sdio.Init.PeriphInc = DMA_PINC_DISABLE;
+//hdma_sdio.Init.MemInc = DMA_MINC_ENABLE;
+//hdma_sdio.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+//hdma_sdio.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+//hdma_sdio.Init.Mode = DMA_NORMAL;
+//hdma_sdio.Init.Priority = DMA_PRIORITY_LOW;
+//if (HAL_DMA_Init(&hdma_sdio) != HAL_OK)
+//{ 
 
-Error_Handler();
-}
-__HAL_LINKDMA( hsd,hdmarx,hdma_sdio);
-Return_Status = HAL_SD_ReadBlocks_DMA( hsd,pData, BlockAdd, NumberOfBlocks);
-return Return_Status;
-}
+//Error_Handler();
+//}
+//__HAL_LINKDMA( hsd,hdmarx,hdma_sdio);
+//Return_Status = HAL_SD_ReadBlocks_DMA( hsd,pData, BlockAdd, NumberOfBlocks);
+//return Return_Status;
+//}
 
-HAL_StatusTypeDef SDIO_WriteBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks)
-{ 
+//HAL_StatusTypeDef SDIO_WriteBlocks_DMA(SD_HandleTypeDef *hsd, uint8_t *pData, uint32_t BlockAdd, uint32_t NumberOfBlocks)
+//{ 
 
-HAL_StatusTypeDef Return_Status;
-HAL_SD_CardStateTypeDef SD_Card_Status;
-do
-{ 
+//HAL_StatusTypeDef Return_Status;
+//HAL_SD_CardStateTypeDef SD_Card_Status;
+//do
+//{ 
 
-SD_Card_Status = HAL_SD_GetCardState(hsd);
-}while(SD_Card_Status != HAL_SD_CARD_TRANSFER );
-/* SDIO DMA DeInit */
-/* SDIO DeInit */
-HAL_DMA_DeInit(&hdma_sdio);
-/* SDIO DMA Init */
-/* SDIO Init */
-hdma_sdio.Instance = DMA2_Stream3;
-hdma_sdio.Init.Direction = DMA_MEMORY_TO_PERIPH;
-hdma_sdio.Init.PeriphInc = DMA_PINC_DISABLE;
-hdma_sdio.Init.MemInc = DMA_MINC_ENABLE;
-hdma_sdio.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-hdma_sdio.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
-hdma_sdio.Init.Mode = DMA_NORMAL;
-hdma_sdio.Init.Priority = DMA_PRIORITY_LOW;
-if (HAL_DMA_Init(&hdma_sdio) != HAL_OK)
-{ 
+//SD_Card_Status = HAL_SD_GetCardState(hsd);
+//}while(SD_Card_Status != HAL_SD_CARD_TRANSFER );
+///* SDIO DMA DeInit */
+///* SDIO DeInit */
+//HAL_DMA_DeInit(&hdma_sdio);
+///* SDIO DMA Init */
+///* SDIO Init */
+//hdma_sdio.Instance = DMA2_Stream3;
+//hdma_sdio.Init.Direction = DMA_MEMORY_TO_PERIPH;
+//hdma_sdio.Init.PeriphInc = DMA_PINC_DISABLE;
+//hdma_sdio.Init.MemInc = DMA_MINC_ENABLE;
+//hdma_sdio.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+//hdma_sdio.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+//hdma_sdio.Init.Mode = DMA_NORMAL;
+//hdma_sdio.Init.Priority = DMA_PRIORITY_LOW;
+//if (HAL_DMA_Init(&hdma_sdio) != HAL_OK)
+//{ 
 
-Error_Handler();
-}
-__HAL_LINKDMA(hsd,hdmatx,hdma_sdio);	
-Return_Status = HAL_SD_WriteBlocks_DMA(hsd,pData, BlockAdd, NumberOfBlocks);
-return Return_Status;
-}
+//Error_Handler();
+//}
+//__HAL_LINKDMA(hsd,hdmatx,hdma_sdio);	
+//Return_Status = HAL_SD_WriteBlocks_DMA(hsd,pData, BlockAdd, NumberOfBlocks);
+//return Return_Status;
+//}
 
 //5ms
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
