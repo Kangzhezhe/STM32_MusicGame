@@ -197,11 +197,11 @@ void StartTask_lvgl(void const * argument)
   for(;;)
   {
     osDelay(1);
-		if(pdTRUE == xSemaphoreTake(mutex_lvglHandle,portMAX_DELAY))    
-		{
-				lv_timer_handler();        
-				xSemaphoreGive(mutex_lvglHandle);
-		}
+    if(pdTRUE == xSemaphoreTake(mutex_lvglHandle,portMAX_DELAY))    
+    {
+            lv_timer_handler();        
+            xSemaphoreGive(mutex_lvglHandle);
+    }
 
   }
   /* USER CODE END StartTask_lvgl */
