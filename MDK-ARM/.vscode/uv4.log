@@ -1,8 +1,60 @@
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'MusicGame'
-compiling freertos.c...
+compiling main.c...
+../Core/Src/main.c(493): warning:  #177-D: variable "buf"  was declared but never referenced
+  	char buf[512] = {0};	
+../Core/Src/main.c(494): warning:  #177-D: variable "fn"  was declared but never referenced
+    char *fn;
+../Core/Src/main.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=190364 RO-data=27300 RW-data=944 ZI-data=106880  
-FromELF: creating hex file...
-"MusicGame\MusicGame.axf" - 0 Error(s), 0 Warning(s).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching startup_stm32f407xx.o(STACK).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching w25qxx.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_init.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching main.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching tasks.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching sdio.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching spi.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching fsmc.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_keyboard.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching adc.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching usart.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching stm32f4xx_hal_timebase_tim.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching touch.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching queue.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching tasks.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching ff.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching heap_4.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_buttonmatrix.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_calendar.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching mp3player.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching freertos.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lcd.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching stm32f4xx_hal.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_port_indev.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_text.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching ff_gen_drv.o(.bss).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching port.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching fsmc.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching delay.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_calendar_header_dropdown.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching sd_diskio.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching ff.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching fatfs.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching system_stm32f4xx.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lcd.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching w25qxx.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_text.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_text.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_text.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_text.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_textarea.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching stdout.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching errno.o(.data).
+MusicGame\MusicGame.axf: Error: L6406E: No space in execution regions with .ANY selector matching lv_port_disp.o(.data).
+MusicGame\MusicGame.axf: Error: L6407E: Sections of aggregate size 0x28c4 bytes could not fit into .ANY selector(s).
+Not enough information to list image symbols.
+Not enough information to list load addresses in the image map.
+Finished: 2 information, 0 warning and 45 error messages.
+"MusicGame\MusicGame.axf" - 45 Error(s), 2 Warning(s).
+Target not created.
 Build Time Elapsed:  00:00:08

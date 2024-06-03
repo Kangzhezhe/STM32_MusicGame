@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "lvgl.h"
+ #include "mp3Player.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,6 +51,7 @@
 osThreadId defaultTaskHandle;
 osThreadId myTask_LEDHandle;
 osThreadId myTask_lvglHandle;
+osThreadId myTask_mp3Handle;
 osSemaphoreId mutex_lvglHandle;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,6 +62,7 @@ osSemaphoreId mutex_lvglHandle;
 void StartDefaultTask(void const * argument);
 void StartTaskLED(void const * argument);
 void StartTask_lvgl(void const * argument);
+void StartTask_mp3(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -138,6 +141,10 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(myTask_lvgl, StartTask_lvgl, osPriorityIdle, 0, 1024);
   myTask_lvglHandle = osThreadCreate(osThread(myTask_lvgl), NULL);
 
+  /* definition and creation of myTask_mp3 */
+  osThreadDef(myTask_mp3, StartTask_mp3, osPriorityIdle, 0, 128);
+  myTask_mp3Handle = osThreadCreate(osThread(myTask_mp3), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -205,6 +212,25 @@ void StartTask_lvgl(void const * argument)
 
   }
   /* USER CODE END StartTask_lvgl */
+}
+
+/* USER CODE BEGIN Header_StartTask_mp3 */
+/**
+* @brief Function implementing the myTask_mp3 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTask_mp3 */
+void StartTask_mp3(void const * argument)
+{
+  /* USER CODE BEGIN StartTask_mp3 */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+		//mp3PlayerDemo("0:/断桥残雪.MP3");
+  }
+  /* USER CODE END StartTask_mp3 */
 }
 
 /* Private application code --------------------------------------------------*/

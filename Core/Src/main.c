@@ -572,7 +572,7 @@ int main(void)
 	W25QXX_Init();			//W25QXX初始化
 	W25QXX_test();
 	
-	GBK_Lib_Init();       //硬件GBK字库初始化--(如果使用不带字库的液晶屏版本，此处可以屏蔽，不做字库初始化） 
+	// GBK_Lib_Init();       //硬件GBK字库初始化--(如果使用不带字库的液晶屏版本，此处可以屏蔽，不做字库初始化） 
 	
 	tp_dev.init();				//触摸屏初始化
 	
@@ -591,13 +591,14 @@ int main(void)
 ////	//MP3
 	scan_files("0:");
 //	
-//	//dac_test_dma();
-////	while (1)
-////	{
-////		mp3PlayerDemo("0:/断桥残雪.MP3");
-////		//mp3PlayerDemo("0:/张国荣-玻璃之情.MP3");
-////	}
-//	lv_demo_music();
+
+	//dac_test_dma();
+//	while (1)
+//	{
+//		mp3PlayerDemo("0:/断桥残雪.MP3");
+//		//mp3PlayerDemo("0:/张国荣-玻璃之情.MP3");
+//	}
+	
 
   /* USER CODE END 2 */
 
