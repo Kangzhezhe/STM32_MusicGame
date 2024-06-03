@@ -101,12 +101,13 @@ ARM Macro Assembler    Page 2
    68 00000016         
    69 00000016                 END
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
-interwork --depend=musicgame\asmmisc.d -omusicgame\asmmisc.o -I.\RTE\_MusicGame
- -IC:\Users\19178\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include -I
-C:\Users\19178\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\
-Device\ST\STM32F4xx\Include --predefine="__MICROLIB SETA 1" --predefine="__UVIS
-ION_VERSION SETA 536" --predefine="_RTE_ SETA 1" --predefine="STM32F407xx SETA 
-1" --predefine="_RTE_ SETA 1" --list=asmmisc.lst ..\HELIX\real\arm\asmmisc.s
+interwork --depend=musicgame\asmmisc.d -omusicgame\asmmisc.o -I../Core/Inc -I.\
+RTE\_MusicGame -IC:\Users\19178\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\C
+ore\Include -IC:\Users\19178\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\
+Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine="__MICROLIB SETA 1" --pre
+define="__UVISION_VERSION SETA 536" --predefine="_RTE_ SETA 1" --predefine="STM
+32F407xx SETA 1" --predefine="_RTE_ SETA 1" --list=asmmisc.lst ..\HELIX\real\ar
+m\asmmisc.s
 
 
 

@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 #include "adc.h"
 #include "dac.h"
 #include "dma.h"
@@ -44,7 +45,7 @@
 #include "string.h"
 #include "key.h"
 #include "mp3Player.h"
-#include "lv_demo_music.h"
+//#include "lv_demo_music.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -87,6 +88,7 @@ uint16_t WBuffer[20] ={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -565,7 +567,7 @@ int main(void)
 	
 	SD_test();
 	fs_test();
-	delay_init(100);
+	delay_init();
 	LCD_Init();
 	W25QXX_Init();			//W25QXX初始化
 	W25QXX_test();
@@ -579,26 +581,33 @@ int main(void)
 	//rtp_test();
 	
 	//lvgl
-	HAL_TIM_Base_Start_IT(&htim1); 
+	//HAL_TIM_Base_Start_IT(&htim1); 
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
 	lv_example_get_started_1();
-	
-	HAL_TIM_Base_Start(&htim2); 
-	//MP3
-	scan_files("0:");
-	//dac_test_dma();
-	while (1)
-	{
-		mp3PlayerDemo("0:/断桥残雪.MP3");
-		//mp3PlayerDemo("0:/张国荣-玻璃之情.MP3");
 
-		delay_ms(50);
-	}
-//lv_demo_music();
+	HAL_TIM_Base_Start(&htim2); 
+////	//MP3
+	scan_files("0:");
+//	
+//	//dac_test_dma();
+////	while (1)
+////	{
+////		mp3PlayerDemo("0:/断桥残雪.MP3");
+////		//mp3PlayerDemo("0:/张国荣-玻璃之情.MP3");
+////	}
+//	lv_demo_music();
 
   /* USER CODE END 2 */
+
+  /* Call init function for freertos objects (in cmsis_os2.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -734,17 +743,9 @@ return Return_Status;
 }
 
 //5ms
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-    if(htim->Instance == TIM1){
-//        static u32 cnt = 0;
-//        if (cnt++>=200)
-//        {
-//            HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-//            cnt = 0;
-//        }
-        lv_tick_inc(5);
-    }
-}
+//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+//    
+//}
 
 int fputc(int ch, FILE *f)
 { 
@@ -762,6 +763,35 @@ return ch;
 }
 
 /* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM6 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM6) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+//	else if(htim->Instance == TIM1){
+//	//        static u32 cnt = 0;
+//	//        if (cnt++>=200)
+//	//        {
+//	//            HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+//	//            cnt = 0;
+//	//        }
+//					lv_tick_inc(5);
+//    }
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
