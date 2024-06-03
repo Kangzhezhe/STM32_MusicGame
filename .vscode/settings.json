@@ -5,6 +5,8 @@
         "cmsis_os.h": "c",
         "lvgl.h": "c",
         "fatfs.h": "c",
-        "functional": "c"
+        "functional": "c",
+        "lv_png.h": "c",
+        "lv_examples.h": "c"
     }
 }

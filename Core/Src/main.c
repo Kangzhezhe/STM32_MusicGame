@@ -587,8 +587,8 @@ int main(void)
 	lv_port_disp_init();
 	lv_port_indev_init();
   //lv_port_fs_init();
-	lv_example_get_started_1();
-
+	// lv_example_get_started_1();
+	
 	HAL_TIM_Base_Start(&htim2); 
 ////	//MP3
 	//scan_files("0:");
