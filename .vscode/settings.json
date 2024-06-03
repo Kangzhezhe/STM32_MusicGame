@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "dac.h": "c",
+        "lv_port_fs.h": "c",
+        "cmsis_os.h": "c",
+        "lvgl.h": "c",
+        "fatfs.h": "c",
+        "functional": "c"
+    }
+}

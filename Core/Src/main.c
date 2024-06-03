@@ -40,6 +40,7 @@
 #include "lv_port_disp.h"
 #include "lvgl.h"
 #include "lv_port_indev.h"
+#include "lv_port_fs.h"
 #include "stdio.h"
 #include "ctype.h"
 #include "string.h"
@@ -248,7 +249,7 @@ void fs_test(void){
 		case FR_OK :
 		{
 			printf("mount successful\r\n");
-#if 0 //创建文件并写数据
+#if 1 //创建文件并写数据
 			retSD = f_open(&file,"0:State.txt",FA_CREATE_ALWAYS | FA_WRITE);  //判断创建或打开文件是否成功
 			if(retSD == FR_OK)
 			{
@@ -308,7 +309,7 @@ void fs_test(void){
 		}
 	}
 #endif
-#if 0  //读取SD卡中数据
+#if 1  //读取SD卡中数据
 	retSD = f_open(&file,"0:State.txt",FA_OPEN_EXISTING | FA_READ);
 	if(retSD == FR_OK)
 	{
@@ -585,6 +586,7 @@ int main(void)
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
+  //lv_port_fs_init();
 	lv_example_get_started_1();
 
 	HAL_TIM_Base_Start(&htim2); 

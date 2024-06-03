@@ -25,7 +25,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "lv_port_disp.h"
 #include "lvgl.h"
+#include "lv_port_indev.h"
+#include "lv_port_fs.h"
  #include "mp3Player.h"
 /* USER CODE END Includes */
 
@@ -248,16 +251,55 @@ void StartTask_mp3(void const * argument)
 void SD_test(void);
 void fs_test(void);
 u8 scan_files(u8 * path);
-//volatile char a[512] = "0:/¶ÏÇÅ²ÐÑ©.MP3";
+#include "fatfs.h"
+#include <stdio.h>
+void test_fs_read(void) {
+    lv_fs_file_t f;
+		lv_fs_res_t res;
+	res = lv_fs_open(&f, "A:/State.txt", LV_FS_MODE_RD);
+	if(res != LV_FS_RES_OK) printf("open err :%d\r\n",res);
+
+		uint32_t read_num;
+		u16 buf[20];
+		res = lv_fs_read(&f, buf, 40, &read_num);
+		if(res != LV_FS_RES_OK || read_num != 40)  printf("read err");
+		for (int i=0;i<20;i++){
+			printf("%d ",buf[i]);
+		}
+		lv_fs_close(&f);
+}
+
+void test_print_directory_files(const char *path) {
+    lv_fs_dir_t dir;
+    lv_fs_res_t res = lv_fs_dir_open(&dir, path);
+    if (res != LV_FS_RES_OK) {
+        printf("Failed to open directory\n");
+        return;
+    }
+    while (true) {
+        char fn[256];
+        lv_fs_res_t res = lv_fs_dir_read(&dir, fn,256);
+        if (res != LV_FS_RES_OK||fn[0] == 0) {
+            break;
+        }
+        printf("%s\r\n", fn);
+    }
+
+    lv_fs_dir_close(&dir);
+}
+
 /* USER CODE END Header_StartTask */
+
 void StartTask(void const * argument)
 {
   /* USER CODE BEGIN StartTask */
-	
+  lv_port_fs_init();
   SD_test();
-	fs_test();
-	scan_files("0:");
-	mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
+//   test_fs_read();
+    test_print_directory_files("A:/");
+	//fs_test();
+	// scan_files("0:");
+	// mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
 	vTaskDelete(start_taskHandle);
   /* USER CODE END StartTask */
 }
