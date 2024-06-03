@@ -44,6 +44,7 @@
 #include "string.h"
 #include "key.h"
 #include "mp3Player.h"
+#include "lv_demo_music.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -481,6 +482,44 @@ void dac_test_dma(void){
 	}
 }
 
+FILINFO fileinfo;	//文件信息
+DIR dir;  			//目录
+//遍历目录文件并打印输出
+u8 scan_files(u8 * path)
+{
+	FRESULT res;
+	char buf[512] = {0};	
+  char *fn;
+	
+#if _USE_LFN
+ 	fileinfo.fsize = _MAX_LFN * 2 + 1;
+	//fileinfo.fname = buf;
+#endif
+ 
+	res = f_opendir(&dir,(const TCHAR*)path);
+	if (res == FR_OK) 
+	{	
+		printf("\r\n"); 
+		
+		while(1){
+			
+			res = f_readdir(&dir, &fileinfo);                
+			if (res != FR_OK || fileinfo.fname[0] == 0) break;  
+ 
+#if _USE_LFN
+			//fn = *fileinfo.lfname ? fileinfo.lfname : fileinfo.fname;
+#else							   
+			fn = fileinfo.fname;
+#endif	    
+
+			printf("%s/", path);			
+			printf("%s\r\n", fileinfo.fname);			
+		} 
+  }	  
+ 
+  return res;	  
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -524,7 +563,6 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 	
-	
 	SD_test();
 	fs_test();
 	delay_init(100);
@@ -538,6 +576,8 @@ int main(void)
 	
 	LCD_Clear(WHITE);//清除屏幕
 	
+	//rtp_test();
+	
 	//lvgl
 	HAL_TIM_Base_Start_IT(&htim1); 
 	lv_init();
@@ -546,6 +586,8 @@ int main(void)
 	lv_example_get_started_1();
 	
 	HAL_TIM_Base_Start(&htim2); 
+	//MP3
+	scan_files("0:");
 	//dac_test_dma();
 	while (1)
 	{
@@ -554,6 +596,7 @@ int main(void)
 
 		delay_ms(50);
 	}
+//lv_demo_music();
 
   /* USER CODE END 2 */
 
