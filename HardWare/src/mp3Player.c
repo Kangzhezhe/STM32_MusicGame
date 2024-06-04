@@ -176,7 +176,7 @@ void mp3PlayerDemo(const char *mp3file)
 		MP3FreeDecoder(Mp3Decoder);
 		return;	/* 停止播放 */
 	}
-	
+    
 	//尝试解码成功
 	if(MP3DataDecoder(&read_ptr, &bytes_left))
 	{
@@ -280,6 +280,7 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
         xSemaphoreGiveFromISR(Semaphore_mp3Handle, &xHigherPriorityTaskWoken);
         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
+
 void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac){
     if(!Semaphore_mp3Handle)return;
 		dac_ht = 1;		

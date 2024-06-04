@@ -172,7 +172,7 @@ void DAC_DMA_Start(uint32_t freq, uint16_t len)
 	HAL_TIM_Base_Stop(&htim2);
 	//设置DMA缓冲长度需要停止DMA
 	HAL_DAC_Stop_DMA(&hdac,DAC_CHANNEL_1);
-
+   
 	HAL_DAC_Start_DMA(&hdac,DAC_CHANNEL_1,(u32*)DAC_buff,len,DAC_ALIGN_12B_L);
     
 	//设置定时器

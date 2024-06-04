@@ -152,9 +152,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>217</LineNumber>
+          <LineNumber>196</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134398316</Address>
+          <Address>134398318</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -163,39 +163,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\HardWare\src\mp3Player.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\MusicGame\../HardWare/src/mp3Player.c\217</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>287</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134227598</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\HardWare\src\mp3Player.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\MusicGame\../HardWare/src/mp3Player.c\287</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>294</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134227666</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\HardWare\src\mp3Player.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\MusicGame\../HardWare/src/mp3Player.c\294</Expression>
+          <Expression>\\MusicGame\../HardWare/src/mp3Player.c\196</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

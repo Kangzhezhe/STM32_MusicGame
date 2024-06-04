@@ -305,9 +305,9 @@ void StartTask(void const * argument)
 	//fs_test();
 	// scan_files("0:");
   vTaskDelay(2000);
-//   __HAL_DMA_ENABLE_IT(&hdma_dac1, DMA_IT_HT | DMA_IT_TC | DMA_IT_TE);
-	mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
-	// mp3PlayerDemo("0:/²£Á§Ö®Çé.MP3");
+	// mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
+	mp3PlayerDemo("0:/zhangguorong.mp3");
+	// mp3PlayerDemo("0:/piano_sound/piano_middle_C.mp3");
 	vTaskDelete(start_taskHandle);
   /* USER CODE END StartTask */
 }
