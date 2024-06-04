@@ -218,7 +218,6 @@ void StartTask_lvgl(void const * argument)
             lv_timer_handler();        
             xSemaphoreGive(mutex_lvglHandle);
     }
-
   }
   /* USER CODE END StartTask_lvgl */
 }
@@ -288,22 +287,8 @@ void test_print_directory_files(const char *path) {
     lv_fs_dir_close(&dir);
 }
 
-//void lv_example_lodepng_1(void)
-//{
-//    LV_IMAGE_DECLARE(img_wink_png);
-//    lv_obj_t * img;
-
-//    img = lv_image_create(lv_screen_active());
-//    lv_image_set_src(img, &img_wink_png);
-//    lv_obj_align(img, LV_ALIGN_LEFT_MID, 20, 0);
-
-//    img = lv_image_create(lv_screen_active());
-//    /* Assuming a File system is attached to letter 'A'
-//     * E.g. set LV_USE_FS_STDIO 'A' in lv_conf.h */
-//    lv_image_set_src(img, "A:/piano_key.png");
-//    lv_obj_align(img, LV_ALIGN_RIGHT_MID, -20, 0);
-//}
 void my_piano(void);
+
 /* USER CODE END Header_StartTask */
 void StartTask(void const * argument)
 {
@@ -311,8 +296,6 @@ void StartTask(void const * argument)
   lv_port_fs_init();
   SD_test();
 	my_piano();
-  //lv_example_lodepng_1();
-//   test_fs_read();
     test_print_directory_files("A:/");
 	//fs_test();
 	// scan_files("0:");

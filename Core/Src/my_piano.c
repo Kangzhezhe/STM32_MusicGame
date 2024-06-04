@@ -166,6 +166,9 @@ static void event_handler_btn0(lv_event_t * e)
     }
 }
 
+void test(lv_event_t *e){
+
+}
 
 //****************
 //*7个钢琴键
@@ -221,7 +224,6 @@ void my_piano(void)
     // lv_obj_set_style_bg_color(lv_scr_act(), lv_palette_main(LV_PALETTE_GREEN), 0);  //设置初始背景颜色
 
 
-
     lv_obj_t * btn1 = lv_imagebutton_create(lv_screen_active());
     lv_imagebutton_set_src(btn1, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/piano_key.png", NULL);
 
@@ -246,29 +248,28 @@ void my_piano(void)
 
 
 
-    // lv_obj_t * btn2 = lv_imagebutton_create(lv_screen_active());
-    // lv_imagebutton_set_src(btn2, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/piano_key.png", NULL);
+    lv_obj_t * btn2 = lv_imagebutton_create(lv_screen_active());
+    lv_imagebutton_set_src(btn2, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/piano_key.png", NULL);
 
-    // lv_obj_add_style(btn2, &style_def, 0);
-    // lv_obj_add_style(btn2, &style_pr, LV_STATE_PRESSED);
+    lv_obj_add_style(btn2, &style_def, 0);
+    lv_obj_add_style(btn2, &style_pr, LV_STATE_PRESSED);
 
-    // lv_obj_add_event_cb(btn2, event_handler_btn0, LV_EVENT_ALL, (void *)2);
+    lv_obj_add_event_cb(btn2, event_handler_btn0, LV_EVENT_ALL, (void *)2);
 
-    // lv_obj_set_width(btn2, 45);
-    // lv_obj_align(btn2, LV_ALIGN_TOP_LEFT, 47, 0);
-    // /*在图像按钮上创建一个标签*/
-    // label = lv_label_create(btn2);
-    // lv_label_set_text(label, "Re");
-    // // 创建一个样式对象
-    // // static lv_style_t style_label;
-    // lv_style_init(&style_label);
-    // // 设置文本颜色为紫色
-    // lv_style_set_text_color(&style_label, lv_palette_main(LV_PALETTE_PURPLE));
-    // // 将样式应用到标签对象上
-    // lv_obj_add_style(label, &style_label, 0);
-    // lv_obj_align(label, LV_ALIGN_CENTER, 0, -10);
+    lv_obj_set_width(btn2, 45);
+    lv_obj_align(btn2, LV_ALIGN_TOP_LEFT, 47, 0);
+    /*在图像按钮上创建一个标签*/
+    label = lv_label_create(btn2);
+    lv_label_set_text(label, "Re");
+    // 创建一个样式对象
+    // static lv_style_t style_label;
+    lv_style_init(&style_label);
+    // 设置文本颜色为紫色
+    lv_style_set_text_color(&style_label, lv_palette_main(LV_PALETTE_PURPLE));
+    // 将样式应用到标签对象上
+    lv_obj_add_style(label, &style_label, 0);
+    lv_obj_align(label, LV_ALIGN_CENTER, 0, -10);
     
-
 
     lv_obj_t * btn3 = lv_imagebutton_create(lv_screen_active());
     lv_imagebutton_set_src(btn3, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/piano_key.png", NULL);

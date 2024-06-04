@@ -118,11 +118,11 @@ static void * fs_open(lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode)
     FRESULT res;
     FIL *file_p = lv_malloc(sizeof(FIL));
     
-    char * p = lv_malloc(30*sizeof(char));
-    char * dist = "0:";
+    static char  p [30];
+    const char * dist = "0:";
     strcpy(p, dist);
     strcat(p, path);
-    printf("open path :%s\r\n",p);
+   // printf("open path :%s\r\n",p);
 
     if(mode == LV_FS_MODE_WR) {
         res = f_open(file_p, p, FA_CREATE_ALWAYS | FA_WRITE);

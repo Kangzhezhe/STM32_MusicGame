@@ -463,7 +463,7 @@ void dac_test_dma(void){
 				DAC_DMA_Start(dacval,210);
 				buf_len=0;
 			}
-		}	 
+		}
 		if(t==10||key==KEY1_PRES||key==WKUP_PRES||KEY0_PRES) 	//WKUP/KEY1按下了,或者定时时间到了
 		{	  
 				adcx = HAL_DAC_GetValue(&hdac,DAC_CHANNEL_1);
@@ -586,7 +586,6 @@ int main(void)
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
-  //lv_port_fs_init();
 	// lv_example_get_started_1();
 	
 	HAL_TIM_Base_Start(&htim2); 
