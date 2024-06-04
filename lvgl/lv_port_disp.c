@@ -107,7 +107,7 @@ static void disp_init(void)
 {
     /*You code here*/
     //LCD_Init();
-		 __HAL_DMA_ENABLE_IT(&hdma_memtomem_dma2_stream6, DMA_IT_TC | DMA_IT_TE);
+		//  __HAL_DMA_ENABLE_IT(&hdma_memtomem_dma2_stream6, DMA_IT_TC | DMA_IT_TE);
         HAL_DMA_RegisterCallback(&hdma_memtomem_dma2_stream6,HAL_DMA_XFER_CPLT_CB_ID,LVGL_LCD_FSMC_DMA_pCallback);
 }
 
@@ -138,36 +138,29 @@ void disp_disable_update(void)
  *'lv_display_flush_ready()' has to be called when it's finished.*/
 vu16 color[400];
 vu16 test_lcd[400];
+#include <stdio.h>
 static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t * px_map)
 {
 
     if(disp_flush_enabled) {
-        //LCD_Color_Fill(area->x1,area->y1,area->x2,area->y2,(uint16_t*)px_map);  
+        // LCD_Color_Fill(area->x1,area->y1,area->x2,area->y2,(uint16_t*)px_map);  
 			
 					LCD_Address_Set(area->x1,area->y1,area->x2,area->y2);
-				 HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM,
-												 ((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
+				//  HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM,
+				// 								 ((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
 
+                HAL_DMA_Start(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM 
+                ,((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
+                if(HAL_DMA_PollForTransfer(&hdma_memtomem_dma2_stream6, HAL_DMA_FULL_TRANSFER,1000)!=HAL_OK)
+                 printf("dma error \r\n");
             //test lcd 
 
-//            u32 index=0; 
-//            u32 totalpoint;
-//            LCD_Set_Window(10,10,20,20);//ÉèÖÃÈ«ÆÁ´°¿Ú
-//					totalpoint=20 * 20; 			//µÃµ½×ÜµãÊý
-//					LCD_SetCursor(10,10);	//ÉèÖÃ¹â±êÎ»ÖÃ 
-//            LCD_WriteRAM_Prepare();     //¿ªÊ¼Ð´ÈëGRAM	 	  
-//            for(index=0;index<totalpoint;index++)
-//            {
-//                color[index]=BRED;	
-//            }
-//             HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream6, (uint32_t) color, (uint32_t) &LCD->LCD_RAM,
-//			 								 20 * 20);
-						
+
     }
 
     /*IMPORTANT!!!
      *Inform the graphics library that you are ready with the flushing*/
-    // lv_display_flush_ready(disp_drv);
+     lv_display_flush_ready(disp_drv);
 }
 
 #else /*Enable this file at the top*/

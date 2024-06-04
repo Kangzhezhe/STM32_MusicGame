@@ -57,6 +57,7 @@ osThreadId myTask_lvglHandle;
 osThreadId myTask_mp3Handle;
 osThreadId start_taskHandle;
 osSemaphoreId mutex_lvglHandle;
+osSemaphoreId Semaphore_mp3Handle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -121,6 +122,10 @@ void MX_FREERTOS_Init(void) {
   osSemaphoreDef(mutex_lvgl);
   mutex_lvglHandle = osSemaphoreCreate(osSemaphore(mutex_lvgl), 1);
 
+  /* definition and creation of Semaphore_mp3 */
+  osSemaphoreDef(Semaphore_mp3);
+  Semaphore_mp3Handle = osSemaphoreCreate(osSemaphore(Semaphore_mp3), 1);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -147,7 +152,7 @@ void MX_FREERTOS_Init(void) {
   myTask_lvglHandle = osThreadCreate(osThread(myTask_lvgl), NULL);
 
   /* definition and creation of myTask_mp3 */
-  osThreadDef(myTask_mp3, StartTask_mp3, osPriorityIdle, 0, 128);
+  osThreadDef(myTask_mp3, StartTask_mp3, osPriorityIdle, 0, 512);
   myTask_mp3Handle = osThreadCreate(osThread(myTask_mp3), NULL);
 
   /* definition and creation of start_task */
@@ -236,7 +241,7 @@ void StartTask_mp3(void const * argument)
   for(;;)
   {
     osDelay(1);
-		//mp3PlayerDemo("0:/æ–?æ¡¥æ®‹é›?.MP3");
+		//mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
   }
   /* USER CODE END StartTask_mp3 */
 }
@@ -289,20 +294,20 @@ void test_print_directory_files(const char *path) {
 
 void my_piano(void);
 #include "lcd.h"
+extern DMA_HandleTypeDef hdma_dac1;
 /* USER CODE END Header_StartTask */
 void StartTask(void const * argument)
 {
   /* USER CODE BEGIN StartTask */
-  lv_port_fs_init();
-  SD_test();
-	my_piano();
+    lv_port_fs_init();
+    SD_test();
     test_print_directory_files("A:/");
 	//fs_test();
 	// scan_files("0:");
-	// mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
-	
-	
-	
+  vTaskDelay(2000);
+//   __HAL_DMA_ENABLE_IT(&hdma_dac1, DMA_IT_HT | DMA_IT_TC | DMA_IT_TE);
+	mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
+	// mp3PlayerDemo("0:/²£Á§Ö®Çé.MP3");
 	vTaskDelete(start_taskHandle);
   /* USER CODE END StartTask */
 }

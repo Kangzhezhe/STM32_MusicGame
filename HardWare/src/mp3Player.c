@@ -41,7 +41,7 @@ static short outbuffer[MP3BUFFER_SIZE];  /* 解码输出缓冲区*/
 static FIL file;			/* file objects */
 static UINT bw;       /* File R/W count */
 FRESULT result; 
-
+extern osSemaphoreId Semaphore_mp3Handle;
 //从SD卡读取MP3源文件进行解码，并传入DAC缓冲区
 int MP3DataDecoder(uint8_t **read_ptr, int *bytes_left)
 {
@@ -94,7 +94,7 @@ int MP3DataDecoder(uint8_t **read_ptr, int *bytes_left)
 				outputSamps *= 2;
 			}//if (Mp3FrameInfo.nChans == 1)	//单声道
 		}//if (outputSamps > 0)
-					
+			
 		//将数据传送至DMA DAC缓冲区
 		for (i = 0; i < outputSamps/2; i++)
 		{
@@ -134,7 +134,7 @@ uint8_t read_file(const char *mp3file, uint8_t **read_ptr, int *bytes_left)
 		return 1;
 	}
 }
-
+u8 start_dac = 0;
 /**
   * @brief  MP3格式音频播放主程序
   * @param  mp3file MP3文件路径
@@ -209,7 +209,7 @@ void mp3PlayerDemo(const char *mp3file)
 	
 	/* 放音状态 */
 	mp3player.ucStatus = STA_PLAYING;
-	
+    
 	/* 进入主程序循环体 */
 	while(mp3player.ucStatus == STA_PLAYING)
 	{
@@ -247,7 +247,8 @@ void mp3PlayerDemo(const char *mp3file)
 			//MP3数据解码并送入DAC缓存
 			if(!MP3DataDecoder(&read_ptr, &bytes_left))
 			{//如果播放出错，Isread置1，避免卡住死循环
-				Isread = 1;
+				// Isread = 1;
+                continue;
 			}
 			
 			//mp3文件读取完成，退出
@@ -258,17 +259,18 @@ void mp3PlayerDemo(const char *mp3file)
 			}	
 
 			//等待DAC发送一半或全部中断
-			while(Isread == 0)
-			{
-				led_delay++;
-				if(led_delay == 0xffffff)
-				{
-					led_delay=0;
-					//LED1_TROG;
-				}
-				//Input_scan();		//等待DMA传输完成，此间可以运行按键扫描及处理事件
-			}
-			Isread = 0;
+			// while(Isread == 0)
+			// {
+			// 	//Input_scan();		//等待DMA传输完成，此间可以运行按键扫描及处理事件
+			// }
+			// Isread = 0;
+            if (!start_dac) {
+                start_dac = 1;
+                printf("start dac:%d\r\n",start_dac);
+            }
+            if (xSemaphoreTake(Semaphore_mp3Handle, portMAX_DELAY) != pdTRUE) {
+                printf("xSemaphoreTake failed!\r\n");
+            }
 	}
 
 	//运行到此处，说明单曲播放完成，收尾工作
@@ -279,37 +281,25 @@ void mp3PlayerDemo(const char *mp3file)
 	f_close(&file);	
 }
 
-//void DMA1_Stream6_IRQHandler(void)
-//{
-//	if(DMA_GetITStatus(DMA1_Stream6, DMA_IT_HTIF6) != RESET) //半传输
-//	{	
-//		dac_ht = 1;		
-//		Isread=1;
-//		
-//    DMA_ClearITPendingBit(DMA1_Stream6, DMA_IT_HTIF6);
-//  }
-//	
-//	if(DMA_GetITStatus(DMA1_Stream6, DMA_IT_TCIF6) != RESET) //全传输
-//	{
-//		dac_ht = 0;
-//		Isread=1;
-//		
-//    DMA_ClearITPendingBit(DMA1_Stream6, DMA_IT_TCIF6);
-//  }
-//}
-
 
 void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
 {
+    if(!Semaphore_mp3Handle||!start_dac)return;
 		dac_ht = 0;
-		Isread=1;
-    /*翻转RED_LED引脚状态*/
-    //HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
+		// Isread=1;
+        printf("start dac cplt :%d\r\n",start_dac);
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        xSemaphoreGiveFromISR(Semaphore_mp3Handle, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac){
+    if(!Semaphore_mp3Handle||!start_dac)return;
 		dac_ht = 1;		
-		Isread=1;
-		//HAL_GPIO_TogglePin(LED_ON_Board_GPIO_Port,LED_ON_Board_Pin);
+		// Isread=1;
+        printf("start dac half :%d\r\n",start_dac);
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        xSemaphoreGiveFromISR(Semaphore_mp3Handle, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 /***************************** (END OF FILE) *********************************/

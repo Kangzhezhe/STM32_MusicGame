@@ -586,7 +586,8 @@ int main(void)
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
-	// lv_example_get_started_1();
+     my_piano();
+	 //lv_example_get_started_1();
 	
 	HAL_TIM_Base_Start(&htim2); 
 	

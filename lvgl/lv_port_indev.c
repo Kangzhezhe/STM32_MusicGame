@@ -411,12 +411,6 @@ static void button_init(void)
     /*Your code comes here*/
 }
 
-// int8_t key_array[15] = {
-//     -1, -1, -1, -1, -1,
-//     -1, -1, -1, -1, -1,
-//     -1, -1, -1, -1, -1
-// };
-// static int i =0;
 /*Will be called by the library to read the button*/
 static void button_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
 {
@@ -425,7 +419,7 @@ static void button_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
 
     /*Get the pressed button's ID*/
     int8_t btn_act = button_get_pressed_id();
-    printf("btn_act = %d\r\n", btn_act);
+    // printf("btn_act = %d\r\n", btn_act);
     if(btn_act >= 0) {
         data->state = LV_INDEV_STATE_PR;
         last_btn = btn_act;
