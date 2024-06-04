@@ -150,6 +150,7 @@ void LCD_WriteRAM(u16 RGB_Code);
 void LCD_Scan_Dir(u8 dir);									//设置屏扫描方向
 void LCD_Display_Dir(u8 dir);								//设置屏幕显示方向
 void LCD_Set_Window(u16 sx,u16 sy,u16 width,u16 height);	//设置窗口	
+void LCD_Address_Set(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
 
 void Draw_Test(void);//绘图工具函数测试
 void Color_Test(void);//颜色填充显示测试

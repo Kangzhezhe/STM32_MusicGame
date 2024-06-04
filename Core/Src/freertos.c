@@ -288,7 +288,7 @@ void test_print_directory_files(const char *path) {
 }
 
 void my_piano(void);
-
+#include "lcd.h"
 /* USER CODE END Header_StartTask */
 void StartTask(void const * argument)
 {
@@ -300,6 +300,9 @@ void StartTask(void const * argument)
 	//fs_test();
 	// scan_files("0:");
 	// mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
+	
+	
+	
 	vTaskDelete(start_taskHandle);
   /* USER CODE END StartTask */
 }

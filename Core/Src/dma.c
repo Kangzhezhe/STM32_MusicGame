@@ -32,9 +32,12 @@
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
+DMA_HandleTypeDef hdma_memtomem_dma2_stream6;
 
 /**
   * Enable DMA controller clock
+  * Configure DMA for memory to memory transfers
+  *   hdma_memtomem_dma2_stream6
   */
 void MX_DMA_Init(void)
 {
@@ -43,6 +46,25 @@ void MX_DMA_Init(void)
   __HAL_RCC_DMA1_CLK_ENABLE();
   __HAL_RCC_DMA2_CLK_ENABLE();
 
+  /* Configure DMA request hdma_memtomem_dma2_stream6 on DMA2_Stream6 */
+  hdma_memtomem_dma2_stream6.Instance = DMA2_Stream6;
+  hdma_memtomem_dma2_stream6.Init.Channel = DMA_CHANNEL_0;
+  hdma_memtomem_dma2_stream6.Init.Direction = DMA_MEMORY_TO_MEMORY;
+  hdma_memtomem_dma2_stream6.Init.PeriphInc = DMA_PINC_ENABLE;
+  hdma_memtomem_dma2_stream6.Init.MemInc = DMA_MINC_DISABLE;
+  hdma_memtomem_dma2_stream6.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+  hdma_memtomem_dma2_stream6.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+  hdma_memtomem_dma2_stream6.Init.Mode = DMA_NORMAL;
+  hdma_memtomem_dma2_stream6.Init.Priority = DMA_PRIORITY_LOW;
+  hdma_memtomem_dma2_stream6.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
+  hdma_memtomem_dma2_stream6.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
+  hdma_memtomem_dma2_stream6.Init.MemBurst = DMA_MBURST_SINGLE;
+  hdma_memtomem_dma2_stream6.Init.PeriphBurst = DMA_PBURST_SINGLE;
+  if (HAL_DMA_Init(&hdma_memtomem_dma2_stream6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
   /* DMA interrupt init */
   /* DMA1_Stream5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 14, 0);
@@ -50,6 +72,9 @@ void MX_DMA_Init(void)
   /* DMA2_Stream3_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 6, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
+  /* DMA2_Stream6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream6_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream6_IRQn);
 
 }
 

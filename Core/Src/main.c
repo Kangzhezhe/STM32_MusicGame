@@ -589,6 +589,10 @@ int main(void)
 	// lv_example_get_started_1();
 	
 	HAL_TIM_Base_Start(&htim2); 
+	
+	
+	
+	
 ////	//MP3
 	//scan_files("0:");
 //	
