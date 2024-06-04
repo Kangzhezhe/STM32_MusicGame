@@ -58,6 +58,7 @@ osThreadId myTask_mp3Handle;
 osThreadId start_taskHandle;
 osSemaphoreId mutex_lvglHandle;
 osSemaphoreId Semaphore_mp3Handle;
+osSemaphoreId Sem_MP3StateHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -126,6 +127,10 @@ void MX_FREERTOS_Init(void) {
   osSemaphoreDef(Semaphore_mp3);
   Semaphore_mp3Handle = osSemaphoreCreate(osSemaphore(Semaphore_mp3), 1);
 
+  /* definition and creation of Sem_MP3State */
+  osSemaphoreDef(Sem_MP3State);
+  Sem_MP3StateHandle = osSemaphoreCreate(osSemaphore(Sem_MP3State), 1);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -161,6 +166,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  osThreadSuspend(myTask_mp3Handle);
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -310,6 +316,7 @@ void StartTask(void const * argument)
 	// mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
 	//mp3PlayerDemo("0:/zhangguorong.mp3");
 	// mp3PlayerDemo("0:/piano_sound/piano_middle_C.mp3");
+    osThreadResume(myTask_mp3Handle);
 	vTaskDelete(start_taskHandle);
   /* USER CODE END StartTask */
 }

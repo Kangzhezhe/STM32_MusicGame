@@ -1,13 +1,14 @@
 // #include "../lv_examples.h"
 #include "lvgl.h"
 #include <stdio.h>
-
+#include "mp3Player.h"
 void playSound(const char* soundFilePath) {
     // CFURLRef soundFileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, CFStringCreateWithCString(NULL, soundFilePath, kCFStringEncodingUTF8), kCFURLPOSIXPathStyle, false);
     // SystemSoundID soundID;
     // AudioServicesCreateSystemSoundID(soundFileURL, &soundID);
     // AudioServicesPlaySystemSound(soundID);
     // CFRelease(soundFileURL);
+    MP3_decode_file(soundFilePath);
     printf("playSound: %s\n", soundFilePath);
 }
 
@@ -96,31 +97,31 @@ static void event_handler_btn0(lv_event_t * e)
                 switch(btn_id) {
                     case 1:
                         LV_LOG_USER("btn1-MID");
-                        playSound("/Users/zhe/Documents/HUST课程/硬件课设/lv_port_pc_vscode/main/src/piano_sound/piano_middle_C.mp3");
+                        playSound("0:/piano_sound/piano_middle_C.mp3");
                         break;
                     case 2:
                         LV_LOG_USER("btn2-MID");
-                        playSound("/Users/zhe/Documents/HUST课程/硬件课设/lv_port_pc_vscode/main/src/piano_sound/piano_D.mp3");
+                        playSound("0:/piano_sound/piano_D.mp3");
                         break;
                     case 3:
                         LV_LOG_USER("btn3-MID");
-                        playSound("/Users/zhe/Documents/HUST课程/硬件课设/lv_port_pc_vscode/main/src/piano_sound/piano_E.mp3");
+                        playSound("0:/piano_sound/piano_E.mp3");
                         break;
                     case 4:
                         LV_LOG_USER("btn4-MID");
-                        playSound("/Users/zhe/Documents/HUST课程/硬件课设/lv_port_pc_vscode/main/src/piano_sound/piano_F.mp3");
+                        playSound("0:/piano_sound/piano_F.mp3");
                         break;
                     case 5:
                         LV_LOG_USER("btn5-MID");
-                        playSound("/Users/zhe/Documents/HUST课程/硬件课设/lv_port_pc_vscode/main/src/piano_sound/piano_G.mp3");
+                        playSound("0:/piano_sound/piano_G.mp3");
                         break;
                     case 6:
                         LV_LOG_USER("btn6-MID");
-                        playSound("/Users/zhe/Documents/HUST课程/硬件课设/lv_port_pc_vscode/main/src/piano_sound/piano_A.mp3");
+                        playSound("0:/piano_sound/piano_A.mp3");
                         break;
                     case 7:
                         LV_LOG_USER("btn7-MID");
-                        playSound("/Users/zhe/Documents/HUST课程/硬件课设/lv_port_pc_vscode/main/src/piano_sound/piano_B.mp3");
+                        playSound("0:/piano_sound/piano_B.mp3");
                         break;
                 }
                 break;
