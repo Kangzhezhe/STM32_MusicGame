@@ -150,19 +150,32 @@ void lv_port_indev_init(void)
      * -----------------*/
 
     /*Initialize your button if you have*/
-//    button_init();
+   button_init();
 
-//    /*Register a button input device*/
-//    indev_button = lv_indev_create();
-//    lv_indev_set_type(indev_button, LV_INDEV_TYPE_BUTTON);
-//    lv_indev_set_read_cb(indev_button, button_read);
+   /*Register a button input device*/
+   indev_button = lv_indev_create();
+   lv_indev_set_type(indev_button, LV_INDEV_TYPE_BUTTON);
+   lv_indev_set_read_cb(indev_button, button_read);
 
-//    /*Assign buttons to points on the screen*/
-//    static const lv_point_t btn_points[2] = {
-//        {10, 10},   /*Button 0 -> x:10; y:10*/
-//        {40, 100},  /*Button 1 -> x:40; y:100*/
-//    };
-//    lv_indev_set_button_points(indev_button, btn_points);
+   /*Assign buttons to points on the screen*/
+   static const lv_point_t btn_points[15] = {
+       {0, 0},   /*Button 0 -> x:10; y:10*/
+       {0, 0},
+       {0, 0},
+       {0, 0},
+       {0, 0},
+       {24, 100},  /*Button 1 -> x:40; y:100*/
+       {69, 100},
+       {114, 100},
+       {159, 100},
+       {204, 100},
+       {249, 100},
+       {294, 100},
+       {52, 224},
+       {160, 224},
+       {268, 224},
+   };
+   lv_indev_set_button_points(indev_button, btn_points);
 }
 
 /**********************
@@ -398,6 +411,12 @@ static void button_init(void)
     /*Your code comes here*/
 }
 
+// int8_t key_array[15] = {
+//     -1, -1, -1, -1, -1,
+//     -1, -1, -1, -1, -1,
+//     -1, -1, -1, -1, -1
+// };
+// static int i =0;
 /*Will be called by the library to read the button*/
 static void button_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
 {
@@ -406,7 +425,7 @@ static void button_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
 
     /*Get the pressed button's ID*/
     int8_t btn_act = button_get_pressed_id();
-
+    printf("btn_act = %d\r\n", btn_act);
     if(btn_act >= 0) {
         data->state = LV_INDEV_STATE_PR;
         last_btn = btn_act;
@@ -418,19 +437,34 @@ static void button_read(lv_indev_t * indev_drv, lv_indev_data_t * data)
     /*Save the last pressed button's ID*/
     data->btn_id = last_btn;
 }
-
+#include "key.h"
 /*Get ID  (0, 1, 2 ..) of the pressed button*/
 static int8_t button_get_pressed_id(void)
 {
     uint8_t i;
 
     /*Check to buttons see which is being pressed (assume there are 2 buttons)*/
-    for(i = 0; i < 2; i++) {
-        /*Return the pressed button's ID*/
-        if(button_is_pressed(i)) {
-            return i;
-        }
-    }
+    // for(i = 0; i < 2; i++) {
+    //     /*Return the pressed button's ID*/
+    //     if(button_is_pressed(i)) {
+    //         return i;
+    //     }
+    // }
+
+    if(KEY0==0)return 1;
+    else if(KEY1==0)return 2;
+    //else if(KEY2==0)return 3;
+    else if(WK_UP==1)return 4;
+    else if(K1==0)return K1_PRES;
+    else if(K2==0)return K2_PRES;
+    else if(K3==0)return K3_PRES;
+    else if(K4==0)return K4_PRES;
+    else if(K5==0)return K5_PRES;
+    else if(K6==0)return K6_PRES;
+    else if(K7==0)return K7_PRES;
+    else if(C1==0)return C1_PRES;
+    else if(C2==0)return C2_PRES;
+    else if(C3==0)return C3_PRES;
 
     /*No button pressed*/
     return -1;

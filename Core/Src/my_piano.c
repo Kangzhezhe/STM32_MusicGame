@@ -56,7 +56,7 @@ static void event_handler_btn0(lv_event_t * e)
     int btn_id = (intptr_t)lv_event_get_user_data(e);
 
 
-    if(code == LV_EVENT_CLICKED) {
+    if(code == LV_EVENT_PRESSED) {
 
         switch(switch0_state) {
             case STATE_LOW:
@@ -434,8 +434,8 @@ void my_piano(void)
     lv_obj_align(switch1, LV_ALIGN_BOTTOM_LEFT, 0, 0);
     lv_obj_remove_flag(switch1, LV_OBJ_FLAG_PRESS_LOCK);
     // lv_obj_add_flag(switch1, LV_OBJ_FLAG_CHECKABLE);
-    lv_obj_set_height(switch1, 32);
     lv_obj_set_width(switch1, 104);
+    lv_obj_set_height(switch1, 32);
 
     label = lv_label_create(switch1);
     lv_label_set_text(label, "LOW");
@@ -448,8 +448,8 @@ void my_piano(void)
     lv_obj_align(switch2, LV_ALIGN_BOTTOM_LEFT, 108, 0);
     lv_obj_remove_flag(switch1, LV_OBJ_FLAG_PRESS_LOCK);
     // lv_obj_add_flag(switch2, LV_OBJ_FLAG_CHECKABLE);
-    lv_obj_set_height(switch2, 32);
     lv_obj_set_width(switch2, 104);
+    lv_obj_set_height(switch2, 32);
 
     label = lv_label_create(switch2);
     lv_label_set_text(label, "MID");
@@ -462,8 +462,8 @@ void my_piano(void)
     lv_obj_align(switch3, LV_ALIGN_BOTTOM_LEFT, 216, 0);
     lv_obj_remove_flag(switch1, LV_OBJ_FLAG_PRESS_LOCK);
     // lv_obj_add_flag(switch3, LV_OBJ_FLAG_CHECKABLE);
-    lv_obj_set_height(switch3, 32);
     lv_obj_set_width(switch3, 104);
+    lv_obj_set_height(switch3, 32);
 
     label = lv_label_create(switch3);
     lv_label_set_text(label, "HIGH");
