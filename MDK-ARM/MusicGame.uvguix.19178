@@ -3606,9 +3606,9 @@
       <ActiveTab>0</ActiveTab>
       <Doc>
         <Name>../Core/Src/main.c</Name>
-        <ColumnNumber>11</ColumnNumber>
+        <ColumnNumber>4</ColumnNumber>
         <TopLine>580</TopLine>
-        <CurrentLine>597</CurrentLine>
+        <CurrentLine>599</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -3651,9 +3651,9 @@
       </Doc>
       <Doc>
         <Name>..\HardWare\src\mp3Player.c</Name>
-        <ColumnNumber>7</ColumnNumber>
-        <TopLine>265</TopLine>
-        <CurrentLine>291</CurrentLine>
+        <ColumnNumber>2</ColumnNumber>
+        <TopLine>267</TopLine>
+        <CurrentLine>293</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>

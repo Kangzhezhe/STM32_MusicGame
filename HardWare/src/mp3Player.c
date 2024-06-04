@@ -134,7 +134,6 @@ uint8_t read_file(const char *mp3file, uint8_t **read_ptr, int *bytes_left)
 		return 1;
 	}
 }
-u8 start_dac = 0;
 /**
   * @brief  MP3格式音频播放主程序
   * @param  mp3file MP3文件路径
@@ -258,16 +257,6 @@ void mp3PlayerDemo(const char *mp3file)
 				break;
 			}	
 
-			//等待DAC发送一半或全部中断
-			// while(Isread == 0)
-			// {
-			// 	//Input_scan();		//等待DMA传输完成，此间可以运行按键扫描及处理事件
-			// }
-			// Isread = 0;
-            if (!start_dac) {
-                start_dac = 1;
-                printf("start dac:%d\r\n",start_dac);
-            }
             if (xSemaphoreTake(Semaphore_mp3Handle, portMAX_DELAY) != pdTRUE) {
                 printf("xSemaphoreTake failed!\r\n");
             }
@@ -281,10 +270,9 @@ void mp3PlayerDemo(const char *mp3file)
 	f_close(&file);	
 }
 
-
 void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
 {
-    if(!Semaphore_mp3Handle||!start_dac)return;
+    if(!Semaphore_mp3Handle)return;
 		dac_ht = 0;
 		// Isread=1;
         // printf("start dac cplt :%d\r\n",start_dac);
@@ -293,7 +281,7 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac){
-    if(!Semaphore_mp3Handle||!start_dac)return;
+    if(!Semaphore_mp3Handle)return;
 		dac_ht = 1;		
 		// Isread=1;
         // printf("start dac half :%d\r\n",start_dac);
