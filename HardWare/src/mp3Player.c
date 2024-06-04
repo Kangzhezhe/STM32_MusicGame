@@ -287,7 +287,7 @@ void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
     if(!Semaphore_mp3Handle||!start_dac)return;
 		dac_ht = 0;
 		// Isread=1;
-        printf("start dac cplt :%d\r\n",start_dac);
+        // printf("start dac cplt :%d\r\n",start_dac);
         BaseType_t xHigherPriorityTaskWoken = pdFALSE;
         xSemaphoreGiveFromISR(Semaphore_mp3Handle, &xHigherPriorityTaskWoken);
         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
@@ -296,7 +296,7 @@ void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef *hdac){
     if(!Semaphore_mp3Handle||!start_dac)return;
 		dac_ht = 1;		
 		// Isread=1;
-        printf("start dac half :%d\r\n",start_dac);
+        // printf("start dac half :%d\r\n",start_dac);
         BaseType_t xHigherPriorityTaskWoken = pdFALSE;
         xSemaphoreGiveFromISR(Semaphore_mp3Handle, &xHigherPriorityTaskWoken);
         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
