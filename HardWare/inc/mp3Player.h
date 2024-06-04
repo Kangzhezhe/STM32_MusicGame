@@ -6,18 +6,20 @@
 /* ×´Ì¬ */
 enum
 {
-	STA_IDLE = 0,	/* ´ý»ú×´Ì¬ */
-	STA_PLAYING,	/* ·ÅÒô×´Ì¬ */
+	STA_IDLE = 0,	/* ï¿½ï¿½ï¿½ï¿½×´Ì¬ */
+	STA_PLAYING,	/* ï¿½ï¿½ï¿½ï¿½×´Ì¬ */
 	STA_ERR,			/*  error  */
 };
 
 typedef struct
 {
-	uint8_t  ucVolume;		/* µ±Ç°·ÅÒôÒôÁ¿ */
-	uint8_t  ucStatus;		/* ×´Ì¬£¬0±íÊ¾´ý»ú£¬1±íÊ¾²¥·ÅÖÐ£¬2 ³ö´í */	
-	uint32_t ucFreq;			/* ²ÉÑùÆµÂÊ */
+	uint8_t  ucVolume;		/* ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+	uint8_t  ucStatus;		/* ×´Ì¬ï¿½ï¿½0ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½2 ï¿½ï¿½ï¿½ï¿½ */	
+	uint32_t ucFreq;			/* ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ */
 }MP3_TYPE;	
 
 void mp3PlayerDemo(const char *mp3file);
-
+void MP3_Playing();
+void MP3_decode_file(const char *mp3file);
+void MP3_decoder_Init(void);
 #endif  /* __MP3PLAYER_H__   */

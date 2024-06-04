@@ -237,11 +237,13 @@ void StartTask_lvgl(void const * argument)
 void StartTask_mp3(void const * argument)
 {
   /* USER CODE BEGIN StartTask_mp3 */
+  MP3_decoder_Init();
+  MP3_decode_file("0:/zhangguorong.mp3");
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
-		//mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
+	MP3_Playing();
   }
   /* USER CODE END StartTask_mp3 */
 }
@@ -306,7 +308,7 @@ void StartTask(void const * argument)
 	// scan_files("0:");
   vTaskDelay(2000);
 	// mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
-	mp3PlayerDemo("0:/zhangguorong.mp3");
+	//mp3PlayerDemo("0:/zhangguorong.mp3");
 	// mp3PlayerDemo("0:/piano_sound/piano_middle_C.mp3");
 	vTaskDelete(start_taskHandle);
   /* USER CODE END StartTask */

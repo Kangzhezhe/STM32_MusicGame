@@ -13,6 +13,7 @@
         "string_view": "c",
         "key.h": "c",
         "lcd.h": "c",
-        "main.h": "c"
+        "main.h": "c",
+        "cstdint": "c"
     }
 }
