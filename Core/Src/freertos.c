@@ -59,6 +59,7 @@ osThreadId start_taskHandle;
 osSemaphoreId mutex_lvglHandle;
 osSemaphoreId Semaphore_mp3Handle;
 osSemaphoreId Sem_MP3StateHandle;
+osSemaphoreId Sem_DispHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -131,6 +132,10 @@ void MX_FREERTOS_Init(void) {
   osSemaphoreDef(Sem_MP3State);
   Sem_MP3StateHandle = osSemaphoreCreate(osSemaphore(Sem_MP3State), 1);
 
+  /* definition and creation of Sem_Disp */
+  osSemaphoreDef(Sem_Disp);
+  Sem_DispHandle = osSemaphoreCreate(osSemaphore(Sem_Disp), 1);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -167,6 +172,7 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   osThreadSuspend(myTask_mp3Handle);
+  osThreadSuspend(myTask_lvglHandle);
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -244,7 +250,7 @@ void StartTask_mp3(void const * argument)
 {
   /* USER CODE BEGIN StartTask_mp3 */
   MP3_decoder_Init();
-  MP3_decode_file("0:/song_List/Coldplay_Yellow.mp3");
+//   MP3_decode_file("0:/song_List/Coldplay_Yellow.mp3");
   /* Infinite loop */
   for(;;)
   {
@@ -308,9 +314,13 @@ extern DMA_HandleTypeDef hdma_dac1;
 void StartTask(void const * argument)
 {
   /* USER CODE BEGIN StartTask */
-    lv_port_fs_init();
     SD_test();
-	//lv_music_UI();
+    if(pdTRUE == xSemaphoreTake(mutex_lvglHandle,portMAX_DELAY))    
+    {
+        lv_port_fs_init();
+        lv_music_UI();
+        xSemaphoreGive(mutex_lvglHandle);
+    }
     //test_print_directory_files("A:/");
 	//fs_test();
 	// scan_files("0:");
@@ -318,6 +328,7 @@ void StartTask(void const * argument)
 	// mp3PlayerDemo("0:/¶ÏÇÅ²ÐÑ©.MP3");
 	//mp3PlayerDemo("0:/zhangguorong.mp3");
 	// mp3PlayerDemo("0:/piano_sound/piano_middle_C.mp3");
+    osThreadResume(myTask_lvglHandle);
     osThreadResume(myTask_mp3Handle);
 	vTaskDelete(start_taskHandle);
   /* USER CODE END StartTask */

@@ -93,14 +93,23 @@ void lv_port_disp_init(void)
  *   STATIC FUNCTIONS
  **********************/
 #include "dma.h"
+#include "FreeRTOS.h"
+#include "cmsis_os.h"
+
+extern osSemaphoreId Sem_DispHandle;
 /*Initialize your display and the required peripherals.*/
 void LVGL_LCD_FSMC_DMA_pCallback(DMA_HandleTypeDef *_hdma)
 {
+    
+
    lv_display_flush_ready(disp);
- 
-   //为了减少栈帧的使用
+   //为了减少栈帧的使�?
 //    disp->flushing = 0;
 //    disp->flushing_last = 0;
+    
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        xSemaphoreGiveFromISR(Sem_DispHandle, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 static void disp_init(void)
@@ -130,8 +139,6 @@ void disp_disable_update(void)
 }
 
 
-
-
 /*Flush the content of the internal buffer the specific area on the display.
  *`px_map` contains the rendered image as raw pixel map and it should be copied to `area` on the display.
  *You can use DMA or any hardware acceleration to do this operation in the background but
@@ -144,11 +151,11 @@ static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t 
 
     if(disp_flush_enabled) {
         // LCD_Color_Fill(area->x1,area->y1,area->x2,area->y2,(uint16_t*)px_map);  
-			
+			if (xSemaphoreTake(Sem_DispHandle, portMAX_DELAY) == pdTRUE) {
 					LCD_Address_Set(area->x1,area->y1,area->x2,area->y2);
 				 HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM,
 												 ((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
-
+            }
                 // HAL_DMA_Start(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM 
                 // ,((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
                 // if(HAL_DMA_PollForTransfer(&hdma_memtomem_dma2_stream6, HAL_DMA_FULL_TRANSFER,1000)!=HAL_OK)

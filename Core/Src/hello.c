@@ -58,7 +58,11 @@ char xx[500] ="single";
                                ;
 
 //
-
+LV_IMG_DECLARE(test1);
+LV_IMG_DECLARE(test2);
+LV_IMG_DECLARE(test3);
+LV_IMG_DECLARE(test4);
+LV_IMG_DECLARE(zheba);
 void lv_music_UI(void)
 {   
     /*Create a transition animation on width transformation and recolor.*/
@@ -86,9 +90,12 @@ void lv_music_UI(void)
     
 
     // 创建播放/暂停按钮
+    
     lv_obj_t * play_pause_btn = lv_imagebutton_create(lv_screen_active());     /*Add a button the current screen*/
-    lv_imagebutton_set_src(play_pause_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/test1.png",
-                          NULL);
+    // lv_imagebutton_set_src(play_pause_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/test1.png",
+    //                       NULL);
+    lv_imagebutton_set_src(play_pause_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test1,NULL);
+
     lv_obj_set_width(play_pause_btn, 60);                      
     lv_obj_align(play_pause_btn, LV_ALIGN_CENTER, 0, 50);
 
@@ -111,7 +118,7 @@ void lv_music_UI(void)
 
     // 创建“上一首”按钮
     lv_obj_t * prev_btn = lv_imagebutton_create(lv_scr_act()); 
-    lv_imagebutton_set_src(prev_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/test4.png",
+    lv_imagebutton_set_src(prev_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test4,
                           NULL);
     // 按下时的样式 
     lv_obj_add_style(prev_btn, &style_def, 0);
@@ -123,7 +130,7 @@ void lv_music_UI(void)
     
      // 创建“下一首”按钮
     lv_obj_t * next_btn = lv_imagebutton_create(lv_scr_act()); 
-    lv_imagebutton_set_src(next_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/test3.png",
+    lv_imagebutton_set_src(next_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test3,
                           NULL);
     // 按下时的样式                      
     lv_obj_add_style(next_btn, &style_def, 0);
@@ -136,7 +143,6 @@ void lv_music_UI(void)
     // 创建标签
     lv_obj_t * label = lv_label_create(lv_screen_active());
     
-
     // 创建音量弧形控件
     lv_obj_t * arc = lv_arc_create(lv_screen_active());
     lv_obj_set_size(arc, 50, 50);
@@ -167,8 +173,10 @@ void lv_music_UI(void)
     lv_style_set_text_font(&style_small, &lv_font_montserrat_10);
     lv_obj_t * small_label;
     /*Add buttons to the list*/
+
     lv_obj_t * btn;
-    // for(i = 0; i < 10; i++) {
+
+    // for(int i = 0; i < 10; i++) {
     //     btn = lv_button_create(list1);
     //     lv_obj_set_width(btn, lv_pct(100));
     //     lv_obj_add_event_cb(btn, event_list_handler, LV_EVENT_CLICKED, NULL);
@@ -177,65 +185,37 @@ void lv_music_UI(void)
     //     lv_label_set_long_mode(label,LV_LABEL_LONG_SCROLL_CIRCULAR);
     //     lv_obj_set_width(label, lv_pct(100));
     // }
-    // DIR *dir;
-    // struct dirent *entry;
 
-    // dir = opendir("A:/song_List");
-    // if (dir == NULL) {
-    // LV_LOG_ERROR("Failed to open directory %s", "A:/song_List");
-    // return;
-    // }
-    //  while ((entry = readdir(dir)) != NULL) {
-    //     if (entry->d_type == DT_REG) { // Only process regular files
-    //         char *ext = strrchr(entry->d_name, '.');
-    //         if (ext && strcmp(ext, ".mp3") == 0) {
-    //             *ext = '\0'; // Null-terminate to remove the extension
-    //         }
-    //         btn = lv_btn_create(list1);
-    //         lv_obj_set_width(btn, lv_pct(100));
-    //         lv_obj_add_event_cb(btn, event_list_handler, LV_EVENT_CLICKED, NULL);
 
-    //         lv_obj_t * label = lv_label_create(btn);
-    //         lv_label_set_text(label, entry->d_name);
+   lv_fs_dir_t dir;
+   lv_fs_res_t res = lv_fs_dir_open(&dir, "A:/song_List");
+   if (res != LV_FS_RES_OK) {
+       printf("Failed to open directory\n");
+       return;
+   }
+   char fn[50];
+   while (true) {
+       lv_fs_res_t res = lv_fs_dir_read(&dir, fn,256);
+       if (res != LV_FS_RES_OK||fn[0] == 0) {
+           break;
+       }
+       char *ext = strrchr(fn, '.');
+       if (ext && strcmp(ext, ".mp3") == 0) {
+           *ext = '\0'; // Null-terminate to remove the extension
+       }
+       printf("%s\r\n", fn);
+       btn = lv_btn_create(list1);
+       lv_obj_set_width(btn, lv_pct(100));
+       lv_obj_add_event_cb(btn, event_list_handler, LV_EVENT_CLICKED, NULL);
+       lv_obj_t * label = lv_label_create(btn);
+       lv_label_set_text(label,fn);
 
-    //         small_label = lv_obj_get_child(btn, 0); // Get the label object of the button
-    //         lv_obj_add_style(small_label, &style_small, 0);
-    //         lv_label_set_long_mode(label, LV_LABEL_LONG_SCROLL_CIRCULAR);
-    //         lv_obj_set_width(label, lv_pct(100));
-    //     }
-    // }
-
-    // closedir(dir);
-
-    lv_fs_dir_t dir;
-    lv_fs_res_t res = lv_fs_dir_open(&dir, "A:/song_List");
-    if (res != LV_FS_RES_OK) {
-        printf("Failed to open directory\n");
-        return;
-    }
-    while (true) {
-        char fn[256];
-        lv_fs_res_t res = lv_fs_dir_read(&dir, fn,256);
-        if (res != LV_FS_RES_OK||fn[0] == 0) {
-            break;
+       small_label = lv_obj_get_child(btn, 0); // Get the label object of the button
+       lv_obj_add_style(small_label, &style_small, 0);
+       lv_label_set_long_mode(label, LV_LABEL_LONG_SCROLL_CIRCULAR);
+       lv_obj_set_width(label, lv_pct(100));
         }
-        char *ext = strrchr(fn, '.');
-        if (ext && strcmp(ext, ".mp3") == 0) {
-            *ext = '\0'; // Null-terminate to remove the extension
-        }
-        btn = lv_btn_create(list1);
-        lv_obj_set_width(btn, lv_pct(100));
-        lv_obj_add_event_cb(btn, event_list_handler, LV_EVENT_CLICKED, NULL);
-
-        lv_obj_t * label = lv_label_create(btn);
-        lv_label_set_text(label,fn);
-
-        small_label = lv_obj_get_child(btn, 0); // Get the label object of the button
-        lv_obj_add_style(small_label, &style_small, 0);
-        lv_label_set_long_mode(label, LV_LABEL_LONG_SCROLL_CIRCULAR);
-        lv_obj_set_width(label, lv_pct(100));
-    }
-    lv_fs_dir_close(&dir);
+        lv_fs_dir_close(&dir);
 
     /*Select the first button by default*/
     currentButton = lv_obj_get_child(list1, 0);
@@ -364,7 +344,7 @@ void play_pause_event_cb(lv_event_t * e)
     if(is_playing==false) {
         if(currentButton == NULL) {
             return;}
-          lv_imagebutton_set_src(btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/test2.png",
+          lv_imagebutton_set_src(btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test2,
                           NULL);// 设置为暂停图标
         lv_obj_remove_state(currentButton, LV_STATE_CHECKED);
         stop_music();
@@ -372,7 +352,7 @@ void play_pause_event_cb(lv_event_t * e)
     } else {
         if(currentButton == NULL) {
             return;}
-        lv_imagebutton_set_src(btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/test1.png",
+        lv_imagebutton_set_src(btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test1,
                           NULL);// 设置为播放图标
         lv_obj_add_state(currentButton, LV_STATE_CHECKED);
         resume_music();
@@ -588,7 +568,7 @@ static void set_angle(void * img, int32_t v)
 
 void lv_example_image_3(void){
     imgx = lv_image_create(lv_screen_active());
-    lv_image_set_src(imgx, "A:/pics/zheba.png");
+    lv_image_set_src(imgx, &zheba);
     lv_obj_align(imgx, LV_ALIGN_CENTER, 0, -40);
   
     /* 获取图片的宽度和高度 */
@@ -629,7 +609,6 @@ static void hidden_handler(lv_event_t * e){
      }
      }
 }
-//
 
 void play_music(){
     lv_obj_t *current_label = lv_obj_get_child(currentButton, 0);
@@ -640,7 +619,7 @@ void play_music(){
     // system(output);
 
     char files[300];
-    sprintf(files, "A:/song_List/%s.mp3", button_name);
+    sprintf(files, "0:/song_List/%s.mp3", button_name);
     LV_LOG_USER("%s", files);
     MP3_decode_file(files);
     duration_time = get_total_duration(files);

@@ -399,6 +399,16 @@
               <FilePath>..\Core\Src\my_piano.c</FilePath>
             </File>
             <File>
+              <FileName>hello.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\hello.c</FilePath>
+            </File>
+            <File>
+              <FileName>game.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\game.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
@@ -926,16 +936,6 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
-            </File>
-            <File>
-              <FileName>hello.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\hello.c</FilePath>
-            </File>
-            <File>
-              <FileName>game.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\game.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -4839,6 +4839,36 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>assets</GroupName>
+          <Files>
+            <File>
+              <FileName>test1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\test1.c</FilePath>
+            </File>
+            <File>
+              <FileName>test2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\test2.c</FilePath>
+            </File>
+            <File>
+              <FileName>test3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\test3.c</FilePath>
+            </File>
+            <File>
+              <FileName>test4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\test4.c</FilePath>
+            </File>
+            <File>
+              <FileName>zheba.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\zheba.c</FilePath>
             </File>
           </Files>
         </Group>
