@@ -628,24 +628,28 @@ void play_music(){
 void stop_music(){
     // 使用 killall 命令暂停 mplayer 进程
     // system("killall -STOP mplayer");
+    MP3_suspend();
     lv_timer_pause(timer);
 }
 void resume_music() {
     // 使用 killall 命令恢复 mplayer 进程
     // system("killall -CONT mplayer");
+    MP3_resume();
     lv_timer_resume(timer);
 }
 void kill_music(){
+    MP3_decoder_Free();
     // system("killall -9 mplayer") ; ;//关闭原有的进程
     current_time=0;
 }
 void change_sound(int nums){
-    int volume = 40+(nums*60/100);
-    char command[50];
+    // int volume = 40+(nums*60/100);
+    // char command[50];
     // 使用 amixer 命令设置音量
 
     // sprintf(command, "amixer set Master %d%%", (int)(volume));
     // system(command);
+    MP3_Set_volume(nums);
 }
 
 
@@ -679,6 +683,8 @@ double get_total_duration(const char* filename) {
     //duration = (int)duration;
     //LV_LOG_USER("Total duration是: %d\n", (int)duration/60);
     //将时间输入到标签中
+
+    duration = MP3_Get_duration();
     
     char buf[1024];
     int m = (int)duration / 60;

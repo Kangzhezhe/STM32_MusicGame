@@ -147,7 +147,7 @@ void mp3PlayerDemo(const char *mp3file)
 	int	bytes_left = 0;					/* 剩余字节数 */	
 	
 	mp3player.ucStatus = STA_IDLE;
-	mp3player.ucVolume = 15; //音量值，100满
+	mp3player.ucVolume = 100; //音量值，100满
 	
 	//尝试打开MP3文件
 	result = f_open(&file, mp3file, FA_READ);
@@ -271,10 +271,12 @@ void mp3PlayerDemo(const char *mp3file)
 	MP3FreeDecoder(Mp3Decoder);//清理缓存
 	f_close(&file);	
 }
+
+
 void MP3_decoder_Free();
 void MP3_decoder_Init(void){
 	mp3player.ucStatus = STA_IDLE;
-	mp3player.ucVolume = 15; //音量值，100满
+	mp3player.ucVolume = 100; //音量值，100满
 	
 	//初始化MP3解码器
 	Mp3Decoder = MP3InitDecoder();	
@@ -294,6 +296,8 @@ int	read_offset = 0;				/* 读偏移指针 */
 int	bytes_left = 0;					/* 剩余字节数 */
 char mp3file_playing[100];
 extern osSemaphoreId Sem_MP3StateHandle;
+u32 duration = 0;
+void MP3_DMA_Start();
 void MP3_decode_file(const char *mp3file)
 {
     xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
@@ -366,6 +370,7 @@ void MP3_decode_file(const char *mp3file)
     //尝试解码成功
     if(MP3DataDecoder(&read_ptr, &bytes_left))
     {
+        duration = f_size(&file) * 8 / Mp3FrameInfo.bitrate;
         //打印MP3信息
         printf(" \r\n Bitrate       %dKbps", Mp3FrameInfo.bitrate/1000);
         printf(" \r\n Samprate      %dHz",   Mp3FrameInfo.samprate);
@@ -374,17 +379,9 @@ void MP3_decode_file(const char *mp3file)
         printf(" \r\n Layer         %d",     Mp3FrameInfo.layer);
         printf(" \r\n Version       %d",     Mp3FrameInfo.version);
         printf(" \r\n OutputSamps   %d",     Mp3FrameInfo.outputSamps);
+        printf(" \r\n Duration      %d",     duration);
         printf("\r\n");
-        DAC_DMA_Clean();
-        //启动DAC，开始发声
-        if (Mp3FrameInfo.nChans == 1)	//单声道要将outputSamps*2
-        {
-            DAC_DMA_Start(Mp3FrameInfo.samprate, 2 * Mp3FrameInfo.outputSamps);
-        }
-        else//双声道直接用Mp3FrameInfo.outputSamps
-        {
-            DAC_DMA_Start(Mp3FrameInfo.samprate, Mp3FrameInfo.outputSamps);
-        }
+        MP3_DMA_Start();
     }
     else //解码失败
     {
@@ -397,6 +394,32 @@ void MP3_decode_file(const char *mp3file)
     mp3player.ucStatus = STA_PLAYING;
     xSemaphoreGive(Sem_MP3StateHandle);
     
+}
+
+void MP3_DMA_Start(){
+    DAC_DMA_Clean();
+    //启动DAC，开始发声
+    if (Mp3FrameInfo.nChans == 1)	//单声道要将outputSamps*2
+    {
+        DAC_DMA_Start(Mp3FrameInfo.samprate, 2 * Mp3FrameInfo.outputSamps);
+    }
+    else//双声道直接用Mp3FrameInfo.outputSamps
+    {
+        DAC_DMA_Start(Mp3FrameInfo.samprate, Mp3FrameInfo.outputSamps);
+    }
+}
+
+void MP3_DMA_Stop(){
+    HAL_DAC_Stop_DMA(&hdac,DAC_CHANNEL_1);
+    DAC_DMA_Clean();
+}
+
+u32 MP3_Get_duration(){
+    return duration;
+}
+
+void MP3_Set_volume(int vol){
+    mp3player.ucVolume = vol;
 }
 
 void MP3_Playing(){
@@ -470,6 +493,22 @@ void MP3_decoder_Free(){
     f_close(&file);
 	// MP3FreeDecoder(Mp3Decoder);//清理缓存
 	//f_close(&file);	
+}
+
+void MP3_suspend(){
+    if(mp3player.ucStatus!=STA_PLAYING)return;
+    xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
+    mp3player.ucStatus = STA_SUSPEND;
+    xSemaphoreGive(Sem_MP3StateHandle);
+    MP3_DMA_Stop();
+}
+
+void MP3_resume(){
+    if(mp3player.ucStatus!=STA_SUSPEND)return;
+    xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
+    mp3player.ucStatus = STA_PLAYING;
+    xSemaphoreGive(Sem_MP3StateHandle);
+    MP3_DMA_Start();
 }
 
 void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef *hdac)
