@@ -49,6 +49,7 @@ static lv_obj_t * list2;
 static lv_obj_t * imgx;
 static lv_obj_t * label3;
 static lv_obj_t * label4;
+lv_obj_t * labeld;
 static lv_obj_t * currentButton = NULL;
 char xx[500] ="single";
 //可变列表
@@ -247,6 +248,7 @@ void lv_music_UI(void)
     // const char *button_name = lv_label_get_text(current_label);
     // char output[326];
     // sprintf(output, "mplayer /song_List/%s.mp3 &", button_name);
+    lv_example_image_3();
     play_music();
     // system(output);
     //system("mplayer /song_List/after.mp3 &");
@@ -302,7 +304,6 @@ void lv_music_UI(void)
     lv_label_set_text(label2, "music list"); // 设置中文标签文本
     lv_obj_align(label2, LV_ALIGN_CENTER, 110, 70); // 调整位置，使其在下拉列表上方
     //
-    lv_example_image_3();
     //
 
 
@@ -577,6 +578,22 @@ void lv_example_image_3(void){
     lv_image_set_src(imgx, &zheba);
     lv_obj_align(imgx, LV_ALIGN_CENTER, 0, -40);
   
+    static lv_style_t styleb;
+    lv_style_init(&styleb);
+
+    // 设置渐变颜色属性
+    lv_style_set_bg_opa(&styleb, LV_OPA_COVER);                    // 设置背景不透明
+    lv_style_set_bg_color(&styleb, lv_palette_main(LV_PALETTE_BLUE));     // 起始颜色
+    lv_style_set_bg_grad_color(&styleb, lv_palette_main(LV_PALETTE_RED)); // 结束颜色
+    lv_style_set_bg_grad_dir(&styleb, LV_GRAD_DIR_HOR);                    // 渐变方向，水平
+    // 创建标签并应用样式
+    labeld = lv_label_create(lv_scr_act());
+    lv_obj_add_style(labeld, &styleb, 0);
+    lv_label_set_text(labeld, "zheba");
+    lv_obj_align(labeld, LV_ALIGN_CENTER, 0, 15);
+    lv_obj_add_flag(labeld,LV_OBJ_FLAG_HIDDEN);
+    //
+
     /* 获取图片的宽度和高度 */
     int32_t img_width = ((lv_image_t *)imgx)->w /2;
     int32_t img_height = ((lv_image_t *)imgx)->h /2;
@@ -607,11 +624,13 @@ static void hidden_handler(lv_event_t * e){
         lv_obj_add_flag(list1,LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(list2,LV_OBJ_FLAG_HIDDEN);
         lv_obj_clear_flag(imgx,LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(labeld,LV_OBJ_FLAG_HIDDEN);
      }else{
         LV_LOG_USER("no");
         lv_obj_clear_flag(list1, LV_OBJ_FLAG_HIDDEN);
         lv_obj_clear_flag(list2,LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(imgx,LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(labeld,LV_OBJ_FLAG_HIDDEN);
      }
      }
 }
@@ -623,6 +642,11 @@ void play_music(){
     // sprintf(output, "mplayer A:/song_List/%s.mp3 &", button_name);
     // LV_LOG_USER("%s", output);
     // system(output);
+
+    lv_label_set_text(labeld, button_name);
+    char xx[100];
+    sprintf(xx,"A:/pics/%s.png", button_name);
+    lv_image_set_src(imgx, xx);
 
     char files[300];
     sprintf(files, "0:/song_List/%s.mp3", button_name);

@@ -3761,14 +3761,14 @@
         <Name>..\lvgl\lv_font_cn.c</Name>
         <ColumnNumber>0</ColumnNumber>
         <TopLine>45</TopLine>
-        <CurrentLine>63</CurrentLine>
+        <CurrentLine>64</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
         <Name>..\Core\Src\hello.c</Name>
-        <ColumnNumber>10</ColumnNumber>
+        <ColumnNumber>16</ColumnNumber>
         <TopLine>358</TopLine>
         <CurrentLine>372</CurrentLine>
         <Folding>1</Folding>
