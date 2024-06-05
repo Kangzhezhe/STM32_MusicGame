@@ -24,6 +24,7 @@
         "utility": "c",
         "stdlib.h": "c",
         "lv_label.h": "c",
-        "freertos.h": "c"
+        "freertos.h": "c",
+        "cstdlib": "c"
     }
 }

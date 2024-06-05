@@ -336,7 +336,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--no-multibyte-chars</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
               <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../HardWare;../HardWare/LCD;../HardWare/inc;../lvgl/inc;../lvgl/inc/inc;../../MusicGame;../lvgl;../HELIX/pub;../HELIX/real;../FATFS/Target;../FATFS/App;../Middlewares/Third_Party/FatFs/src;../lvgl_demos/demos;../lvgl_demos/demos/music;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F</IncludePath>
@@ -4869,6 +4869,11 @@
               <FileName>zheba.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\lvgl\zheba.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_cn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lvgl\lv_font_cn.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -51,7 +51,7 @@ static lv_obj_t * label3;
 static lv_obj_t * label4;
 static lv_obj_t * currentButton = NULL;
 char xx[500] ="single";
-//¿É±äÁĞ±í
+//å¯å˜åˆ—è¡¨
  static const char * opts = "single\n"
                                "List\n"
                                "random"
@@ -63,6 +63,7 @@ LV_IMG_DECLARE(test2);
 LV_IMG_DECLARE(test3);
 LV_IMG_DECLARE(test4);
 LV_IMG_DECLARE(zheba);
+LV_FONT_DECLARE(lv_font_cn);
 void lv_music_UI(void)
 {   
     /*Create a transition animation on width transformation and recolor.*/
@@ -87,9 +88,13 @@ void lv_music_UI(void)
     // lv_image_set_src(img_pause, "A:/test2.png");
     // lv_obj_align(img_play, LV_ALIGN_CENTER, 0, 0);
     
-    
+//     static lv_style_t style_font;
+//    lv_style_init(&style_font);
+//    lv_style_set_text_font(&style_font,  &lv_font_cn);  //æ ·å¼ä½¿ç”¨è‡ªå®šä¹‰å­—ä½“
+//    lv_style_set_text_color(&style_font, lv_palette_main(LV_PALETTE_LIGHT_GREEN));   //è®¾ç½®å­—ä½“é¢œè‰²
 
-    // ´´½¨²¥·Å/ÔİÍ£°´Å¥
+
+    // åˆ›å»ºæ’­æ”¾/æš‚åœæŒ‰é’®
     
     lv_obj_t * play_pause_btn = lv_imagebutton_create(lv_screen_active());     /*Add a button the current screen*/
     // lv_imagebutton_set_src(play_pause_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/test1.png",
@@ -101,12 +106,13 @@ void lv_music_UI(void)
 
     lv_obj_add_event_cb(play_pause_btn, play_pause_event_cb, LV_EVENT_CLICKED, NULL);
     
-    // ´´½¨±êÇ©
+    // åˆ›å»ºæ ‡ç­¾
     lv_obj_t * label1 = lv_label_create(lv_scr_act());
-    lv_label_set_text(label1, "play mode"); // ÉèÖÃÖĞÎÄ±êÇ©ÎÄ±¾
-    lv_obj_align(label1, LV_ALIGN_CENTER, -120, 65); // µ÷ÕûÎ»ÖÃ£¬Ê¹ÆäÔÚÏÂÀ­ÁĞ±íÉÏ·½
+    lv_label_set_text(label1, "play mode"); // è®¾ç½®ä¸­æ–‡æ ‡ç­¾æ–‡æœ¬
+    // lv_obj_add_style(label1, &style_font,LV_STATE_DEFAULT);
+    lv_obj_align(label1, LV_ALIGN_CENTER, -120, 65); // è°ƒæ•´ä½ç½®ï¼Œä½¿å…¶åœ¨ä¸‹æ‹‰åˆ—è¡¨ä¸Šæ–¹
 
-    // Ñ¡ÔñÄ£Ê½µÄÏÂÀ­ÁĞ±í
+    // é€‰æ‹©æ¨¡å¼çš„ä¸‹æ‹‰åˆ—è¡¨
     /*Create a normal drop down list*/
     lv_obj_t * dd = lv_dropdown_create(lv_screen_active());
     lv_dropdown_set_options_static(dd, opts);
@@ -116,34 +122,34 @@ void lv_music_UI(void)
     lv_obj_align(dd, LV_ALIGN_CENTER, -120, 40);
     lv_obj_add_event_cb(dd, event_handler, LV_EVENT_ALL, NULL);
 
-    // ´´½¨¡°ÉÏÒ»Ê×¡±°´Å¥
+    // åˆ›å»ºâ€œä¸Šä¸€é¦–â€æŒ‰é’®
     lv_obj_t * prev_btn = lv_imagebutton_create(lv_scr_act()); 
     lv_imagebutton_set_src(prev_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test4,
                           NULL);
-    // °´ÏÂÊ±µÄÑùÊ½ 
+    // æŒ‰ä¸‹æ—¶çš„æ ·å¼ 
     lv_obj_add_style(prev_btn, &style_def, 0);
     lv_obj_add_style(prev_btn, &style_pr, LV_STATE_PRESSED);
 
     lv_obj_set_width(prev_btn, 40);                      
-    lv_obj_align(prev_btn, LV_ALIGN_CENTER, -50, 50); // Ïà¶ÔÓÚÖĞĞÄÎ»ÖÃ×óÒÆ50ÏñËØ
+    lv_obj_align(prev_btn, LV_ALIGN_CENTER, -50, 50); // ç›¸å¯¹äºä¸­å¿ƒä½ç½®å·¦ç§»50åƒç´ 
     lv_obj_add_event_cb(prev_btn, prev_event_cb, LV_EVENT_CLICKED, NULL);
     
-     // ´´½¨¡°ÏÂÒ»Ê×¡±°´Å¥
+     // åˆ›å»ºâ€œä¸‹ä¸€é¦–â€æŒ‰é’®
     lv_obj_t * next_btn = lv_imagebutton_create(lv_scr_act()); 
     lv_imagebutton_set_src(next_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test3,
                           NULL);
-    // °´ÏÂÊ±µÄÑùÊ½                      
+    // æŒ‰ä¸‹æ—¶çš„æ ·å¼                      
     lv_obj_add_style(next_btn, &style_def, 0);
     lv_obj_add_style(next_btn, &style_pr, LV_STATE_PRESSED);
     lv_obj_set_width(next_btn, 40);                      
-    lv_obj_align(next_btn, LV_ALIGN_CENTER, 50, 50); // Ïà¶ÔÓÚÖĞĞÄÎ»ÖÃ×óÒÆ50ÏñËØ
+    lv_obj_align(next_btn, LV_ALIGN_CENTER, 50, 50); // ç›¸å¯¹äºä¸­å¿ƒä½ç½®å·¦ç§»50åƒç´ 
     lv_obj_add_event_cb(next_btn, next_event_cb, LV_EVENT_CLICKED, NULL);
     
     //
-    // ´´½¨±êÇ©
+    // åˆ›å»ºæ ‡ç­¾
     lv_obj_t * label = lv_label_create(lv_screen_active());
     
-    // ´´½¨ÒôÁ¿»¡ĞÎ¿Ø¼ş
+    // åˆ›å»ºéŸ³é‡å¼§å½¢æ§ä»¶
     lv_obj_t * arc = lv_arc_create(lv_screen_active());
     lv_obj_set_size(arc, 50, 50);
     lv_arc_set_rotation(arc, 135);
@@ -153,13 +159,13 @@ void lv_music_UI(void)
     lv_obj_align(arc, LV_ALIGN_TOP_LEFT, 25, 50);
     lv_obj_add_event_cb(arc, value_changed_event_cb, LV_EVENT_VALUE_CHANGED, label);
 
-    // ÉèÖÃ±êÇ©Î»ÖÃ
-    //lv_obj_align(label,  LV_ALIGN_TOP_LEFT, 50, 45);// ½«±êÇ©·ÅÔÚ¡°ÏÂÒ»Ê×¡±°´Å¥µÄÏÂ·½
+    // è®¾ç½®æ ‡ç­¾ä½ç½®
+    //lv_obj_align(label,  LV_ALIGN_TOP_LEFT, 50, 45);// å°†æ ‡ç­¾æ”¾åœ¨â€œä¸‹ä¸€é¦–â€æŒ‰é’®çš„ä¸‹æ–¹
 
-    // ÊÖ¶¯¸üĞÂ±êÇ©µÚÒ»´Î
+    // æ‰‹åŠ¨æ›´æ–°æ ‡ç­¾ç¬¬ä¸€æ¬¡
     lv_obj_send_event(arc, LV_EVENT_VALUE_CHANGED, NULL);
 
-    // ¸èµ¥
+    // æ­Œå•
     /*Create a list*/
     list1 = lv_list_create(lv_screen_active());
     lv_obj_set_size(list1, lv_pct(40), lv_pct(60));
@@ -225,18 +231,18 @@ void lv_music_UI(void)
     //
      //duration time
     label3 = lv_label_create(lv_screen_active());
-    lv_label_set_text(label3, "00:00"); // ÉèÖÃ±êÇ©ÎÄ±¾
+    lv_label_set_text(label3, "00:00"); // è®¾ç½®æ ‡ç­¾æ–‡æœ¬
     lv_obj_add_style(label3, &style_small, 0);
-    lv_obj_align(label3, LV_ALIGN_CENTER, 140, 100); // µ÷ÕûÎ»ÖÃ£¬Ê¹ÆäÔÚÏÂÀ­ÁĞ±íÉÏ·½
+    lv_obj_align(label3, LV_ALIGN_CENTER, 140, 100); // è°ƒæ•´ä½ç½®ï¼Œä½¿å…¶åœ¨ä¸‹æ‹‰åˆ—è¡¨ä¸Šæ–¹
     //now time
     label4 = lv_label_create(lv_screen_active());
-    lv_label_set_text(label4, "00:00"); // ÉèÖÃ±êÇ©ÎÄ±¾
+    lv_label_set_text(label4, "00:00"); // è®¾ç½®æ ‡ç­¾æ–‡æœ¬
     lv_obj_add_style(label4, &style_small, 0);
-    lv_obj_align(label4, LV_ALIGN_LEFT_MID, 0, 100); // µ÷ÕûÎ»ÖÃ£¬Ê¹ÆäÔÚÏÂÀ­ÁĞ±íÉÏ·½
+    lv_obj_align(label4, LV_ALIGN_LEFT_MID, 0, 100); // è°ƒæ•´ä½ç½®ï¼Œä½¿å…¶åœ¨ä¸‹æ‹‰åˆ—è¡¨ä¸Šæ–¹
     
-     // ´´½¨Ò»¸ö¶¨Ê±Æ÷£¬Ã¿Ãëµ÷ÓÃÒ»´Î»Øµ÷º¯Êı
+     // åˆ›å»ºä¸€ä¸ªå®šæ—¶å™¨ï¼Œæ¯ç§’è°ƒç”¨ä¸€æ¬¡å›è°ƒå‡½æ•°
     timer = lv_timer_create(my_timer_callback, 1000, NULL);
-    //Ä¬ÈÏ²¥·ÅµÚÒ»Ê×
+    //é»˜è®¤æ’­æ”¾ç¬¬ä¸€é¦–
     // lv_obj_t *current_label = lv_obj_get_child(currentButton, 0);
     // const char *button_name = lv_label_get_text(current_label);
     // char output[326];
@@ -291,61 +297,61 @@ void lv_music_UI(void)
     lv_obj_add_event_cb(sw, hidden_handler, LV_EVENT_ALL, NULL);
     lv_obj_add_flag(sw, LV_OBJ_FLAG_EVENT_BUBBLE);
     //
-    // ´´½¨±êÇ©
+    // åˆ›å»ºæ ‡ç­¾
     lv_obj_t * label2 = lv_label_create(lv_scr_act());
-    lv_label_set_text(label2, "music_list"); // ÉèÖÃÖĞÎÄ±êÇ©ÎÄ±¾
-    lv_obj_align(label2, LV_ALIGN_CENTER, 110, 70); // µ÷ÕûÎ»ÖÃ£¬Ê¹ÆäÔÚÏÂÀ­ÁĞ±íÉÏ·½
+    lv_label_set_text(label2, "music list"); // è®¾ç½®ä¸­æ–‡æ ‡ç­¾æ–‡æœ¬
+    lv_obj_align(label2, LV_ALIGN_CENTER, 110, 70); // è°ƒæ•´ä½ç½®ï¼Œä½¿å…¶åœ¨ä¸‹æ‹‰åˆ—è¡¨ä¸Šæ–¹
     //
     lv_example_image_3();
     //
 
 
-     // ÃÀ»¯»¬¶¯Ìõ
+     // ç¾åŒ–æ»‘åŠ¨æ¡
     static lv_style_t style_bg;
     static lv_style_t style_indic;
     static lv_style_t style_knob;
     lv_style_init(&style_bg);
-    lv_style_set_radius(&style_bg, LV_RADIUS_CIRCLE); // ÉèÖÃ±³¾°Ô²½Ç
-    lv_style_set_bg_color(&style_bg, lv_color_hex(0xAAAAAA)); // ÉèÖÃ±³¾°ÑÕÉ«
-    lv_style_set_bg_grad_color(&style_bg, lv_color_hex(0x888888)); // ÉèÖÃ½¥±äÑÕÉ«
-    lv_style_set_bg_grad_dir(&style_bg, LV_GRAD_DIR_VER); // ÉèÖÃ½¥±ä·½Ïò
-    lv_style_set_border_color(&style_bg, lv_color_hex(0x666666)); // ÉèÖÃ±ß¿òÑÕÉ«
-    lv_style_set_border_width(&style_bg, 2); // ÉèÖÃ±ß¿ò¿í¶È
-    lv_style_set_pad_all(&style_bg, 2); // ÉèÖÃÄÚ±ß¾à
-    lv_style_set_width(&style_bg, 10); // ÉèÖÃ±³¾°ºñ¶È
+    lv_style_set_radius(&style_bg, LV_RADIUS_CIRCLE); // è®¾ç½®èƒŒæ™¯åœ†è§’
+    lv_style_set_bg_color(&style_bg, lv_color_hex(0xAAAAAA)); // è®¾ç½®èƒŒæ™¯é¢œè‰²
+    lv_style_set_bg_grad_color(&style_bg, lv_color_hex(0x888888)); // è®¾ç½®æ¸å˜é¢œè‰²
+    lv_style_set_bg_grad_dir(&style_bg, LV_GRAD_DIR_VER); // è®¾ç½®æ¸å˜æ–¹å‘
+    lv_style_set_border_color(&style_bg, lv_color_hex(0x666666)); // è®¾ç½®è¾¹æ¡†é¢œè‰²
+    lv_style_set_border_width(&style_bg, 2); // è®¾ç½®è¾¹æ¡†å®½åº¦
+    lv_style_set_pad_all(&style_bg, 2); // è®¾ç½®å†…è¾¹è·
+    lv_style_set_width(&style_bg, 10); // è®¾ç½®èƒŒæ™¯åšåº¦
 
     lv_style_init(&style_indic);
-    lv_style_set_radius(&style_indic, LV_RADIUS_CIRCLE); // ÉèÖÃÖ¸Ê¾Æ÷Ô²½Ç
-    lv_style_set_border_width(&style_indic, 2); // ÉèÖÃ±ß¿ò¿í¶È
+    lv_style_set_radius(&style_indic, LV_RADIUS_CIRCLE); // è®¾ç½®æŒ‡ç¤ºå™¨åœ†è§’
+    lv_style_set_border_width(&style_indic, 2); // è®¾ç½®è¾¹æ¡†å®½åº¦
     
     lv_style_init(&style_knob);
-    lv_style_set_radius(&style_knob, LV_RADIUS_CIRCLE); // ÉèÖÃ»¬¿éÔ²½Ç
-    lv_style_set_border_width(&style_knob, 0); // ÉèÖÃ»¬¿é±ß¿ò¿í¶È
-    lv_style_set_width(&style_knob, 3); // ÉèÖÃ»¬¿é¿í¶È
-    lv_style_set_height(&style_knob, 3); // ÉèÖÃ»¬¿é¸ß¶È
-    // ´´½¨½ø¶ÈÌõ
+    lv_style_set_radius(&style_knob, LV_RADIUS_CIRCLE); // è®¾ç½®æ»‘å—åœ†è§’
+    lv_style_set_border_width(&style_knob, 0); // è®¾ç½®æ»‘å—è¾¹æ¡†å®½åº¦
+    lv_style_set_width(&style_knob, 3); // è®¾ç½®æ»‘å—å®½åº¦
+    lv_style_set_height(&style_knob, 3); // è®¾ç½®æ»‘å—é«˜åº¦
+    // åˆ›å»ºè¿›åº¦æ¡
     slider = lv_slider_create(lv_screen_active());
     lv_obj_set_width(slider, 250);
     lv_obj_align(slider, LV_ALIGN_CENTER, 0, 100);
-    lv_obj_add_style(slider, &style_bg, LV_PART_MAIN); // Ó¦ÓÃ±³¾°ÑùÊ½
-    lv_obj_add_style(slider, &style_indic, LV_PART_INDICATOR); // Ó¦ÓÃÖ¸Ê¾Æ÷ÑùÊ½
-    lv_obj_add_style(slider, &style_knob, LV_PART_KNOB); // Ó¦ÓÃ»¬¿éÑùÊ½
+    lv_obj_add_style(slider, &style_bg, LV_PART_MAIN); // åº”ç”¨èƒŒæ™¯æ ·å¼
+    lv_obj_add_style(slider, &style_indic, LV_PART_INDICATOR); // åº”ç”¨æŒ‡ç¤ºå™¨æ ·å¼
+    lv_obj_add_style(slider, &style_knob, LV_PART_KNOB); // åº”ç”¨æ»‘å—æ ·å¼
     //lv_obj_add_event_cb(slider, slider_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
     lv_slider_set_value(slider, 0, LV_ANIM_OFF);
    
 }
 
-// ²¥·Å/ÔİÍ£°´Å¥»Øµ÷º¯Êı
+// æ’­æ”¾/æš‚åœæŒ‰é’®å›è°ƒå‡½æ•°
 void play_pause_event_cb(lv_event_t * e)
 {
     lv_obj_t * btn = lv_event_get_target(e);
-    // ÊµÏÖ²¥·Å/ÔİÍ£Âß¼­
-     is_playing = !is_playing; // ÇĞ»»×´Ì¬
+    // å®ç°æ’­æ”¾/æš‚åœé€»è¾‘
+     is_playing = !is_playing; // åˆ‡æ¢çŠ¶æ€
     if(is_playing==false) {
         if(currentButton == NULL) {
             return;}
           lv_imagebutton_set_src(btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test2,
-                          NULL);// ÉèÖÃÎªÔİÍ£Í¼±ê
+                          NULL);// è®¾ç½®ä¸ºæš‚åœå›¾æ ‡
         lv_obj_remove_state(currentButton, LV_STATE_CHECKED);
         stop_music();
           
@@ -353,23 +359,23 @@ void play_pause_event_cb(lv_event_t * e)
         if(currentButton == NULL) {
             return;}
         lv_imagebutton_set_src(btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test1,
-                          NULL);// ÉèÖÃÎª²¥·ÅÍ¼±ê
+                          NULL);// è®¾ç½®ä¸ºæ’­æ”¾å›¾æ ‡
         lv_obj_add_state(currentButton, LV_STATE_CHECKED);
         resume_music();
     }
 }
 
-// ½ø¶ÈÌõÊÂ¼ş»Øµ÷º¯Êı
+// è¿›åº¦æ¡äº‹ä»¶å›è°ƒå‡½æ•°
 void slider_event_cb(lv_event_t * e)
 {
     lv_obj_t * slider = lv_event_get_target(e);
-    // ÊµÏÖ½ø¶ÈÌõ¿ØÖÆÂß¼­
+    // å®ç°è¿›åº¦æ¡æ§åˆ¶é€»è¾‘
 }
 
-// ÉÏÒ»Ê×°´Å¥ÊÂ¼ş»Øµ÷º¯Êı
+// ä¸Šä¸€é¦–æŒ‰é’®äº‹ä»¶å›è°ƒå‡½æ•°
 void prev_event_cb(lv_event_t * e)
 {    lv_obj_t * btn = lv_event_get_target(e);
-    printf("ÉÏÒ»Ê×");
+    //printf("ä¸Šä¸€é¦–");
     if(currentButton == NULL) return;
     lv_obj_t * parent = lv_obj_get_parent(currentButton);
     uint32_t current_index = lv_obj_get_index(currentButton);
@@ -384,11 +390,11 @@ void prev_event_cb(lv_event_t * e)
 }
 
 
-// ÏÂÒ»Ê×°´Å¥ÊÂ¼ş»Øµ÷º¯Êı
+// ä¸‹ä¸€é¦–æŒ‰é’®äº‹ä»¶å›è°ƒå‡½æ•°
 void next_event_cb(lv_event_t * e)
 {
     lv_obj_t * btn = lv_event_get_target(e);
-    printf("ÏÂÒ»Ê×");
+    //printf("ä¸‹ä¸€é¦–");
     if(currentButton == NULL) return;
     lv_obj_t * parent = lv_obj_get_parent(currentButton);
     uint32_t current_index = lv_obj_get_index(currentButton);
@@ -403,9 +409,9 @@ void next_event_cb(lv_event_t * e)
 }
 
 //
-// ¼ÆËãÑÕÉ«ÖµµÄ¸¨Öúº¯Êı
+// è®¡ç®—é¢œè‰²å€¼çš„è¾…åŠ©å‡½æ•°
 static lv_color_t get_color_from_value(int value) {
-    // ¼ÆËãÑÕÉ«¹ı¶É
+    // è®¡ç®—é¢œè‰²è¿‡æ¸¡
     uint8_t r = (uint8_t)(255 * value / 100);
     uint8_t g = 0;
     uint8_t b = (uint8_t)(255 * (100 - value) / 100);
@@ -425,7 +431,7 @@ static void value_changed_event_cb(lv_event_t * e)
     /*Rotate the label to the current position of the arc*/
     lv_arc_rotate_obj_to_angle(arc, label, 25);
 
-    // ¼ÆËãÑÕÉ«²¢ÉèÖÃ
+    // è®¡ç®—é¢œè‰²å¹¶è®¾ç½®
     lv_color_t color = get_color_from_value(lv_arc_get_value(arc));
     lv_obj_set_style_arc_color(arc, color, LV_PART_INDICATOR);
 }
@@ -451,10 +457,10 @@ static void event_list_handler(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * obj = lv_event_get_target(e);
-    //´¦Àíµã»÷ÊÂ¼ş,ÏÔÊ¾±»µã»÷°´Å¥µÄÎÄ±¾ÄÚÈİ
+    //å¤„ç†ç‚¹å‡»äº‹ä»¶,æ˜¾ç¤ºè¢«ç‚¹å‡»æŒ‰é’®çš„æ–‡æœ¬å†…å®¹
     if(code == LV_EVENT_CLICKED) {
         LV_LOG_USER("Clicked: %s", lv_list_get_button_text(list1, obj));
-        // ¸üĞÂµ±Ç°°´Å¥
+        // æ›´æ–°å½“å‰æŒ‰é’®
         if(currentButton == obj) {
             currentButton = NULL;
             kill_music();
@@ -462,12 +468,12 @@ static void event_list_handler(lv_event_t * e)
         }
         else {
             currentButton = obj;
-            //·Åµ±Ç°¸èÇú
+            //æ”¾å½“å‰æ­Œæ›²
             kill_music();
             play_music();
         }
-        // ¸üĞÂ°´Å¥µÄ×´Ì¬
-        //Èç¹û×Ó¶ÔÏóÊÇcurrentButton£¬Ôò¸øËüÌí¼ÓLV_STATE_CHECKED×´Ì¬£¨±íÊ¾Ñ¡ÖĞ×´Ì¬£©¡£·ñÔò£¬ÒÆ³ıÆäLV_STATE_CHECKED×´Ì¬¡£
+        // æ›´æ–°æŒ‰é’®çš„çŠ¶æ€
+        //å¦‚æœå­å¯¹è±¡æ˜¯currentButtonï¼Œåˆ™ç»™å®ƒæ·»åŠ LV_STATE_CHECKEDçŠ¶æ€ï¼ˆè¡¨ç¤ºé€‰ä¸­çŠ¶æ€ï¼‰ã€‚å¦åˆ™ï¼Œç§»é™¤å…¶LV_STATE_CHECKEDçŠ¶æ€ã€‚
         lv_obj_t * parent = lv_obj_get_parent(obj);
         uint32_t i;
         for(i = 0; i < lv_obj_get_child_count(parent); i++) {
@@ -480,10 +486,10 @@ static void event_list_handler(lv_event_t * e)
             }
         }
     }
-    // ¹ö¶¯ÊÓÍ¼ÒÔÈ·±£¸Ã°´Å¥ÔÚÊÓÒ°·¶Î§ÄÚ£¬²¢Ê¹ÓÃ¶¯»­Ğ§¹û¡£
+    // æ»šåŠ¨è§†å›¾ä»¥ç¡®ä¿è¯¥æŒ‰é’®åœ¨è§†é‡èŒƒå›´å†…ï¼Œå¹¶ä½¿ç”¨åŠ¨ç”»æ•ˆæœã€‚
     if (currentButton!=NULL){
     lv_obj_scroll_to_view(currentButton, LV_ANIM_ON);}
-    //·Åµ±Ç°¸èÇú
+    //æ”¾å½“å‰æ­Œæ›²
     // kill_music();
     // play_music();
 }
@@ -492,11 +498,11 @@ static void event_handler_top(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     if(code == LV_EVENT_CLICKED) {
-        // ¼ì²éÊÇ·ñÓĞµ±Ç°Ñ¡ÖĞµÄ°´Å¥£¨currentButton£©
+        // æ£€æŸ¥æ˜¯å¦æœ‰å½“å‰é€‰ä¸­çš„æŒ‰é’®ï¼ˆcurrentButtonï¼‰
         if(currentButton == NULL) return;
-        // Èç¹ûÓĞÑ¡ÖĞµÄ°´Å¥£¬½«ÆäÒÆ¶¯µ½±³¾°
+        // å¦‚æœæœ‰é€‰ä¸­çš„æŒ‰é’®ï¼Œå°†å…¶ç§»åŠ¨åˆ°èƒŒæ™¯
         lv_obj_move_background(currentButton);
-        // ¹ö¶¯ÊÓÍ¼ÒÔÈ·±£¸Ã°´Å¥ÔÚÊÓÒ°·¶Î§ÄÚ£¬²¢Ê¹ÓÃ¶¯»­Ğ§¹û¡£
+        // æ»šåŠ¨è§†å›¾ä»¥ç¡®ä¿è¯¥æŒ‰é’®åœ¨è§†é‡èŒƒå›´å†…ï¼Œå¹¶ä½¿ç”¨åŠ¨ç”»æ•ˆæœã€‚
         lv_obj_scroll_to_view(currentButton, LV_ANIM_ON);
     }
 }
@@ -505,11 +511,11 @@ static void event_handler_bottom(lv_event_t * e)
 {
     const lv_event_code_t code = lv_event_get_code(e);
     if(code == LV_EVENT_CLICKED) {
-        // ¼ì²éÊÇ·ñÓĞµ±Ç°Ñ¡ÖĞµÄ°´Å¥£¨currentButton£©
+        // æ£€æŸ¥æ˜¯å¦æœ‰å½“å‰é€‰ä¸­çš„æŒ‰é’®ï¼ˆcurrentButtonï¼‰
         if(currentButton == NULL) return;
-        // Èç¹ûÓĞÑ¡ÖĞµÄ°´Å¥£¬½«ÆäÒÆ¶¯µ½Ç°¾°
+        // å¦‚æœæœ‰é€‰ä¸­çš„æŒ‰é’®ï¼Œå°†å…¶ç§»åŠ¨åˆ°å‰æ™¯
         lv_obj_move_foreground(currentButton);
-        // ¹ö¶¯ÊÓÍ¼ÒÔÈ·±£¸Ã°´Å¥ÔÚÊÓÒ°·¶Î§ÄÚ£¬²¢Ê¹ÓÃ¶¯»­Ğ§¹û¡£
+        // æ»šåŠ¨è§†å›¾ä»¥ç¡®ä¿è¯¥æŒ‰é’®åœ¨è§†é‡èŒƒå›´å†…ï¼Œå¹¶ä½¿ç”¨åŠ¨ç”»æ•ˆæœã€‚
         lv_obj_scroll_to_view(currentButton, LV_ANIM_ON);
     }
 }
@@ -519,12 +525,12 @@ static void event_handler_up(lv_event_t * e)
     lv_event_code_t code = lv_event_get_code(e);
     if((code == LV_EVENT_CLICKED) || (code == LV_EVENT_LONG_PRESSED_REPEAT)) {
         if(currentButton == NULL) return;
-        // »ñÈ¡ currentButton ÔÚÆä¸¸¶ÔÏó×Ó¶ÔÏóÁĞ±íÖĞµÄË÷Òı
+        // è·å– currentButton åœ¨å…¶çˆ¶å¯¹è±¡å­å¯¹è±¡åˆ—è¡¨ä¸­çš„ç´¢å¼•
         uint32_t index = lv_obj_get_index(currentButton);
         if(index <= 0) return;
-        // currentButton ÒÆ¶¯µ½Æäµ±Ç°Ë÷ÒıµÄÇ°Ò»¸öÎ»ÖÃ£¬¼´ÉÏÒ»¸öÎ»ÖÃ
+        // currentButton ç§»åŠ¨åˆ°å…¶å½“å‰ç´¢å¼•çš„å‰ä¸€ä¸ªä½ç½®ï¼Œå³ä¸Šä¸€ä¸ªä½ç½®
         lv_obj_move_to_index(currentButton, index - 1);
-        // ÕâĞĞ´úÂë¹ö¶¯ÊÓÍ¼ÒÔÈ·±£ currentButton ÔÚÊÓÒ°·¶Î§ÄÚ£¬²¢ÆôÓÃ¶¯»­Ğ§¹û
+        // è¿™è¡Œä»£ç æ»šåŠ¨è§†å›¾ä»¥ç¡®ä¿ currentButton åœ¨è§†é‡èŒƒå›´å†…ï¼Œå¹¶å¯ç”¨åŠ¨ç”»æ•ˆæœ
         lv_obj_scroll_to_view(currentButton, LV_ANIM_ON);
     }
 }
@@ -571,11 +577,11 @@ void lv_example_image_3(void){
     lv_image_set_src(imgx, &zheba);
     lv_obj_align(imgx, LV_ALIGN_CENTER, 0, -40);
   
-    /* »ñÈ¡Í¼Æ¬µÄ¿í¶ÈºÍ¸ß¶È */
+    /* è·å–å›¾ç‰‡çš„å®½åº¦å’Œé«˜åº¦ */
     int32_t img_width = ((lv_image_t *)imgx)->w /2;
     int32_t img_height = ((lv_image_t *)imgx)->h /2;
 
-    /* ÉèÖÃĞı×ªÖ§µãÎªÍ¼Æ¬µÄÖĞĞÄ */
+    /* è®¾ç½®æ—‹è½¬æ”¯ç‚¹ä¸ºå›¾ç‰‡çš„ä¸­å¿ƒ */
     lv_image_set_pivot(imgx, img_width, img_height);
 
     
@@ -626,26 +632,27 @@ void play_music(){
     lv_timer_resume(timer);
 }
 void stop_music(){
-    // Ê¹ÓÃ killall ÃüÁîÔİÍ£ mplayer ½ø³Ì
+    // ä½¿ç”¨ killall å‘½ä»¤æš‚åœ mplayer è¿›ç¨‹
     // system("killall -STOP mplayer");
     MP3_suspend();
     lv_timer_pause(timer);
 }
+
 void resume_music() {
-    // Ê¹ÓÃ killall ÃüÁî»Ö¸´ mplayer ½ø³Ì
+    // ä½¿ç”¨ killall å‘½ä»¤æ¢å¤ mplayer è¿›ç¨‹
     // system("killall -CONT mplayer");
     MP3_resume();
     lv_timer_resume(timer);
 }
 void kill_music(){
     MP3_decoder_Free();
-    // system("killall -9 mplayer") ; ;//¹Ø±ÕÔ­ÓĞµÄ½ø³Ì
+    // system("killall -9 mplayer") ; ;//å…³é—­åŸæœ‰çš„è¿›ç¨‹
     current_time=0;
 }
 void change_sound(int nums){
     // int volume = 40+(nums*60/100);
     // char command[50];
-    // Ê¹ÓÃ amixer ÃüÁîÉèÖÃÒôÁ¿
+    // ä½¿ç”¨ amixer å‘½ä»¤è®¾ç½®éŸ³é‡
 
     // sprintf(command, "amixer set Master %d%%", (int)(volume));
     // system(command);
@@ -658,17 +665,17 @@ double get_total_duration(const char* filename) {
     char buffer[1024];
     double duration = 0.0;
 
-    // ¹¹½¨ÃüÁî×Ö·û´®
+    // æ„å»ºå‘½ä»¤å­—ç¬¦ä¸²
     // snprintf(command, sizeof(command), "mplayer -identify -frames 0 -ao null \"%s\" 2>&1", filename);
 
-    // // ´ò¿ª¹ÜµÀ¶ÁÈ¡ÃüÁîÊä³ö
+    // // æ‰“å¼€ç®¡é“è¯»å–å‘½ä»¤è¾“å‡º
     // FILE* pipe = popen(command, "r");
     // if (!pipe) {
     //     perror("popen failed");
     //     return -1;
     // }
 
-    // // ¶ÁÈ¡ÃüÁîÊä³ö²¢½âÎö×ÜÊ±³¤
+    // // è¯»å–å‘½ä»¤è¾“å‡ºå¹¶è§£ææ€»æ—¶é•¿
     // while (fgets(buffer, sizeof(buffer), pipe)) {
     //     if (strstr(buffer, "ID_LENGTH=") == buffer) {
     //         sscanf(buffer, "ID_LENGTH=%lf", &duration);
@@ -676,13 +683,13 @@ double get_total_duration(const char* filename) {
     //     }
     // }
 
-    // // ¹Ø±Õ¹ÜµÀ
+    // // å…³é—­ç®¡é“
     // pclose(pipe);
 
-    //LV_LOG_USER("Total durationÊÇ: %f\n", (int)duration);
+    //LV_LOG_USER("Total durationæ˜¯: %f\n", (int)duration);
     //duration = (int)duration;
-    //LV_LOG_USER("Total durationÊÇ: %d\n", (int)duration/60);
-    //½«Ê±¼äÊäÈëµ½±êÇ©ÖĞ
+    //LV_LOG_USER("Total durationæ˜¯: %d\n", (int)duration/60);
+    //å°†æ—¶é—´è¾“å…¥åˆ°æ ‡ç­¾ä¸­
 
     duration = MP3_Get_duration();
     
@@ -697,9 +704,9 @@ double get_total_duration(const char* filename) {
     }
 
    
-    lv_label_set_text(label3, buf); // ÉèÖÃ±êÇ©ÎÄ±¾
+    lv_label_set_text(label3, buf); // è®¾ç½®æ ‡ç­¾æ–‡æœ¬
     //s
-    LV_LOG_USER("Ê±¼ä: %s\n", buf);
+    LV_LOG_USER("æ—¶é—´: %s\n", buf);
     return duration;
 }
 
@@ -714,7 +721,7 @@ void my_timer_callback(lv_timer_t * timer){
     else {
         sprintf(buf,"0%d:%d",m,s);
     }
-    lv_label_set_text(label4, buf); // ÉèÖÃ±êÇ©ÎÄ±¾
+    lv_label_set_text(label4, buf); // è®¾ç½®æ ‡ç­¾æ–‡æœ¬
     
     //
     if(current_time <= duration_time){
@@ -725,7 +732,7 @@ void my_timer_callback(lv_timer_t * timer){
     // LV_LOG_USER("Option: %s", xx);duration_time
     //
     if (current_time >= duration_time){
-        //Ë³Ğò²¥·Å
+        //é¡ºåºæ’­æ”¾
         if(currentButton == NULL) return;
         if (strcmp(xx, "List") == 0){
         lv_obj_t * parent = lv_obj_get_parent(currentButton);
@@ -737,13 +744,13 @@ void my_timer_callback(lv_timer_t * timer){
         lv_obj_send_event(pre_Button , LV_EVENT_CLICKED, NULL);
 
         }
-        //Ñ­»·²¥·Å
+        //å¾ªç¯æ’­æ”¾
         if (strcmp(xx, "single") == 0){
         kill_music();
         play_music();
 
         }
-        //Ëæ¼´²¥·Å
+        //éšå³æ’­æ”¾
         if (strcmp(xx, "random") == 0){
         lv_obj_t * parent = lv_obj_get_parent(currentButton);
         uint32_t current_index = lv_obj_get_index(currentButton);
