@@ -637,18 +637,18 @@ static void hidden_handler(lv_event_t * e){
 
 void play_music(){
     lv_obj_t *current_label = lv_obj_get_child(currentButton, 0);
-    const char *button_name = lv_label_get_text(current_label);
+    char *button_name = lv_label_get_text(current_label);
     // char output[326];
     // sprintf(output, "mplayer A:/song_List/%s.mp3 &", button_name);
     // LV_LOG_USER("%s", output);
     // system(output);
 
     lv_label_set_text(labeld, button_name);
-    char xx[100];
+    static char xx[100];
     sprintf(xx,"A:/pics/%s.png", button_name);
     lv_image_set_src(imgx, xx);
 
-    char files[300];
+    static char files[300];
     sprintf(files, "0:/song_List/%s.mp3", button_name);
     LV_LOG_USER("%s", files);
     MP3_decode_file(files);

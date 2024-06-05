@@ -158,6 +158,7 @@ void _lv_draw_image_normal_helper(lv_draw_unit_t * draw_unit, const lv_draw_imag
     lv_image_decoder_dsc_t decoder_dsc;
     lv_result_t res = lv_image_decoder_open(&decoder_dsc, draw_dsc->src, NULL);
     if(res != LV_RESULT_OK) {
+        LV_LOG_USER("res :%d\r\n",res);
         LV_LOG_ERROR("Failed to open image");
         return;
     }
@@ -178,6 +179,7 @@ void _lv_draw_image_tiled_helper(lv_draw_unit_t * draw_unit, const lv_draw_image
     lv_image_decoder_dsc_t decoder_dsc;
     lv_result_t res = lv_image_decoder_open(&decoder_dsc, draw_dsc->src, NULL);
     if(res != LV_RESULT_OK) {
+				LV_LOG_USER("res :%d\r\n",res);
         LV_LOG_ERROR("Failed to open image");
         return;
     }
