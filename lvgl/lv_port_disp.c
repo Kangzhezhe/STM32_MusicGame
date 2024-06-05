@@ -146,21 +146,20 @@ static void disp_flush(lv_display_t * disp_drv, const lv_area_t * area, uint8_t 
         // LCD_Color_Fill(area->x1,area->y1,area->x2,area->y2,(uint16_t*)px_map);  
 			
 					LCD_Address_Set(area->x1,area->y1,area->x2,area->y2);
-				//  HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM,
-				// 								 ((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
+				 HAL_DMA_Start_IT(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM,
+												 ((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
 
-                HAL_DMA_Start(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM 
-                ,((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
-                if(HAL_DMA_PollForTransfer(&hdma_memtomem_dma2_stream6, HAL_DMA_FULL_TRANSFER,1000)!=HAL_OK)
-                 printf("dma error \r\n");
-            //test lcd 
+                // HAL_DMA_Start(&hdma_memtomem_dma2_stream6, (uint32_t) px_map, (uint32_t) &LCD->LCD_RAM 
+                // ,((area->x2 + 1) - area->x1) * ((area->y2 + 1) - area->y1));
+                // if(HAL_DMA_PollForTransfer(&hdma_memtomem_dma2_stream6, HAL_DMA_FULL_TRANSFER,1000)!=HAL_OK)
+                //  printf("dma error \r\n");
 
 
     }
 
     /*IMPORTANT!!!
      *Inform the graphics library that you are ready with the flushing*/
-     lv_display_flush_ready(disp_drv);
+    //  lv_display_flush_ready(disp_drv);
 }
 
 #else /*Enable this file at the top*/

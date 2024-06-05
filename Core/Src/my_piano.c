@@ -2,6 +2,7 @@
 #include "lvgl.h"
 #include <stdio.h>
 #include "mp3Player.h"
+
 void playSound(const char* soundFilePath) {
     // CFURLRef soundFileURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, CFStringCreateWithCString(NULL, soundFilePath, kCFStringEncodingUTF8), kCFURLPOSIXPathStyle, false);
     // SystemSoundID soundID;
@@ -9,7 +10,7 @@ void playSound(const char* soundFilePath) {
     // AudioServicesPlaySystemSound(soundID);
     // CFRelease(soundFileURL);
     MP3_decode_file(soundFilePath);
-    printf("playSound: %s\n", soundFilePath);
+    printf("playSound: %s\r\n", soundFilePath);
 }
 
 
