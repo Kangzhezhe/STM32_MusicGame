@@ -523,6 +523,7 @@ u8 scan_files(u8 * path)
   return res;	  
 }
 
+void game_UI(void);
 /* USER CODE END 0 */
 
 /**
@@ -586,8 +587,10 @@ int main(void)
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
-     my_piano();
 	 //lv_example_get_started_1();
+     my_piano();
+   // game_UI();
+
 	
 	HAL_TIM_Base_Start(&htim2); 
 	

@@ -927,6 +927,11 @@
                 </FileArmAds>
               </FileOption>
             </File>
+            <File>
+              <FileName>game.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\game.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

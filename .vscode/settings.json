@@ -15,6 +15,12 @@
         "lcd.h": "c",
         "main.h": "c",
         "cstdint": "c",
-        "mp3player.h": "c"
+        "mp3player.h": "c",
+        "pthread.h": "c",
+        "*.tcc": "c",
+        "memory": "c",
+        "istream": "c",
+        "tuple": "c",
+        "utility": "c"
     }
 }

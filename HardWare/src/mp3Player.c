@@ -425,6 +425,7 @@ void MP3_Playing(){
             xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
             mp3player.ucStatus=STA_IDLE;
             xSemaphoreGive(Sem_MP3StateHandle);
+            f_close(&file);
             return;
         }	
 
