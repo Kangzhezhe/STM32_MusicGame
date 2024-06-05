@@ -44,6 +44,7 @@ void MX_DAC_Init(void);
 void Dac1_Set_Vol(u16 vol);
 extern uint16_t DAC_buff[DAC_BUF_LEN]; 
 void DAC_DMA_Start(uint32_t freq, uint16_t len);
+void DAC_DMA_Clean(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

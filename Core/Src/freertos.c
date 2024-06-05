@@ -244,7 +244,7 @@ void StartTask_mp3(void const * argument)
 {
   /* USER CODE BEGIN StartTask_mp3 */
   MP3_decoder_Init();
-  MP3_decode_file("0:/zhangguorong.mp3");
+  MP3_decode_file("0:/song_List/Coldplay_Yellow.mp3");
   /* Infinite loop */
   for(;;)
   {
@@ -301,6 +301,7 @@ void test_print_directory_files(const char *path) {
 }
 
 void my_piano(void);
+void lv_music_UI(void);
 #include "lcd.h"
 extern DMA_HandleTypeDef hdma_dac1;
 /* USER CODE END Header_StartTask */
@@ -309,7 +310,8 @@ void StartTask(void const * argument)
   /* USER CODE BEGIN StartTask */
     lv_port_fs_init();
     SD_test();
-    test_print_directory_files("A:/");
+	//lv_music_UI();
+    //test_print_directory_files("A:/");
 	//fs_test();
 	// scan_files("0:");
   vTaskDelay(2000);

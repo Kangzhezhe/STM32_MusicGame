@@ -171,9 +171,10 @@ void lv_port_indev_init(void)
        {204, 100},
        {249, 100},
        {294, 100},
-       {52, 224},
-       {160, 224},
        {268, 224},
+       {160, 224},
+       {52, 224},
+       
    };
    lv_indev_set_button_points(indev_button, btn_points);
 }

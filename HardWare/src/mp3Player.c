@@ -204,7 +204,8 @@ void mp3PlayerDemo(const char *mp3file)
 	else //解码失败
 	{
 		MP3FreeDecoder(Mp3Decoder);
-		return;
+        f_close (&file);
+    	return;
 	}
 	
 	/* 放音状态 */
@@ -270,7 +271,7 @@ void mp3PlayerDemo(const char *mp3file)
 	MP3FreeDecoder(Mp3Decoder);//清理缓存
 	f_close(&file);	
 }
-
+void MP3_decoder_Free();
 void MP3_decoder_Init(void){
 	mp3player.ucStatus = STA_IDLE;
 	mp3player.ucVolume = 15; //音量值，100满
@@ -323,12 +324,45 @@ void MP3_decode_file(const char *mp3file)
     if(!read_file(mp3file, &read_ptr, &bytes_left))
     {
         MP3FreeDecoder(Mp3Decoder);
+        f_close (&file);
         xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
         mp3player.ucStatus=STA_IDLE;
         xSemaphoreGive(Sem_MP3StateHandle);
         return;	/* 停止播放 */
     }
     
+    //寻找帧同步，返回第一个同步字的位置
+    read_offset = MP3FindSyncWord(read_ptr, bytes_left);
+    if(read_offset < 0)					//没有找到同步字
+    {
+        if(!read_file(mp3file_playing, &read_ptr, &bytes_left))//重新读取一次文件再找
+        {
+            return;//回到while(mp3player.ucStatus == STA_PLAYING)后面
+        }
+    }
+    else//找到同步字
+    {			
+        read_ptr   += read_offset;	//偏移至同步字的位置
+        bytes_left -= read_offset;	//同步字之后的数据大小	
+        
+        if(bytes_left < 1024)				//如果剩余的数据小于1024字节，补充数据
+        {
+            /* 注意这个地方因为采用的是DMA读取，所以一定要4字节对齐  */
+            u16 i = (uint32_t)(bytes_left)&3;	//判断多余的字节
+            if(i) i=4-i;						//需要补充的字节
+            memcpy(inputbuf+i, read_ptr, bytes_left);	//从对齐位置开始复制
+            read_ptr = inputbuf+i;										//指向数据对齐位置
+            result = f_read(&file, inputbuf+bytes_left+i, INPUTBUF_SIZE-bytes_left-i, &bw);//补充数据
+            if(result != FR_OK)
+            {
+                printf("读取%s失败 -> %d\r\n",mp3file_playing,result);
+                MP3_decoder_Free();
+                return;
+            }
+            bytes_left += bw;		//有效数据流大小
+        }
+    }
+
     //尝试解码成功
     if(MP3DataDecoder(&read_ptr, &bytes_left))
     {
@@ -341,7 +375,7 @@ void MP3_decode_file(const char *mp3file)
         printf(" \r\n Version       %d",     Mp3FrameInfo.version);
         printf(" \r\n OutputSamps   %d",     Mp3FrameInfo.outputSamps);
         printf("\r\n");
-        
+        DAC_DMA_Clean();
         //启动DAC，开始发声
         if (Mp3FrameInfo.nChans == 1)	//单声道要将outputSamps*2
         {
@@ -354,10 +388,8 @@ void MP3_decode_file(const char *mp3file)
     }
     else //解码失败
     {
+        MP3_decoder_Free();
         MP3FreeDecoder(Mp3Decoder);
-        xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
-        mp3player.ucStatus=STA_IDLE;
-        xSemaphoreGive(Sem_MP3StateHandle);
         return;
     }
     /* 放音状态 */
@@ -399,9 +431,7 @@ void MP3_Playing(){
                 if(result != FR_OK)
                 {
                     printf("读取%s失败 -> %d\r\n",mp3file_playing,result);
-                    xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
-                    mp3player.ucStatus=STA_IDLE;
-                    xSemaphoreGive(Sem_MP3StateHandle);
+                    MP3_decoder_Free();
                     return;
                 }
                 bytes_left += bw;		//有效数据流大小
@@ -412,9 +442,7 @@ void MP3_Playing(){
         if(!MP3DataDecoder(&read_ptr, &bytes_left))
         {//如果播放出错，Isread置1，避免卡住死循环
             // Isread = 1;
-            xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
-            mp3player.ucStatus=STA_IDLE;
-            xSemaphoreGive(Sem_MP3StateHandle);
+            MP3_decoder_Free();
             return;
         }
         
@@ -422,10 +450,7 @@ void MP3_Playing(){
         if(file.fptr == f_size(&file))
         {
             printf("单曲播放完毕\r\n");
-            xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
-            mp3player.ucStatus=STA_IDLE;
-            xSemaphoreGive(Sem_MP3StateHandle);
-            f_close(&file);
+            MP3_decoder_Free();
             return;
         }	
 
@@ -437,11 +462,13 @@ void MP3_Playing(){
 
 void MP3_decoder_Free(){
     //运行到此处，说明单曲播放完成，收尾工作
-	HAL_DAC_Stop_DMA(&hdac,DAC_CHANNEL_1);
+    HAL_DAC_Stop_DMA(&hdac,DAC_CHANNEL_1);
+	DAC_DMA_Clean();
     xSemaphoreTake(Sem_MP3StateHandle, portMAX_DELAY);
-	mp3player.ucStatus = STA_IDLE;
+    mp3player.ucStatus=STA_IDLE;
     xSemaphoreGive(Sem_MP3StateHandle);
-	MP3FreeDecoder(Mp3Decoder);//清理缓存
+    f_close(&file);
+	// MP3FreeDecoder(Mp3Decoder);//清理缓存
 	//f_close(&file);	
 }
 

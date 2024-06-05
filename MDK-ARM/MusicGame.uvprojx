@@ -928,6 +928,11 @@
               </FileOption>
             </File>
             <File>
+              <FileName>hello.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\hello.c</FilePath>
+            </File>
+            <File>
               <FileName>game.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\game.c</FilePath>

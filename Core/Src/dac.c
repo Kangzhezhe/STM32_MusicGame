@@ -166,13 +166,20 @@ void Dac1_Set_Vol(u16 vol)
 }
 #define   CNT_FREQ          50000000      // TIM2 counter clock (prescaled APB1)
 
+void DAC_DMA_Clean(void)
+{
+    for (int i = 0; i < DAC_BUF_LEN; i++){
+        DAC_buff[i] = 32768;
+    }
+}
+
 //配置DAC采样率和DMA数据长度，并启动DMA DAC
 void DAC_DMA_Start(uint32_t freq, uint16_t len)
 {
 	HAL_TIM_Base_Stop(&htim2);
 	//设置DMA缓冲长度需要停止DMA
 	HAL_DAC_Stop_DMA(&hdac,DAC_CHANNEL_1);
-   
+    DAC_DMA_Clean();
 	HAL_DAC_Start_DMA(&hdac,DAC_CHANNEL_1,(u32*)DAC_buff,len,DAC_ALIGN_12B_L);
     
 	//设置定时器
