@@ -26,7 +26,7 @@ static lv_obj_t *BtnLabel     = NULL;
 // #include "../lv_examples.h"
 #include "lvgl.h"
 #include <stdio.h>
-// #include "mp3Player.h"
+#include "mp3Player.h"
 
 void playSound(const char* soundFilePath) {
     MP3_decode_file(soundFilePath);
@@ -545,12 +545,14 @@ static void Gui_PianoScrEnter(void)
 {
     Gui_PianoScrLayout();
     printf("piano enter\r\n");
+    MP3_Set_volume(15);
     lv_obj_add_event_cb(piano_btn, piano_btn_event_cb, LV_EVENT_CLICKED, NULL);
 }
 
 static void Gui_PianoScrExit(void)
 {
     printf("piano exit\r\n");
+    MP3_decoder_Free();   
     lv_obj_remove_event_cb(piano_btn, piano_btn_event_cb);
 }
 

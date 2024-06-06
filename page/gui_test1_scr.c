@@ -197,7 +197,7 @@ void lv_music_UI(void)
     lv_obj_set_size(arc, 50, 50);
     lv_arc_set_rotation(arc, 135);
     lv_arc_set_bg_angles(arc, 0, 270);
-    lv_arc_set_value(arc, 80);
+    lv_arc_set_value(arc, 20);
    
     lv_obj_align(arc, LV_ALIGN_TOP_LEFT, 25, 50);
     lv_obj_add_event_cb(arc, value_changed_event_cb, LV_EVENT_VALUE_CHANGED, label);
@@ -597,14 +597,15 @@ static void event_handler_dn(lv_event_t * e)
 static void set_angle(void * img, int32_t v)
 {   
     if(is_playing) {
-    lv_image_set_rotation(img, v);
+        lv_image_set_rotation(img, v);
     }
 }
 
 
 void lv_example_image_3(void){
     imgx = lv_image_create(Test1ScrRoot);
-    lv_image_set_src(imgx, &zheba);
+    // lv_image_set_src(imgx, &zheba);
+    lv_image_set_src(imgx, "A:/pics/after.bin");
     lv_obj_align(imgx, LV_ALIGN_CENTER, 0, -40);
   
     
@@ -630,6 +631,7 @@ void lv_example_image_3(void){
     /* 设置旋转�?点为图片的中�? */
     lv_image_set_pivot(imgx, img_width, img_height);
 
+    printf("w: %d, h:%d\r\n",img_width,img_height);
     
     lv_anim_t a;
     lv_anim_init(&a);

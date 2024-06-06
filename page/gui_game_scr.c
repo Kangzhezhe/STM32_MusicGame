@@ -58,9 +58,9 @@ static lv_obj_t *BtnLabel     = NULL;
 #include <string.h>
 
 #include "lvgl_app.h"
+#include "mp3Player.h"
 
-
-#define FALL_SPEED 2//下落速度  
+#define FALL_SPEED 3//下落速度  
 #define TIMER_PERIOD 50 //
 #define LENTH 100 // 长滑块默认长度
 
@@ -94,8 +94,8 @@ typedef struct {
     int pos;
     int lenth;
 } Lbtn_timer_t;
-#define MAX_SHORT 15
-#define MAX_LONG 5
+#define MAX_SHORT 23
+#define MAX_LONG 4
 static btn_timer_t* btn_timer[MAX_SHORT];
 static u8 btn_timer_die[MAX_SHORT];
 static Lbtn_timer_t* btnL_timer[MAX_LONG];
@@ -114,7 +114,7 @@ static lv_style_t stylex1;
 static lv_style_t style_prx1;
 
 int w =3;
-int currnet_time =0;
+int currnet_time =-20;
 int get (int * x,int i,int j){
     return  x[i*w+j];
 }
@@ -312,30 +312,63 @@ void stylesx(){
 
 
 
+// static int inf[MAX_SHORT*3]={
+//     1,0,FALL_SPEED,
+//     2,80,FALL_SPEED,
+//     2,160,FALL_SPEED,
+//     2,240,FALL_SPEED,
+//     4,0,FALL_SPEED,
+//     4,240,FALL_SPEED,
+//     5,160,FALL_SPEED,
+//     6,120,FALL_SPEED,
+//     7,240,FALL_SPEED,
+//     8,0,FALL_SPEED,
+//     32,80,FALL_SPEED,
+//     34,160,FALL_SPEED,
+//     34,240,FALL_SPEED,
+//     36,0,FALL_SPEED,
+//     36,160,FALL_SPEED,
+// };
+
 static int inf[MAX_SHORT*3]={
-    1,0,FALL_SPEED,
-    2,80,FALL_SPEED,
-    2,160,FALL_SPEED,
-    2,240,FALL_SPEED,
-    4,0,FALL_SPEED,
-    4,240,FALL_SPEED,
-    5,160,FALL_SPEED,
-    6,120,FALL_SPEED,
-    7,240,FALL_SPEED,
-    8,0,FALL_SPEED,
-    32,80,FALL_SPEED,
-    34,160,FALL_SPEED,
-    34,240,FALL_SPEED,
-    36,0,FALL_SPEED,
-    36,160,FALL_SPEED,
+    1,160,FALL_SPEED,
+    8,160,FALL_SPEED,
+    15,80,FALL_SPEED,
+    21,80,FALL_SPEED,
+    56,240,FALL_SPEED,
+    63,240,FALL_SPEED,
+    70,160,FALL_SPEED,
+    76,160,FALL_SPEED,
+    111,240,FALL_SPEED,
+    118,240,FALL_SPEED,
+    125,160,FALL_SPEED,
+    132,160,FALL_SPEED,
+    166,0,FALL_SPEED,
+    173,0,FALL_SPEED,
+    180,160,FALL_SPEED,
+    187,160,FALL_SPEED,
+    194,240,FALL_SPEED,
+    201,240,FALL_SPEED,
+    208,160,FALL_SPEED,
+    221,160,FALL_SPEED,
+    228,160,FALL_SPEED,
+    235,80,FALL_SPEED,
+    242,80,FALL_SPEED,
 };
 
+// static int Linf[MAX_LONG*4]={
+//     10,0,FALL_SPEED+1,LENTH,
+//     15,80,FALL_SPEED+1,LENTH,
+//     20,160,FALL_SPEED+1,LENTH+50,
+//     25,240,FALL_SPEED+1,LENTH,
+//     28,0,FALL_SPEED+1,LENTH+100
+// };
+
 static int Linf[MAX_LONG*4]={
-    10,0,FALL_SPEED+1,LENTH,
-    15,80,FALL_SPEED+1,LENTH,
-    20,160,FALL_SPEED+1,LENTH+50,
-    25,240,FALL_SPEED+1,LENTH,
-    28,0,FALL_SPEED+1,LENTH+100
+    28,0,FALL_SPEED,LENTH,
+    83,80,FALL_SPEED,LENTH,
+    137,80,FALL_SPEED,LENTH,
+    247,0,FALL_SPEED,LENTH
 };
 
 static lv_timer_t *crete_timer;
@@ -368,7 +401,7 @@ void game(void){
     lv_obj_align(goal_label, LV_ALIGN_TOP_MID, 0, 0);
     lv_label_set_text_fmt(goal_label, "%d", goal);
 
-    crete_timer = lv_timer_create(create_timer_cb, 1000, NULL);
+    crete_timer = lv_timer_create(create_timer_cb, 100, NULL);
   
    
     draw_line_example();
@@ -663,7 +696,7 @@ static lv_obj_t *Gui_GameScrCreate(lv_obj_t *parent)
     lv_obj_add_event_cb(game_btn, game_btn_event_cb, LV_EVENT_CLICKED, NULL);
 
     game();
-
+    MP3_Set_volume(10);
     printf("game created\r\n");
     return GameScrRoot;
 }
@@ -672,7 +705,7 @@ static void Gui_GameScrLayout(void)
 {
    
 }
-#include "mp3Player.h"
+
 static void Gui_GameScrEnter(void)
 {
     Gui_GameScrLayout();
@@ -684,6 +717,7 @@ static void Gui_GameScrEnter(void)
 static void Gui_GameScrExit(void)
 {
     printf("game exit\r\n");
+    MP3_decoder_Free();
     // lv_obj_remove_event_cb(game_btn, game_btn_event_cb);
 }
 
@@ -708,7 +742,7 @@ static void Gui_GameScrDestory(void)
     lv_timer_del(crete_timer);
     min1 = 0;
     max = 0;
-    currnet_time = 0;
+    currnet_time = -20;
     minL = 0;
     goal = 0;
 
