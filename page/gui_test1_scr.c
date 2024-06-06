@@ -100,6 +100,13 @@ LV_IMG_DECLARE(test3);
 LV_IMG_DECLARE(test4);
 LV_IMG_DECLARE(zheba);
 LV_FONT_DECLARE(lv_font_cn);
+static lv_style_t style_def;
+static lv_style_t style_pr;
+static lv_style_t style_small;
+static lv_style_t style_bg;
+static lv_style_t style_indic;
+static lv_style_t style_knob;
+static lv_style_t styleb;
 void lv_music_UI(void)
 {   
     /*Create a transition animation on width transformation and recolor.*/
@@ -107,13 +114,13 @@ void lv_music_UI(void)
     static lv_style_transition_dsc_t tr;
     lv_style_transition_dsc_init(&tr, tr_prop, lv_anim_path_linear, 200, 0, NULL);
 
-    static lv_style_t style_def;
+    
     lv_style_init(&style_def);
     lv_style_set_text_color(&style_def, lv_color_white());
     lv_style_set_transition(&style_def, &tr);
 
     /*Darken the button when pressed and make it wider*/
-    static lv_style_t style_pr;
+    
     lv_style_init(&style_pr);
     lv_style_set_img_recolor_opa(&style_pr, LV_OPA_30);
     lv_style_set_img_recolor(&style_pr, lv_color_black());
@@ -210,7 +217,7 @@ void lv_music_UI(void)
 
 
     /* Create a style for the smaller font */
-    static lv_style_t style_small;
+    
     lv_style_init(&style_small);
     lv_style_set_text_font(&style_small, &lv_font_montserrat_10);
     lv_obj_t * small_label;
@@ -332,9 +339,7 @@ void lv_music_UI(void)
 
 
      // 美化滑动�?
-    static lv_style_t style_bg;
-    static lv_style_t style_indic;
-    static lv_style_t style_knob;
+    
     lv_style_init(&style_bg);
     lv_style_set_radius(&style_bg, LV_RADIUS_CIRCLE); // 设置背景圆�??
     lv_style_set_bg_color(&style_bg, lv_color_hex(0xAAAAAA)); // 设置背景颜色
@@ -602,7 +607,7 @@ void lv_example_image_3(void){
     lv_image_set_src(imgx, &zheba);
     lv_obj_align(imgx, LV_ALIGN_CENTER, 0, -40);
   
-    static lv_style_t styleb;
+    
     lv_style_init(&styleb);
 
     // 设置渐变颜色属�?
@@ -843,6 +848,13 @@ static void Gui_Test1ScrDestory(void)
     currentButton = NULL;
     kill_music();
     lv_obj_clean(Test1ScrRoot);
+    lv_style_reset(&style_def);
+    lv_style_reset(&style_pr);
+    lv_style_reset(&style_small);
+    lv_style_reset(&style_bg);
+    lv_style_reset(&style_indic);
+    lv_style_reset(&style_knob);
+    lv_style_reset(&styleb);
     lv_obj_del_async(Test1ScrRoot);
     printf("test1 destory\r\n");
 }
