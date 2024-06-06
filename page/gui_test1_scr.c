@@ -670,7 +670,7 @@ void play_music(){
 
     lv_label_set_text(labeld, button_name);
     static char xx[100];
-    sprintf(xx,"A:/pics/%s.png", button_name);
+    sprintf(xx,"A:/pics/%s.bin", button_name);
     lv_image_set_src(imgx, xx);
 
     static char files[300];

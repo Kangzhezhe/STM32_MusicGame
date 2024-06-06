@@ -672,10 +672,11 @@ static void Gui_GameScrLayout(void)
 {
    
 }
-
+#include "mp3Player.h"
 static void Gui_GameScrEnter(void)
 {
     Gui_GameScrLayout();
+    MP3_decode_file("0:/star.mp3");
     printf("game enter\r\n");
     // lv_obj_add_event_cb(game_btn, game_btn_event_cb, LV_EVENT_CLICKED, NULL);
 }
