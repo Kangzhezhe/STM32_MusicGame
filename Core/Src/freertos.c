@@ -309,6 +309,7 @@ void test_print_directory_files(const char *path) {
 void my_piano(void);
 void lv_music_UI(void);
 #include "lcd.h"
+#include "lvgl_app.h"
 extern DMA_HandleTypeDef hdma_dac1;
 /* USER CODE END Header_StartTask */
 void StartTask(void const * argument)
@@ -318,7 +319,8 @@ void StartTask(void const * argument)
     if(pdTRUE == xSemaphoreTake(mutex_lvglHandle,portMAX_DELAY))    
     {
         lv_port_fs_init();
-        lv_music_UI();
+        // lv_music_UI();
+        lvgl_app_init();
         xSemaphoreGive(mutex_lvglHandle);
     }
     //test_print_directory_files("A:/");
