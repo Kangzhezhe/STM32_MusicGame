@@ -319,8 +319,8 @@ void StartTask(void const * argument)
     if(pdTRUE == xSemaphoreTake(mutex_lvglHandle,portMAX_DELAY))    
     {
         lv_port_fs_init();
-        // lv_music_UI();
-        lvgl_app_init();
+         lv_music_UI();
+        //lvgl_app_init();
         xSemaphoreGive(mutex_lvglHandle);
     }
     //test_print_directory_files("A:/");

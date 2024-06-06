@@ -49,7 +49,7 @@ static lv_obj_t *BtnLabel     = NULL;
 #include <stdlib.h>
 #include "lvgl/lvgl.h"
 #include <string.h>
-// #include "mp3Player.h"
+#include "mp3Player.h"
 
 
 static void play_pause_event_cb(lv_event_t * e);
@@ -218,39 +218,39 @@ void lv_music_UI(void)
 
     lv_obj_t * btn;
 
-//    lv_fs_dir_t dir;
-//    lv_fs_res_t res = lv_fs_dir_open(&dir, "A:/song_List");
-//    if (res != LV_FS_RES_OK) {
-//        printf("Failed to open directory\n");
-//        return;
-//    }
-//    char fn[50];
-//    while (true) {
-//        lv_fs_res_t res = lv_fs_dir_read(&dir, fn,256);
-//        if (res != LV_FS_RES_OK||fn[0] == 0) {
-//            break;
-//        }
-//        char *ext = strrchr(fn, '.');
-//        if (ext && strcmp(ext, ".mp3") == 0) {
-//            *ext = '\0'; // Null-terminate to remove the extension
-//        }
-//        printf("%s\r\n", fn);
-//        btn = lv_btn_create(list1);
-//        lv_obj_set_width(btn, lv_pct(100));
-//        lv_obj_add_event_cb(btn, event_list_handler, LV_EVENT_CLICKED, NULL);
-//        lv_obj_t * label = lv_label_create(btn);
-//        lv_label_set_text(label,fn);
+   lv_fs_dir_t dir;
+   lv_fs_res_t res = lv_fs_dir_open(&dir, "A:/song_List");
+   if (res != LV_FS_RES_OK) {
+       printf("Failed to open directory\n");
+       return;
+   }
+   char fn[50];
+   while (true) {
+       lv_fs_res_t res = lv_fs_dir_read(&dir, fn,256);
+       if (res != LV_FS_RES_OK||fn[0] == 0) {
+           break;
+       }
+       char *ext = strrchr(fn, '.');
+       if (ext && strcmp(ext, ".mp3") == 0) {
+           *ext = '\0'; // Null-terminate to remove the extension
+       }
+       printf("%s\r\n", fn);
+       btn = lv_btn_create(list1);
+       lv_obj_set_width(btn, lv_pct(100));
+       lv_obj_add_event_cb(btn, event_list_handler, LV_EVENT_CLICKED, NULL);
+       lv_obj_t * label = lv_label_create(btn);
+       lv_label_set_text(label,fn);
 
-//        small_label = lv_obj_get_child(btn, 0); // Get the label object of the button
-//        lv_obj_add_style(small_label, &style_small, 0);
-//        lv_label_set_long_mode(label, LV_LABEL_LONG_SCROLL_CIRCULAR);
-//        lv_obj_set_width(label, lv_pct(100));
-//         }
-//         lv_fs_dir_close(&dir);
+       small_label = lv_obj_get_child(btn, 0); // Get the label object of the button
+       lv_obj_add_style(small_label, &style_small, 0);
+       lv_label_set_long_mode(label, LV_LABEL_LONG_SCROLL_CIRCULAR);
+       lv_obj_set_width(label, lv_pct(100));
+        }
+        lv_fs_dir_close(&dir);
 
-//     /*Select the first button by default*/
-//     currentButton = lv_obj_get_child(list1, 0);
-//     lv_obj_add_state(currentButton, LV_STATE_CHECKED);
+    /*Select the first button by default*/
+    currentButton = lv_obj_get_child(list1, 0);
+    lv_obj_add_state(currentButton, LV_STATE_CHECKED);
 
 
     //
@@ -671,26 +671,26 @@ void play_music(){
     static char files[300];
     sprintf(files, "0:/song_List/%s.mp3", button_name);
     LV_LOG_USER("%s", files);
-    // MP3_decode_file(files);
+    MP3_decode_file(files);
     duration_time = get_total_duration(files);
     lv_timer_resume(timer);
 }
 void stop_music(){
-    // MP3_suspend();
+    MP3_suspend();
     lv_timer_pause(timer);
 }
 
 void resume_music() {
-    // MP3_resume();
+    MP3_resume();
     lv_timer_resume(timer);
 }
 void kill_music(){
-    // MP3_decoder_Free();
+    MP3_decoder_Free();
     current_time=0;
 }
 void change_sound(int nums){
 
-    // MP3_Set_volume(nums);
+    MP3_Set_volume(nums);
 }
 
 double get_total_duration(const char* filename) {
@@ -699,7 +699,7 @@ double get_total_duration(const char* filename) {
     double duration = 0.0;
 
 
-    // duration = MP3_Get_duration();
+    duration = MP3_Get_duration();
     
     char buf[1024];
     int m = (int)duration / 60;
