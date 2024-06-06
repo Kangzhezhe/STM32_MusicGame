@@ -523,14 +523,14 @@ static lv_obj_t *Gui_PianoScrCreate(lv_obj_t *parent)
     // lv_label_set_text(PianoLabel, "Screen 3");
 
     piano_btn = lv_btn_create(PianoScrRoot);
-    lv_obj_set_size(piano_btn, 5, 5);
+    lv_obj_set_size(piano_btn, 20, 20);
     BtnLabel = lv_label_create(piano_btn);
     lv_label_set_text(BtnLabel, "return");
     // lv_obj_add_flag(piano_btn, LV_OBJ_FLAG_HIDDEN);
 
     // lv_obj_align_to(PianoLabel, PianoScrRoot, LV_ALIGN_CENTER, 0, -30);
     lv_obj_center(BtnLabel);
-    lv_obj_align_to(piano_btn, PianoScrRoot, LV_ALIGN_BOTTOM_MID, 0, -5);
+    lv_obj_align_to(piano_btn, PianoScrRoot, LV_ALIGN_BOTTOM_MID, 0, -20);
 
     my_piano();
     printf("piano created\r\n");

@@ -132,7 +132,7 @@ void lv_music_UI(void)
 
     // 创建�?�?/暂停按钮
     
-    lv_obj_t * play_pause_btn = lv_imagebutton_create(lv_screen_active());     /*Add a button the current screen*/
+    lv_obj_t * play_pause_btn = lv_imagebutton_create(Test1ScrRoot);     /*Add a button the current screen*/
     // lv_imagebutton_set_src(play_pause_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, "A:/test1.png",
     //                       NULL);
     lv_imagebutton_set_src(play_pause_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test1,NULL);
@@ -143,14 +143,14 @@ void lv_music_UI(void)
     lv_obj_add_event_cb(play_pause_btn, play_pause_event_cb, LV_EVENT_CLICKED, NULL);
     
     // 创建标�??
-    lv_obj_t * label1 = lv_label_create(lv_scr_act());
+    lv_obj_t * label1 = lv_label_create(Test1ScrRoot);
     lv_label_set_text(label1, "play mode"); // 设置�?文标签文�?
     // lv_obj_add_style(label1, &style_font,LV_STATE_DEFAULT);
     lv_obj_align(label1, LV_ALIGN_CENTER, -120, 65); // 调整位置，使其在下拉列表上方
 
     // 选择模式的下拉列�?
     /*Create a normal drop down list*/
-    lv_obj_t * dd = lv_dropdown_create(lv_screen_active());
+    lv_obj_t * dd = lv_dropdown_create(Test1ScrRoot);
     lv_dropdown_set_options_static(dd, opts);
     lv_dropdown_set_dir(dd, LV_DIR_BOTTOM);
     lv_dropdown_set_symbol(dd, LV_SYMBOL_UP);
@@ -159,7 +159,7 @@ void lv_music_UI(void)
     lv_obj_add_event_cb(dd, event_handler, LV_EVENT_ALL, NULL);
 
     // 创建“上一首”按�?
-    lv_obj_t * prev_btn = lv_imagebutton_create(lv_scr_act()); 
+    lv_obj_t * prev_btn = lv_imagebutton_create(Test1ScrRoot); 
     lv_imagebutton_set_src(prev_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test4,
                           NULL);
     // 按下时的样式 
@@ -171,7 +171,7 @@ void lv_music_UI(void)
     lv_obj_add_event_cb(prev_btn, prev_event_cb, LV_EVENT_CLICKED, NULL);
     
      // 创建“下一首”按�?
-    lv_obj_t * next_btn = lv_imagebutton_create(lv_scr_act()); 
+    lv_obj_t * next_btn = lv_imagebutton_create(Test1ScrRoot); 
     lv_imagebutton_set_src(next_btn, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &test3,
                           NULL);
     // 按下时的样式                      
@@ -183,10 +183,10 @@ void lv_music_UI(void)
     
     //
     // 创建标�??
-    lv_obj_t * label = lv_label_create(lv_screen_active());
+    lv_obj_t * label = lv_label_create(Test1ScrRoot);
     
     // 创建音量弧形控件
-    lv_obj_t * arc = lv_arc_create(lv_screen_active());
+    lv_obj_t * arc = lv_arc_create(Test1ScrRoot);
     lv_obj_set_size(arc, 50, 50);
     lv_arc_set_rotation(arc, 135);
     lv_arc_set_bg_angles(arc, 0, 270);
@@ -203,7 +203,7 @@ void lv_music_UI(void)
 
     // 歌单
     /*Create a list*/
-    list1 = lv_list_create(lv_screen_active());
+    list1 = lv_list_create(Test1ScrRoot);
     lv_obj_set_size(list1, lv_pct(40), lv_pct(60));
     lv_obj_align(list1, LV_ALIGN_TOP_MID, lv_pct(0), 0);
     lv_obj_set_style_pad_row(list1, 5, 0);
@@ -255,12 +255,12 @@ void lv_music_UI(void)
 
     //
      //duration time
-    label3 = lv_label_create(lv_screen_active());
+    label3 = lv_label_create(Test1ScrRoot);
     lv_label_set_text(label3, "00:00"); // 设置标�?�文�?
     lv_obj_add_style(label3, &style_small, 0);
     lv_obj_align(label3, LV_ALIGN_CENTER, 140, 100); // 调整位置，使其在下拉列表上方
     //now time
-    label4 = lv_label_create(lv_screen_active());
+    label4 = lv_label_create(Test1ScrRoot);
     lv_label_set_text(label4, "00:00"); // 设置标�?�文�?
     lv_obj_add_style(label4, &style_small, 0);
     lv_obj_align(label4, LV_ALIGN_LEFT_MID, 0, 100); // 调整位置，使其在下拉列表上方
@@ -279,7 +279,7 @@ void lv_music_UI(void)
     //
 
     /*Create a second list with up and down buttons*/
-    list2 = lv_list_create(lv_screen_active());
+    list2 = lv_list_create(Test1ScrRoot);
     lv_obj_set_size(list2, lv_pct(30), lv_pct(60));
     lv_obj_align(list2, LV_ALIGN_TOP_RIGHT, 0, 0);
     lv_obj_set_flex_flow(list2, LV_FLEX_FLOW_COLUMN);
@@ -318,13 +318,13 @@ void lv_music_UI(void)
     
 
     //
-    lv_obj_t * sw = lv_switch_create(lv_screen_active());
+    lv_obj_t * sw = lv_switch_create(Test1ScrRoot);
     lv_obj_align(sw,LV_ALIGN_CENTER, 100, 50);
     lv_obj_add_event_cb(sw, hidden_handler, LV_EVENT_ALL, NULL);
     lv_obj_add_flag(sw, LV_OBJ_FLAG_EVENT_BUBBLE);
     //
     // 创建标�??
-    lv_obj_t * label2 = lv_label_create(lv_scr_act());
+    lv_obj_t * label2 = lv_label_create(Test1ScrRoot);
     lv_label_set_text(label2, "music list"); // 设置�?文标签文�?
     lv_obj_align(label2, LV_ALIGN_CENTER, 110, 70); // 调整位置，使其在下拉列表上方
     //
@@ -355,7 +355,7 @@ void lv_music_UI(void)
     lv_style_set_width(&style_knob, 3); // 设置滑块宽度
     lv_style_set_height(&style_knob, 3); // 设置滑块高度
     // 创建进度�?
-    slider = lv_slider_create(lv_screen_active());
+    slider = lv_slider_create(Test1ScrRoot);
     lv_obj_set_width(slider, 250);
     lv_obj_align(slider, LV_ALIGN_CENTER, 0, 100);
     lv_obj_add_style(slider, &style_bg, LV_PART_MAIN); // 应用背景样式
@@ -598,7 +598,7 @@ static void set_angle(void * img, int32_t v)
 
 
 void lv_example_image_3(void){
-    imgx = lv_image_create(lv_screen_active());
+    imgx = lv_image_create(Test1ScrRoot);
     lv_image_set_src(imgx, &zheba);
     lv_obj_align(imgx, LV_ALIGN_CENTER, 0, -40);
   
@@ -611,7 +611,7 @@ void lv_example_image_3(void){
     lv_style_set_bg_grad_color(&styleb, lv_palette_main(LV_PALETTE_RED)); // 结束颜色
     lv_style_set_bg_grad_dir(&styleb, LV_GRAD_DIR_HOR);                    // 渐变方向，水�?
     // 创建标�?�并应用样式
-    labeld = lv_label_create(lv_scr_act());
+    labeld = lv_label_create(Test1ScrRoot);
     lv_obj_add_style(labeld, &styleb, 0);
     lv_label_set_text(labeld, "zheba");
     lv_obj_align(labeld, LV_ALIGN_CENTER, 0, 15);
@@ -793,22 +793,23 @@ static lv_obj_t *Gui_Test1ScrCreate(lv_obj_t *parent)
 {
     Test1ScrRoot = lv_obj_create(parent);
     lv_obj_set_size(Test1ScrRoot, lv_pct(100), lv_pct(100));
-    lv_obj_set_style_bg_color(Test1ScrRoot, lv_color_black(), LV_PART_MAIN);
+    // lv_obj_set_style_bg_color(Test1ScrRoot, lv_color_black(), LV_PART_MAIN);
 
     // Test1Label = lv_label_create(Test1ScrRoot);
     // lv_obj_set_style_text_color(Test1Label, lv_color_white(), LV_PART_MAIN);
     // lv_label_set_text(Test1Label, "Screen 2");
 
     test1_btn = lv_btn_create(Test1ScrRoot);
-    lv_obj_set_size(test1_btn, 5, 5);
+    lv_obj_set_size(test1_btn, 15, 15);
     BtnLabel = lv_label_create(test1_btn);
     lv_label_set_text(BtnLabel, "ret");
     // lv_obj_add_flag(test1_btn, LV_OBJ_FLAG_HIDDEN);
 
     // lv_obj_align_to(Test1Label, Test1ScrRoot, LV_ALIGN_CENTER, 0, -30);
     lv_obj_center(BtnLabel);
-    lv_obj_align_to(test1_btn, Test1ScrRoot, LV_ALIGN_TOP_MID, 0, 5);
+    lv_obj_align_to(test1_btn, Test1ScrRoot, LV_ALIGN_TOP_LEFT,0 , 0);
     // TRACE_I("test1 created");
+    lv_music_UI();
     printf("test1 created\r\n");
     return Test1ScrRoot;
 }
@@ -836,6 +837,13 @@ static void Gui_Test1ScrExit(void)
 static void Gui_Test1ScrDestory(void)
 {
     // TRACE_I("test1 destory");
+    is_playing = true;
+    duration_time = 0;
+    current_time = 0;
+    currentButton = NULL;
+    kill_music();
+    lv_obj_clean(Test1ScrRoot);
+    lv_obj_del_async(Test1ScrRoot);
     printf("test1 destory\r\n");
 }
 

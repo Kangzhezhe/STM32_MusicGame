@@ -652,14 +652,14 @@ static lv_obj_t *Gui_GameScrCreate(lv_obj_t *parent)
     // lv_label_set_text(GameLabel, "Game");
 
     game_btn = lv_btn_create(GameScrRoot);
-    lv_obj_set_size(game_btn, 5, 5);
+    lv_obj_set_size(game_btn, 20, 20);
     BtnLabel = lv_label_create(game_btn);
     lv_label_set_text(BtnLabel, "ret");
     // lv_obj_add_flag(game_btn, LV_OBJ_FLAG_HIDDEN);
 
     // lv_obj_align_to(GameLabel, GameScrRoot, LV_ALIGN_CENTER, 0, -30);
     lv_obj_center(BtnLabel);
-    lv_obj_align_to(game_btn, GameScrRoot, LV_ALIGN_TOP_MID, 0, 5);
+    lv_obj_align_to(game_btn, GameScrRoot, LV_ALIGN_TOP_LEFT, 0, 20);
     lv_obj_add_event_cb(game_btn, game_btn_event_cb, LV_EVENT_CLICKED, NULL);
 
     game();
