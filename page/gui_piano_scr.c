@@ -29,7 +29,7 @@ static lv_obj_t *BtnLabel     = NULL;
 // #include "mp3Player.h"
 
 void playSound(const char* soundFilePath) {
-    // MP3_decode_file(soundFilePath);
+    MP3_decode_file(soundFilePath);
     printf("playSound: %s\r\n", soundFilePath);
 }
 
@@ -447,10 +447,10 @@ void my_piano(void)
 
     lv_obj_t * switch1 = lv_button_create(PianoScrRoot);
     lv_obj_add_event_cb(switch1, event_handler_switch1, LV_EVENT_ALL, NULL);
-    lv_obj_align(switch1, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+    lv_obj_align(switch1, LV_ALIGN_BOTTOM_LEFT, 10, 0);
     lv_obj_remove_flag(switch1, LV_OBJ_FLAG_PRESS_LOCK);
     // lv_obj_add_flag(switch1, LV_OBJ_FLAG_CHECKABLE);
-    lv_obj_set_width(switch1, 104);
+    lv_obj_set_width(switch1, 84);
     lv_obj_set_height(switch1, 32);
 
     label = lv_label_create(switch1);
@@ -458,13 +458,12 @@ void my_piano(void)
     lv_obj_center(label);
 
 
-
-    lv_obj_t * switch2 = lv_button_create(lv_screen_active());
+    lv_obj_t * switch2 = lv_button_create(PianoScrRoot);
     lv_obj_add_event_cb(switch2, event_handler_switch2, LV_EVENT_ALL, NULL);
     lv_obj_align(switch2, LV_ALIGN_BOTTOM_LEFT, 108, 0);
     lv_obj_remove_flag(switch1, LV_OBJ_FLAG_PRESS_LOCK);
     // lv_obj_add_flag(switch2, LV_OBJ_FLAG_CHECKABLE);
-    lv_obj_set_width(switch2, 104);
+    lv_obj_set_width(switch2, 84);
     lv_obj_set_height(switch2, 32);
 
     label = lv_label_create(switch2);
@@ -475,10 +474,10 @@ void my_piano(void)
 
     lv_obj_t * switch3 = lv_button_create(PianoScrRoot);
     lv_obj_add_event_cb(switch3, event_handler_switch3, LV_EVENT_ALL, NULL);
-    lv_obj_align(switch3, LV_ALIGN_BOTTOM_LEFT, 216, 0);
+    lv_obj_align(switch3, LV_ALIGN_BOTTOM_LEFT, 206, 0);
     lv_obj_remove_flag(switch1, LV_OBJ_FLAG_PRESS_LOCK);
     // lv_obj_add_flag(switch3, LV_OBJ_FLAG_CHECKABLE);
-    lv_obj_set_width(switch3, 104);
+    lv_obj_set_width(switch3, 84);
     lv_obj_set_height(switch3, 32);
 
     label = lv_label_create(switch3);
@@ -523,14 +522,14 @@ static lv_obj_t *Gui_PianoScrCreate(lv_obj_t *parent)
     // lv_label_set_text(PianoLabel, "Screen 3");
 
     piano_btn = lv_btn_create(PianoScrRoot);
-    lv_obj_set_size(piano_btn, 20, 20);
+    lv_obj_set_size(piano_btn, 1, 1);
     BtnLabel = lv_label_create(piano_btn);
-    lv_label_set_text(BtnLabel, "return");
+    lv_label_set_text(BtnLabel, "r");
     // lv_obj_add_flag(piano_btn, LV_OBJ_FLAG_HIDDEN);
 
     // lv_obj_align_to(PianoLabel, PianoScrRoot, LV_ALIGN_CENTER, 0, -30);
     lv_obj_center(BtnLabel);
-    lv_obj_align_to(piano_btn, PianoScrRoot, LV_ALIGN_BOTTOM_MID, 0, -20);
+    lv_obj_align_to(piano_btn, PianoScrRoot, LV_ALIGN_TOP_LEFT, 0, 0);
 
     my_piano();
     printf("piano created\r\n");

@@ -66,6 +66,9 @@ void lv_port_disp_init(void)
     
     disp =  lv_display_create(MY_DISP_HOR_RES, MY_DISP_VER_RES);
 		//lv_display_set_rotation(disp, LV_DISPLAY_ROTATION_90); 
+    lv_obj_t * screen = lv_scr_act();
+    lv_obj_set_size(screen, MY_DISP_HOR_RES, MY_DISP_VER_RES); // 设置屏幕对象的大小
+    lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE); // 禁用滚动
     lv_display_set_flush_cb(disp, disp_flush);
 
     /* Example 1

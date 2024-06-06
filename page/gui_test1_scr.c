@@ -797,17 +797,17 @@ void test1_btn_event_cb(lv_event_t *e)
 static lv_obj_t *Gui_Test1ScrCreate(lv_obj_t *parent)
 {
     Test1ScrRoot = lv_obj_create(parent);
-    lv_obj_set_size(Test1ScrRoot, lv_pct(100), lv_pct(100));
+    lv_obj_set_size(Test1ScrRoot, 320, 240);
+    lv_obj_clear_flag(Test1ScrRoot, LV_OBJ_FLAG_SCROLLABLE); // ½ûÓÃ¹ö¶¯
     // lv_obj_set_style_bg_color(Test1ScrRoot, lv_color_black(), LV_PART_MAIN);
 
     // Test1Label = lv_label_create(Test1ScrRoot);
     // lv_obj_set_style_text_color(Test1Label, lv_color_white(), LV_PART_MAIN);
     // lv_label_set_text(Test1Label, "Screen 2");
-
     test1_btn = lv_btn_create(Test1ScrRoot);
-    lv_obj_set_size(test1_btn, 15, 15);
+    lv_obj_set_size(test1_btn, 1, 1);
     BtnLabel = lv_label_create(test1_btn);
-    lv_label_set_text(BtnLabel, "ret");
+    lv_label_set_text(BtnLabel, "r");
     // lv_obj_add_flag(test1_btn, LV_OBJ_FLAG_HIDDEN);
 
     // lv_obj_align_to(Test1Label, Test1ScrRoot, LV_ALIGN_CENTER, 0, -30);
