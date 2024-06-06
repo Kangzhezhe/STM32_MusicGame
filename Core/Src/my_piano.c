@@ -48,7 +48,6 @@ static void event_handler_switch3(lv_event_t * e) {
 }
 
 
-
 // #############
 // 按钮的事件�?�理函数
 // #############
